@@ -1,15 +1,29 @@
 import React from 'react'
 
-import { ExampleComponent, configureRtc } from 'rtc-react'
+import { configureRtc, RTCContext } from 'rtc-react'
 import 'rtc-react/dist/index.css'
-
+import { TestComponent } from "./test_component";
 
 configureRtc({
     apiEndpoint: "api.burnerdomain.rtccart.io"
 });
 
 const App = () => {
-  return <ExampleComponent text="Create React Library Example 😄" />
+
+  const [ value, setValue ] = React.useState({
+    stuff: "BLARG"
+  });
+
+
+  console.log(setValue);
+
+  return (
+    <RTCContext.Provider value={{updateStateFn: setValue, ...value}}>
+      <TestComponent text="Create React Library Example 😄" />
+    </RTCContext.Provider>
+
+  )
+
 }
 
 export default App

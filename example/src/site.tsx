@@ -9,8 +9,8 @@ import 'rtc-react/dist/index.css'
 export const Site = (props:any) => {
   return (
     <>
-      <h1>test_component.tsx</h1>
       <DebugComponent />
+      <h1>test_component.tsx</h1>
       <ExampleComponent text={props.text} />
     </>
   );

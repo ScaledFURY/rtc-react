@@ -12,6 +12,18 @@ window.RTC.ApiClient = ApiClient;
 interface Props {
   component: any;
   apiEndpoint: string;
+  forceVariantId?: string;
+  isReceiptPage?: boolean;
+  defaultVariantId?: string;
+  defaultAddons?: string;
+  nextUrl: string;
+  landingPageName?: string;
+  upsellPageName?: string;
+  funnelName?: string;
+  orderTag?: string;
+  advertorialPageName?: string;
+  trackStock?: boolean;
+  paypalConfirmUrl?: string;
 }
 
 export const RTC = (props: Props) => {
@@ -20,8 +32,9 @@ export const RTC = (props: Props) => {
   const Component = props.component;
 
   React.useEffect(() => {
-    ApiClient.getCart({ checkoutPageParams: JSON.stringify({}) }).then(newCart => {
-      setState(Object.assign({}, state, newCart));
+    const settings : Settings = load_settings(props);
+    ApiClient.getCart(settings).then(newCart => {
+      setState(Object.assign({}, state, newCart, { settings }));
     });
   }, []);
 
@@ -30,4 +43,73 @@ export const RTC = (props: Props) => {
       <Component state={state} />
     </RTCContext.Provider>
   )
+}
+
+interface Settings {
+    urlCoupon : string|null;
+    forceVariantId: string|null;
+    recoveryCartId: string|null;
+    resetCookie: boolean;
+    forceShippingZone: string|null;
+    debugForeignCurrency: string;
+    checkoutPage: Location;
+    checkoutPageParams: string;
+    isReceiptPage: boolean;
+    defaultVariantId?: string;
+    defaultAddons?: string;
+    nextUrl: string;
+    landingPageName: string;
+    upsellPageName: string;
+    funnelName: string;
+    orderTag: string;
+    advertorialPageName: string;
+    trackStock: boolean;
+    paypalConfirmUrl?: string;
+}
+
+
+export function urlToAbsolute(url?:string) : string|undefined {
+  if (typeof url !== 'string') {
+    return url;
+  }
+  if (!url.match(/^http(s)*:/)) {
+    const tmp = document.createElement("a");
+    tmp.href = url;
+    return tmp.href;
+  } else {
+    return url;
+  }
+};
+
+function load_settings(props: Props) : Settings {
+  const urlParams = new URLSearchParams(window.location.search);
+
+  const origParams = {};
+  for (const [key,value] of urlParams.entries()) {
+    origParams[key] = value;
+  }
+
+  const settings : Settings = {
+    urlCoupon:            urlParams.get('coupon'),
+    forceVariantId:       urlParams.get('forceVariantId') || props.forceVariantId || null,
+    recoveryCartId:       urlParams.get('recoveryCartId'),
+    resetCookie:          urlParams.get('resetCookie') === "true",
+    forceShippingZone:    urlParams.get('forceShippingZone') || "",
+    debugForeignCurrency: urlParams.get('debugForeignCurrency') || "false",
+    checkoutPage:         window.location,
+    checkoutPageParams:   JSON.stringify(origParams),
+    isReceiptPage:        props.isReceiptPage || false,
+    defaultVariantId:     props.defaultVariantId,
+    defaultAddons:        props.defaultAddons || "",
+    nextUrl:              props.nextUrl,
+    landingPageName:      props.landingPageName || "",
+    upsellPageName:       props.upsellPageName || "",
+    funnelName:           props.funnelName || "",
+    orderTag:             props.orderTag || "",
+    advertorialPageName:  props.advertorialPageName || "",
+    trackStock:           !!props.trackStock,
+    paypalConfirmUrl:     urlToAbsolute(props.paypalConfirmUrl)
+  };
+
+  return settings;
 }

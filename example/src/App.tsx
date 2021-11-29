@@ -4,7 +4,7 @@ import { Site } from "./site";
 
 const App = () => {
   return (
-    <RTC component={Site} apiEndpoint="api.burnerdomain.rtccart.io" />
+    <RTC component={Site} nextUrl="https://www.google.com" apiEndpoint="api.burnerdomain.rtccart.io" />
   );
 }
 

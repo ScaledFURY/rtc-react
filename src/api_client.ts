@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
 import Cookies from 'js-cookie';
-
+//import { Settings } from "./components/rtc";
 
 let apiEndpoint : string|null = null;
 
@@ -10,13 +10,21 @@ export function setApiEndpoint(newApiEndpoint:string) {
 
 let cartId : string|null = null;
 
-function getCartId() {
+function getCartId(resetCookie:boolean) {
   const COOKIE_NAME="checkoutSessionCookie";
+
+  const setNewCookie = () => {
+    cartId = uuidv4();
+    Cookies.set(COOKIE_NAME, cartId, { expires: 1 });
+  }
+
+  if (resetCookie === true) {
+    setNewCookie();
+  }
   if (!cartId) {
     cartId = Cookies.get(COOKIE_NAME) || null;
     if (!cartId) {
-      cartId = uuidv4();
-      Cookies.set(COOKIE_NAME, cartId, { expires: 1 });
+      setNewCookie();
     }
   }
   console.log(`cartId = ${cartId}`);
@@ -43,9 +51,8 @@ async function apiRequest(endPoint:string, opts:any={}, queryParams:any={}) {
 }
 
 export async function getCart(props:any) {
-  console.log(`getCart`);
-  console.log(getCartId());
-  return apiRequest(`cart/${getCartId()}`, {}, props);
+  alert(props.resetCookie);
+  return apiRequest(`cart/${getCartId(props.resetCookie)}`, {}, props);
 }
 
 

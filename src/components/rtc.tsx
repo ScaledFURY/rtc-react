@@ -1,5 +1,6 @@
 import * as React from 'react'
 import { RTCContext } from './rtc_context';
+import { urlToAbsolute } from "../urlToAbsolute";
 import * as ApiClient from '../api_client';
 
 declare global {
@@ -40,12 +41,12 @@ export const RTC = (props: Props) => {
 
   return (
     <RTCContext.Provider value={{ ...state, setState }}>
-      <Component state={state} />
+      <Component {...state} />
     </RTCContext.Provider>
   )
 }
 
-interface Settings {
+export interface Settings {
     urlCoupon : string|null;
     forceVariantId: string|null;
     recoveryCartId: string|null;
@@ -66,20 +67,6 @@ interface Settings {
     trackStock: boolean;
     paypalConfirmUrl?: string;
 }
-
-
-export function urlToAbsolute(url?:string) : string|undefined {
-  if (typeof url !== 'string') {
-    return url;
-  }
-  if (!url.match(/^http(s)*:/)) {
-    const tmp = document.createElement("a");
-    tmp.href = url;
-    return tmp.href;
-  } else {
-    return url;
-  }
-};
 
 function load_settings(props: Props) : Settings {
   const urlParams = new URLSearchParams(window.location.search);

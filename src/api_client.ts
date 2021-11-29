@@ -51,7 +51,6 @@ async function apiRequest(endPoint:string, opts:any={}, queryParams:any={}) {
 }
 
 export async function getCart(props:any) {
-  alert(props.resetCookie);
   return apiRequest(`cart/${getCartId(props.resetCookie)}`, {}, props);
 }
 

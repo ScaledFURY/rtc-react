@@ -1,6 +1,59 @@
 import { v4 as uuidv4 } from 'uuid';
 import Cookies from 'js-cookie';
 
+
+let apiEndpoint : string|null = null;
+
+export function setApiEndpoint(newApiEndpoint:string) {
+  apiEndpoint = newApiEndpoint;
+}
+
+let cartId : string|null = null;
+
+function getCartId() {
+  const COOKIE_NAME="checkoutSessionCookie";
+  if (!cartId) {
+    cartId = Cookies.get(COOKIE_NAME) || null;
+    if (!cartId) {
+      cartId = uuidv4();
+      Cookies.set(COOKIE_NAME, cartId, { expires: 1 });
+    }
+  }
+  console.log(`cartId = ${cartId}`);
+  return cartId;
+}
+
+async function apiRequest(endPoint:string, opts:any={}, queryParams:any={}) {
+  if (apiEndpoint === null) {
+    throw Error("api called before calling setApiEndpoint");
+  }
+  const url = new URL(`https://${apiEndpoint}/v1/${endPoint}`);
+  url.search = new URLSearchParams(queryParams).toString();
+  const settings = Object.assign({
+      method: 'get',
+      mode: 'cors',
+      headers: {
+        'Content-Type': "application/json"
+      },
+      cache: 'no-cache',
+  }, opts);
+
+  const response = await fetch(url.toString(), settings);
+  return await response.json();
+}
+
+export async function getCart(props:any) {
+  console.log(`getCart`);
+  console.log(getCartId());
+  return apiRequest(`cart/${getCartId()}`, {}, props);
+}
+
+
+
+/*
+import { v4 as uuidv4 } from 'uuid';
+import Cookies from 'js-cookie';
+
 window.Cookies = Cookies;
 
 const COOKIE_NAME="checkoutSessionCookie";
@@ -176,3 +229,4 @@ export default class ApiClient {
     return await response.json();
   }
 }
+*/

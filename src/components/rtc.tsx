@@ -14,14 +14,14 @@ interface Props {
   component: any;
   apiEndpoint: string;
   forceVariantId?: string;
-  isReceiptPage?: boolean;
+  isReceiptPage?: boolean; // Needed?
   defaultVariantId?: string;
   defaultAddons?: string;
   nextUrl: string;
   landingPageName?: string;
   upsellPageName?: string;
   funnelName?: string;
-  orderTag?: string;
+  orderTag?: string; // Needed?
   advertorialPageName?: string;
   trackStock?: boolean;
   paypalConfirmUrl?: string;

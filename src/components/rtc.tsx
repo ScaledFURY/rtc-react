@@ -55,7 +55,7 @@ export const RTC = (props: IProps) => {
     window.RTC.__cart = newCart;
     setCartOrig(newCart);
   };
-  const publicApi = createPublicApi(ApiClient, setCart);
+  const publicApi = createPublicApi(ApiClient, setCart, cart);
   window.RTC.__publicApi = publicApi;
 
 
@@ -77,7 +77,7 @@ export const RTC = (props: IProps) => {
   }, []);
 
   return (
-    <RTCContext.Provider value={{ cart, meta, currencyFormatter }}>
+    <RTCContext.Provider value={{ cart, meta, currencyFormatter, publicApi }}>
       <Component />
     </RTCContext.Provider>
   )

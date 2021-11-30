@@ -1,5 +1,19 @@
-export const createPublicApi = (apiClient:any, setCart:Function) => {
+export const createPublicApi = (apiClient:any, setCart:Function, cart: any) => {
   const result : any = {};
+
+  result.hasVariant = (variantId:string) => {
+    return cart.currencyCart.hasVariant(variantId);
+  }
+
+  result.toggleAddon = async (variantId:string) => {
+    const result = await apiClient.toggleAddon(variantId);
+    if (result) {
+      setCart(result);
+      return true;
+    } else {
+      return false
+    }
+  }
 
   result.applyCoupon = async (code:string) => {
     const result = await apiClient.applyCoupon(code);

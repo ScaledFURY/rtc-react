@@ -7,3 +7,4 @@ export { ShippingValue  }    from "./components/shipping_value";
 export { DiscountValue  }    from "./components/discount_value";
 export { LineItems      }    from "./components/line_items";
 export { CartDisplay    }    from "./components/cart_display";
+export { ToggleAddonButton } from "./components/toggle_addon_button";

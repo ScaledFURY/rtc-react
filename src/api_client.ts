@@ -62,6 +62,11 @@ export async function  applyCoupon(code:string) {
   return apiRequest(`cart/${getCartId()}/apply_coupon`, { "method": "POST", "body": JSON.stringify({ "code": code }) }, {});
 }
 
+export async function toggleAddon(variantId:string) {
+  return apiRequest(`cart/${getCartId()}/toggle_addon`, { "method": "POST", "body": JSON.stringify({ variantId }) }, {});
+}
+
+
 export async function loadPricing() {
   if (apiEndpoint === null) {
     throw Error("api called before calling setApiEndpoint");
@@ -98,22 +103,22 @@ export default class ApiClient {
   }
 
   getSessionId() {
-    this.sessionId = Cookies.get(COOKIE_NAME);
+    getCartId() = Cookies.get(COOKIE_NAME);
 
     const hasRecoveryCartId = typeof(this.props.recoveryCartId) === 'string' && this.props.recoveryCartId.length > 5;
-    if (this.sessionId === undefined || this.props.resetCookie || hasRecoveryCartId) {
-      this.sessionId = uuidv4();
-      Cookies.set(COOKIE_NAME, this.sessionId, { expires: 1 });
+    if (getCartId() === undefined || this.props.resetCookie || hasRecoveryCartId) {
+      getCartId() = uuidv4();
+      Cookies.set(COOKIE_NAME, getCartId(), { expires: 1 });
     }
-    console.log(`RTC SessionID = ${this.sessionId}`);
+    console.log(`RTC SessionID = ${getCartId()}`);
   }
 
   initBraintree(data) {
-    return this.apiRequest(`braintree/${this.sessionId}/init`, { "method": "POST", "body": JSON.stringify(data) }, {});
+    return this.apiRequest(`braintree/${getCartId()}/init`, { "method": "POST", "body": JSON.stringify(data) }, {});
   }
 
   initKlarna(data) {
-    return this.apiRequest(`klarna/${this.sessionId}/init`, { "method": "POST", "body": JSON.stringify(data) }, {});
+    return this.apiRequest(`klarna/${getCartId()}/init`, { "method": "POST", "body": JSON.stringify(data) }, {});
   }
 
   validateAddress(addr) {
@@ -121,20 +126,20 @@ export default class ApiClient {
   }
 
   getKlaviyoData() {
-    return this.apiRequest(`cart/${this.sessionId}/klaviyo_data`);
+    return this.apiRequest(`cart/${getCartId()}/klaviyo_data`);
   }
 
   saveValues(data) {
-    return this.apiRequest(`cart/${this.sessionId}/save_values`, { "method": "POST", "body": JSON.stringify(data) }, {});
+    return this.apiRequest(`cart/${getCartId()}/save_values`, { "method": "POST", "body": JSON.stringify(data) }, {});
   }
 
 
   commitApplePay(data) {
-    return this.apiRequest(`applepay/${this.sessionId}/commit`, { "method": "POST", "body": JSON.stringify(data) }, {});
+    return this.apiRequest(`applepay/${getCartId()}/commit`, { "method": "POST", "body": JSON.stringify(data) }, {});
   }
 
   getApplepaySession(data) {
-    return this.apiRequest(`applepay/${this.sessionId}/init`, { "method": "POST", "body": JSON.stringify(data) }, {});
+    return this.apiRequest(`applepay/${getCartId()}/init`, { "method": "POST", "body": JSON.stringify(data) }, {});
   }
 
   addToAttentive(data) {
@@ -142,17 +147,17 @@ export default class ApiClient {
   }
 
   getPixelData() {
-    return this.apiRequest(`cart/${this.sessionId}/pixel_data`);
+    return this.apiRequest(`cart/${getCartId()}/pixel_data`);
   }
 
   // Not necessarily any data...
   sendEvent(data = {}) {
-    data.sessionCartId = data.sessionCartId || this.sessionId;
-    return this.apiRequest(`events/${this.sessionId}`, { "method": "POST", "body": JSON.stringify(data) }, {});
+    data.sessionCartId = data.sessionCartId || getCartId();
+    return this.apiRequest(`events/${getCartId()}`, { "method": "POST", "body": JSON.stringify(data) }, {});
   }
 
   completeStripeIntent(data) {
-    return this.apiRequest(`stripe/${this.sessionId}/complete_intent`, { "method": "POST", "body": JSON.stringify(data) }, {});
+    return this.apiRequest(`stripe/${getCartId()}/complete_intent`, { "method": "POST", "body": JSON.stringify(data) }, {});
   }
 
   getMeta() {
@@ -160,84 +165,84 @@ export default class ApiClient {
   }
 
   setupQuadpay(data) {
-    return this.apiRequest(`quadpay/${this.sessionId}/init`, { "method": "POST", "body": JSON.stringify(data) }, {});
+    return this.apiRequest(`quadpay/${getCartId()}/init`, { "method": "POST", "body": JSON.stringify(data) }, {});
   }
 
 
   setupStripeIntent() {
-    return this.apiRequest(`stripe/${this.sessionId}/create_intent`);
+    return this.apiRequest(`stripe/${getCartId()}/create_intent`);
   }
 
   walletStripeIntent() {
-    return this.apiRequest(`stripe/${this.sessionId}/wallet_create_intent`);
+    return this.apiRequest(`stripe/${getCartId()}/wallet_create_intent`);
   }
 
   walletCompleteStripeIntent(data) {
-    return this.apiRequest(`stripe/${this.sessionId}/wallet_complete_intent`, { "method": "POST", "body": JSON.stringify(data) }, {});
+    return this.apiRequest(`stripe/${getCartId()}/wallet_complete_intent`, { "method": "POST", "body": JSON.stringify(data) }, {});
   }
 
   walletRequestObject() {
-    return this.apiRequest(`stripe/${this.sessionId}/wallet_request_object`);
+    return this.apiRequest(`stripe/${getCartId()}/wallet_request_object`);
   }
 
   walletShipping(data) {
-    return this.apiRequest(`stripe/${this.sessionId}/wallet_shipping`, { "method": "POST", "body": JSON.stringify(data) }, {});
+    return this.apiRequest(`stripe/${getCartId()}/wallet_shipping`, { "method": "POST", "body": JSON.stringify(data) }, {});
   }
 
   charge(ccData) {
-    return this.apiRequest(`cart/${this.sessionId}/charge`, { "method": "POST", "body": JSON.stringify(ccData) }, {});
+    return this.apiRequest(`cart/${getCartId()}/charge`, { "method": "POST", "body": JSON.stringify(ccData) }, {});
 
   }
 
   setCountry(country) {
-    return this.apiRequest(`cart/${this.sessionId}/set_country`, { "method": "POST", "body": JSON.stringify({ "country": country }) }, {});
+    return this.apiRequest(`cart/${getCartId()}/set_country`, { "method": "POST", "body": JSON.stringify({ "country": country }) }, {});
   }
 
   setNextUrl(nextUrl) {
-    return this.apiRequest(`cart/${this.sessionId}/set_next_url`, { "method": "POST", "body": JSON.stringify({ "nextUrl": nextUrl }) }, {});
+    return this.apiRequest(`cart/${getCartId()}/set_next_url`, { "method": "POST", "body": JSON.stringify({ "nextUrl": nextUrl }) }, {});
   }
 
   confirmPaypal() {
-    return this.apiRequest(`paypal/${this.sessionId}/confirm`, { "method": "GET" }, {});
+    return this.apiRequest(`paypal/${getCartId()}/confirm`, { "method": "GET" }, {});
   }
 
   toggleAddon(variantId) {
-    return this.apiRequest(`cart/${this.sessionId}/toggle_addon`, { "method": "POST", "body": JSON.stringify({ variantId }) }, {});
+    return this.apiRequest(`cart/${getCartId()}/toggle_addon`, { "method": "POST", "body": JSON.stringify({ variantId }) }, {});
   }
 
   getReceipt(props) {
-    return this.apiRequest(`cart/${this.sessionId}/receipt`, {}, props);
+    return this.apiRequest(`cart/${getCartId()}/receipt`, {}, props);
   }
 
 
   getBrowserEvents(props) {
-    return this.apiRequest(`browser_events/${this.sessionId}`, {}, props);
+    return this.apiRequest(`browser_events/${getCartId()}`, {}, props);
   }
 
 
   getCart(props) {
-    return this.apiRequest(`cart/${this.sessionId}`, {}, props);
+    return this.apiRequest(`cart/${getCartId()}`, {}, props);
   }
 
   acceptUpsell(data) {
-    return this.apiRequest(`cart/${this.sessionId}/accept_upsell`, { "method": "POST", "body": JSON.stringify(data) }, {});
+    return this.apiRequest(`cart/${getCartId()}/accept_upsell`, { "method": "POST", "body": JSON.stringify(data) }, {});
   }
 
   setVariantQuantities(data) {
-    return this.apiRequest(`cart/${this.sessionId}/set_variant_quantities`, { "method": "POST", "body": JSON.stringify(data) }, {});
+    return this.apiRequest(`cart/${getCartId()}/set_variant_quantities`, { "method": "POST", "body": JSON.stringify(data) }, {});
 
   }
 
   setCurrentVariant(variantId) {
-    return this.apiRequest(`cart/${this.sessionId}/set_current_variant`, { "method": "POST", "body": JSON.stringify({ "variantId": variantId }) }, {});
+    return this.apiRequest(`cart/${getCartId()}/set_current_variant`, { "method": "POST", "body": JSON.stringify({ "variantId": variantId }) }, {});
   }
 
   removeCoupon() {
-    return this.apiRequest(`cart/${this.sessionId}/remove_coupon`, { "method": "POST" }, {});
+    return this.apiRequest(`cart/${getCartId()}/remove_coupon`, { "method": "POST" }, {});
   }
 
   applyCoupon(code) {
-    return this.apiRequest(`cart/${this.sessionId}/apply_coupon`, { "method": "POST", "body": JSON.stringify({ "code": code }) }, {});
+    return this.apiRequest(`cart/${getCartId()}/apply_coupon`, { "method": "POST", "body": JSON.stringify({ "code": code }) }, {});
   }
 
   async apiRequest(endPoint, opts={}, queryParams={}) {

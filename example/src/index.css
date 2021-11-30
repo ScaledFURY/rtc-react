@@ -20,3 +20,7 @@ code {
 .rtc-cart-display td:last-child {
   text-align: left;
 }
+
+.rtc-addon-enabled {
+  background-color: yellow;
+}

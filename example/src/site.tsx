@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { DebugComponent, CartDisplay, ToggleAddonButton, RemoveCouponButton, SetPrimaryVariantButton } from 'rtc-react';
+import { DebugComponent, CartDisplay, ToggleAddonButton, RemoveCouponButton, SetPrimaryVariantButton, AddCouponComponent } from 'rtc-react';
 
 export const Site = () => {
   return (
@@ -21,6 +21,12 @@ export const Site = () => {
       <SetPrimaryVariantButton text="sub widgets" variantId="39518512808122" />
       <SetPrimaryVariantButton text="sub later widgets" variantId="39983260598458" />
       <SetPrimaryVariantButton text="bundle widgets" variantId="40194513993914" />
+
+      <hr/>
+
+      <h3>Add Coupon Component</h3>
+      <AddCouponComponent text="Add coupon" />
+
 
       <hr/>
 

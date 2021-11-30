@@ -1,0 +1,39 @@
+import * as React from 'react'
+import { RTCContext } from './rtc_context';
+
+interface IProps {
+  text: string;
+  id?: string;
+  className?: string;
+}
+
+export const AddCouponComponent = (props:IProps) => {
+  const ctx : any = React.useContext(RTCContext);
+  if (!ctx.cart) {
+    return null;
+  }
+
+  if (typeof(ctx.cart.couponCode) === 'string' && ctx.cart.couponCode.length > 0) {
+    return null;
+  }
+
+  let [ couponCode, setCouponCode ] = React.useState("");
+
+  const btnHandler = async () => {
+    await ctx.publicApi.applyCoupon(couponCode);
+    setCouponCode("");
+  };
+
+  const keyupHandler = (e:any) => {
+    if (e.keyCode === 13) {
+      btnHandler();
+    }
+  }
+
+  return (
+    <div id={props.id} className={`rtc-add-coupon-component ${props.className || ""}`}>
+      <input type="text" value={couponCode} onKeyUp={keyupHandler} onChange={(e) => setCouponCode(e.target.value)} />
+      <button onClick={btnHandler}>{props.text}</button>
+    </div>
+  )
+}

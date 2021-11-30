@@ -10,3 +10,4 @@ export { CartDisplay    }          from "./components/cart_display";
 export { ToggleAddonButton }       from "./components/toggle_addon_button";
 export { RemoveCouponButton }      from "./components/remove_coupon_button";
 export { SetPrimaryVariantButton } from "./components/set_primary_variant_button";
+export { AddCouponComponent }      from "./components/add_coupon_component";

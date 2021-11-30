@@ -54,8 +54,22 @@ export async function getCart(props:any) {
   return apiRequest(`cart/${getCartId(props.resetCookie)}`, {}, props);
 }
 
+export async function loadPricing() {
+  if (apiEndpoint === null) {
+    throw Error("api called before calling setApiEndpoint");
+  }
+  console.log(`Loading Pricing`);
 
-
+  try {
+    const cdnUrl = apiEndpoint.replace(/^api\./, 'cdn.');
+    const raw = await fetch(`https://${cdnUrl}/cafcb58f5f7280959b1327dc8606de30c450e4e1213dbae22afb3004be13f498.json`);
+    const pricingData = Object.freeze(await raw.json());
+    return pricingData;
+  } catch(err) {
+    console.log(err);
+    return null;
+  }
+}
 /*
 import { v4 as uuidv4 } from 'uuid';
 import Cookies from 'js-cookie';

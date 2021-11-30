@@ -1,9 +1,13 @@
 import * as React from 'react'
 
 interface IRtcContext {
-  settings?:object;
-  setState?:Function;
-
+  cart:object|null;
+  meta:object|null;
+  currencyFormatter?:any;
 }
 
-export const RTCContext = React.createContext<IRtcContext>({});
+export const RTCContext = React.createContext<IRtcContext>({
+  cart: null,
+  meta: null,
+  currencyFormatter: null
+});

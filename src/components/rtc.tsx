@@ -2,6 +2,7 @@ import * as React from 'react'
 import { RTCContext } from './rtc_context';
 import { urlToAbsolute } from "../urlToAbsolute";
 import * as ApiClient from '../api_client';
+import { LocalCart } from "../local-cart";
 
 declare global {
     interface Window { RTC: any; }
@@ -29,19 +30,53 @@ interface IProps {
 
 export const RTC = (props: IProps) => {
   ApiClient.setApiEndpoint(props.apiEndpoint);
-  const [ state, setState ] = React.useState({});
+  const settings : ISettings = load_settings(props);
+
+  const [ cart, setCartOrig ]           = React.useState({});
+  const [ meta, setMeta ]               = React.useState({});
+  const [ pricingData, setPricingData ] = React.useState({});
+  const [ currencyFormatter, setCurrencyFormatter] = React.useState<object|null>(null);
+
+  ((pd:any) => {
+    pd.stuff
+  })(pricingData);
+
+  const setCart = (newCart : any) => {
+    if (newCart.localCart) {
+      newCart.localCart = new LocalCart(newCart.localCart);
+    }
+    if (newCart.currencyCart) {
+      newCart.currencyCart = new LocalCart(newCart.currencyCart);
+    }
+    window.RTC.cart = newCart;
+    console.log(`Setting cart`);
+    console.log(newCart);
+    setCartOrig(newCart);
+  };
+
   const Component = props.component;
 
   React.useEffect(() => {
-    const settings : ISettings = load_settings(props);
+
     ApiClient.getCart(settings).then(newCart => {
-      setState(Object.assign({}, state, newCart, { settings }));
+      setMeta(newCart.meta);
+      setCart(newCart.cart);
+      console.log(newCart.cart.locale);
+      console.log(newCart.cart.cartCurrency);
+      const itlObj = new Intl.NumberFormat(newCart.cart.locale, { style: 'currency', currency: newCart.cart.cartCurrency });
+      setCurrencyFormatter(itlObj);
     });
+
+    ApiClient.loadPricing().then(newPricingData => {
+      setPricingData(newPricingData);
+    });
+
+
   }, []);
 
   return (
-    <RTCContext.Provider value={{ ...state, setState }}>
-      <Component {...state} />
+    <RTCContext.Provider value={{ cart, meta, currencyFormatter }}>
+      <Component cart={cart} meta={meta} />
     </RTCContext.Provider>
   )
 }

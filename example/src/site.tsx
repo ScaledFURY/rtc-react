@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { DebugComponent, CartDisplay, ToggleAddonButton } from 'rtc-react';
+import { DebugComponent, CartDisplay, ToggleAddonButton, RemoveCouponButton } from 'rtc-react';
 
 export const Site = () => {
   return (
@@ -13,6 +13,12 @@ export const Site = () => {
       <ToggleAddonButton text="medium addon" variantId="39518515331258" />
       <ToggleAddonButton text="large addon" variantId="39518515364026" />
       <hr/>
+
+      <h3>Remove Coupon Button</h3>
+      <RemoveCouponButton text="remove coupon" />
+
+      <hr/>
+
       <h3>Debug View</h3>
       <DebugComponent />
     </>

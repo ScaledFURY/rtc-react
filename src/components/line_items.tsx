@@ -36,7 +36,6 @@ export const LineItems = (props:IProps) => {
       formattedLi.totalPrice = null;
     }
     if (formattedLi.compareAtPrice) {
-      console.log(formattedLi.compareAtPrice);
       formattedLi.totalCompareAtPrice = parseFloat(formattedLi.compareAtPrice) * formattedLi.quantity;
     } else {
       formattedLi.totalCompareAtPrice = null;

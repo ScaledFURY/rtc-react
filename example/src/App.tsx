@@ -7,7 +7,7 @@ const App = () => {
     <RTC component={Site}
          defaultVariantId="40194513993914"
          defaultAddons="39507333447866"
-         nextUrl="https://www.google.com"
+         nextUrl="https://www.whatever.com"
          apiEndpoint="api.burnerdomain.rtccart.io"
          landingPageName="LPN"
          upsellPageName="UPN"
@@ -15,8 +15,7 @@ const App = () => {
          orderTag="OT"
          advertorialPageName="APN"
          trackStock={false}
-         paypalConfirmUrl="http://www.bing.com"
-
+         paypalConfirmUrl="http://www.whatever.com"
     />
   );
 }

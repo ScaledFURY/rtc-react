@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { SubtotalValue, TotalValue, TaxValue, ShippingValue, DiscountValue, LineItems } from 'rtc-react';
+import { SubtotalValue, TotalValue, TaxValue, ShippingValue, DiscountValue, LineItems } from '../index';
 
 /*
   {
@@ -37,7 +37,6 @@ const LineItem = (props:any) => {
 
 export const CartDisplay = () => {
   return (
-    <>
       <table className="cart-display-demo">
         <tbody>
           <LineItems component={LineItem} />
@@ -48,6 +47,5 @@ export const CartDisplay = () => {
           <tr><th colSpan={2}>Total</th><td><TotalValue /></td></tr>
         </tbody>
       </table>
-    </>
   );
 }

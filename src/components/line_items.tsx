@@ -31,11 +31,15 @@ export const LineItems = (props:IProps) => {
   return ctx.cart.currencyCart.lineItems.map((li:any) => {
     const formattedLi : IFormattedLineItem = Object.assign({}, li);
     if (formattedLi.price) {
-      console.log(formattedLi.price);
       formattedLi.totalPrice = parseFloat(formattedLi.price) * formattedLi.quantity;
+    } else {
+      formattedLi.totalPrice = null;
     }
     if (formattedLi.compareAtPrice) {
+      console.log(formattedLi.compareAtPrice);
       formattedLi.totalCompareAtPrice = parseFloat(formattedLi.compareAtPrice) * formattedLi.quantity;
+    } else {
+      formattedLi.totalCompareAtPrice = null;
     }
 
     if (formattedLi.shippingRatePerItem) {

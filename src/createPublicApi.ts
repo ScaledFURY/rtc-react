@@ -5,6 +5,17 @@ export const createPublicApi = (apiClient:any, setCart:Function, cart: any) => {
     return cart.currencyCart.hasVariant(variantId);
   }
 
+  result.setPrimaryVariant = async (variantId:string) => {
+    const result = await apiClient.setPrimaryVariant(variantId);
+    if (result) {
+      setCart(result);
+      return true;
+    } else {
+      return false
+    }
+  }
+
+
   result.toggleAddon = async (variantId:string) => {
     const result = await apiClient.toggleAddon(variantId);
     if (result) {

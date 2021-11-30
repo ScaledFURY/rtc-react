@@ -43,6 +43,8 @@ export const LineItems = (props:IProps) => {
 
     if (formattedLi.shippingRatePerItem) {
       formattedLi.totalShipping = parseFloat(formattedLi.shippingRatePerItem) * formattedLi.quantity;
+    } else {
+      formattedLi.totalShipping = null;
     }
 
     [ "price", "compareAtPrice", "totalPrice","totalCompareAtPrice", "shippingRatePerItem", "totalShipping"].forEach(x => {

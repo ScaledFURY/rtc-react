@@ -24,3 +24,7 @@ code {
 .rtc-addon-enabled {
   background-color: yellow;
 }
+
+.rtc-selected-primary-variant {
+  background: yellow;
+}

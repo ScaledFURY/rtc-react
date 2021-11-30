@@ -2,25 +2,26 @@ import * as React from 'react'
 import { RTCContext } from './rtc_context';
 
 interface IProps {
+  variantId: string;
   text: string;
   id?: string;
   className?: string;
 }
 
-export const RemoveCouponButton = (props:IProps) => {
+export const SetPrimaryVariantButton = (props:IProps) => {
   const ctx : any = React.useContext(RTCContext);
-  if (!ctx.cart) {
+  if (!ctx.cart || !ctx.currencyFormatter) {
     return null;
   }
 
-  if (!ctx.cart.couponCode) {
-    return null;
-  }
+  let className = `rtc-select-primary-variant ${props.className || ""}`;
 
-  let className = `rtc-remove-coupon ${props.className || ""}`;
+  if (ctx.publicApi.hasVariant(props.variantId)) {
+    className += " rtc-selected-primary-variant";
+  }
 
   const handler = async () => {
-    ctx.publicApi.removeCoupon();
+    ctx.publicApi.setPrimaryVariant(props.variantId);
   };
 
   return (

@@ -10,7 +10,7 @@ declare global {
 }
 
 window.RTC = window.RTC || {};
-window.RTC.ApiClient = ApiClient;
+window.RTC.__ApiClient = ApiClient;
 
 interface IProps {
   component: any;
@@ -52,11 +52,11 @@ export const RTC = (props: IProps) => {
     if (newCart.currencyCart) {
       newCart.currencyCart = new LocalCart(newCart.currencyCart);
     }
-    window.RTC.cart = newCart;
+    window.RTC.__cart = newCart;
     setCartOrig(newCart);
   };
   const publicApi = createPublicApi(ApiClient, setCart);
-  window.RTC.publicApi = publicApi;
+  window.RTC.__publicApi = publicApi;
 
 
   const Component = props.component;

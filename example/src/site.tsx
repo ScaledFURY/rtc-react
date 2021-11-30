@@ -19,7 +19,7 @@ import { DebugComponent,
 export const Site = () => {
   return (
     <>
-      <h3>Cart Dispaly</h3>
+      <h3>Cart Display</h3>
       <CartDisplay />
       <hr/>
       <h3>Toggle Addon Buttons</h3>

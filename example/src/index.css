@@ -13,10 +13,10 @@ code {
     monospace;
 }
 
-.cart-display-demo th {
+.rtc-cart-display th {
   text-align: left;
 }
 
-.cart-display-demo td:last-child {
+.rtc-cart-display td:last-child {
   text-align: left;
 }

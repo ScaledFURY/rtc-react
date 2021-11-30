@@ -37,7 +37,7 @@ const LineItem = (props:any) => {
 
 export const CartDisplay = () => {
   return (
-      <table className="cart-display-demo">
+      <table className="rtc-cart-display">
         <tbody>
           <LineItems component={LineItem} />
           <tr><th colSpan={2}>Subtotal</th><td><SubtotalValue /></td></tr>

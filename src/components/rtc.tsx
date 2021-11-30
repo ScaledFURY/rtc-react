@@ -66,17 +66,14 @@ export const RTC = (props: IProps) => {
       const itlObj = new Intl.NumberFormat(newCart.cart.locale, { style: 'currency', currency: newCart.cart.cartCurrency });
       setCurrencyFormatter(itlObj);
     });
-
     ApiClient.loadPricing().then(newPricingData => {
       setPricingData(newPricingData);
     });
-
-
   }, []);
 
   return (
     <RTCContext.Provider value={{ cart, meta, currencyFormatter }}>
-      <Component cart={cart} meta={meta} />
+      <Component />
     </RTCContext.Provider>
   )
 }

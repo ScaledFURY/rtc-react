@@ -10,7 +10,7 @@ declare global {
 window.RTC = window.RTC || {};
 window.RTC.ApiClient = ApiClient;
 
-interface Props {
+interface IProps {
   component: any;
   apiEndpoint: string;
   forceVariantId?: string;
@@ -27,13 +27,13 @@ interface Props {
   paypalConfirmUrl?: string;
 }
 
-export const RTC = (props: Props) => {
+export const RTC = (props: IProps) => {
   ApiClient.setApiEndpoint(props.apiEndpoint);
   const [ state, setState ] = React.useState({});
   const Component = props.component;
 
   React.useEffect(() => {
-    const settings : Settings = load_settings(props);
+    const settings : ISettings = load_settings(props);
     ApiClient.getCart(settings).then(newCart => {
       setState(Object.assign({}, state, newCart, { settings }));
     });
@@ -46,7 +46,7 @@ export const RTC = (props: Props) => {
   )
 }
 
-export interface Settings {
+export interface ISettings {
     urlCoupon : string|null;
     forceVariantId: string|null;
     recoveryCartId: string|null;
@@ -68,7 +68,7 @@ export interface Settings {
     paypalConfirmUrl?: string;
 }
 
-function load_settings(props: Props) : Settings {
+function load_settings(props: IProps) : ISettings {
   const urlParams = new URLSearchParams(window.location.search);
 
   const origParams = {};
@@ -76,7 +76,7 @@ function load_settings(props: Props) : Settings {
     origParams[key] = value;
   }
 
-  const settings : Settings = {
+  const settings : ISettings = {
     urlCoupon:            urlParams.get('coupon'),
     forceVariantId:       urlParams.get('forceVariantId') || props.forceVariantId || null,
     recoveryCartId:       urlParams.get('recoveryCartId'),

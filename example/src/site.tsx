@@ -1,6 +1,16 @@
 import React from 'react'
 
-import { DebugComponent, CartDisplay, ToggleAddonButton, RemoveCouponButton, SetPrimaryVariantButton, AddCouponComponent } from 'rtc-react';
+import { DebugComponent,
+         CartDisplay,
+         ToggleAddonButton,
+         RemoveCouponButton,
+         SetPrimaryVariantButton,
+         AddCouponComponent,
+         TotalLineItemValue,
+         TotalCompareValue,
+         TotalSavingsValue,
+         TotalSavingsPct
+       } from 'rtc-react';
 
 export const Site = () => {
   return (
@@ -34,6 +44,18 @@ export const Site = () => {
       <RemoveCouponButton text="remove coupon" />
 
       <hr/>
+
+      <h3>TotalLineItemValue</h3>
+      <TotalLineItemValue />
+
+      <h3>TotalCompareValue</h3>
+      <TotalCompareValue />
+
+      <h3>TotalSavingsValue</h3>
+      <TotalSavingsValue />
+
+      <h3>TotalSavingsPct</h3>
+      <TotalSavingsPct />
 
       <h3>Debug View</h3>
       <DebugComponent />

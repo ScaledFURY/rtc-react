@@ -7,6 +7,6 @@ export const ShippingValue = () => {
     return null;
   }
   return (
-    <span className="rtc-subtotal-value">{ctx.currencyFormatter.format(ctx.cart.currencyCart.shippingTotal)}</span>
+    <span className="rtc-shipping-value">{ctx.currencyFormatter.format(ctx.cart.currencyCart.shippingTotal)}</span>
   )
 }

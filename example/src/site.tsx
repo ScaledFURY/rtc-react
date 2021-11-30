@@ -9,7 +9,11 @@ import { DebugComponent,
          TotalLineItemValue,
          TotalCompareValue,
          TotalSavingsValue,
-         TotalSavingsPct
+         TotalSavingsPct,
+         SubtotalValue,
+         TotalValue,
+         ShippingValue,
+         DiscountValue
        } from 'rtc-react';
 
 export const Site = () => {
@@ -45,6 +49,18 @@ export const Site = () => {
 
       <hr/>
 
+      <h3>SubtotalValue</h3>
+      <SubtotalValue />
+
+      <h3>TotalValue</h3>
+      <TotalValue />
+
+      <h3>DiscountValue</h3>
+      <DiscountValue />
+
+      <h3>ShippingValue</h3>
+      <ShippingValue />
+
       <h3>TotalLineItemValue</h3>
       <TotalLineItemValue />
 
@@ -56,6 +72,9 @@ export const Site = () => {
 
       <h3>TotalSavingsPct</h3>
       <TotalSavingsPct />
+
+      <h3>LineItems</h3>
+      No demo for LineItems
 
       <h3>Debug View</h3>
       <DebugComponent />

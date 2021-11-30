@@ -1,7 +1,6 @@
 import React from 'react'
 
 import { SubtotalValue, TotalValue, TaxValue, ShippingValue, DiscountValue, LineItems } from 'rtc-react';
-import 'rtc-react/dist/index.css'
 
 /*
   {
@@ -39,7 +38,7 @@ const LineItem = (props:any) => {
 export const CartDisplay = () => {
   return (
     <>
-      <table>
+      <table className="cart-display-demo">
         <tbody>
           <LineItems component={LineItem} />
           <tr><th colSpan={2}>Subtotal</th><td><SubtotalValue /></td></tr>

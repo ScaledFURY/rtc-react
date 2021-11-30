@@ -12,3 +12,11 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.cart-display-demo th {
+  text-align: left;
+}
+
+.cart-display-demo td:last-child {
+  text-align: left;
+}

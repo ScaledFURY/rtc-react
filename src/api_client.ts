@@ -10,7 +10,7 @@ export function setApiEndpoint(newApiEndpoint:string) {
 
 let cartId : string|null = null;
 
-function getCartId(resetCookie:boolean) {
+function getCartId(resetCookie:boolean=false) {
   const COOKIE_NAME="checkoutSessionCookie";
 
   const setNewCookie = () => {
@@ -52,6 +52,14 @@ async function apiRequest(endPoint:string, opts:any={}, queryParams:any={}) {
 
 export async function getCart(props:any) {
   return apiRequest(`cart/${getCartId(props.resetCookie)}`, {}, props);
+}
+
+export async function removeCoupon() {
+  return apiRequest(`cart/${getCartId()}/remove_coupon`, { "method": "POST" }, {});
+}
+
+export async function  applyCoupon(code:string) {
+  return apiRequest(`cart/${getCartId()}/apply_coupon`, { "method": "POST", "body": JSON.stringify({ "code": code }) }, {});
 }
 
 export async function loadPricing() {

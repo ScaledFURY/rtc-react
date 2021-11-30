@@ -3,6 +3,7 @@ import { RTCContext } from './rtc_context';
 import { urlToAbsolute } from "../urlToAbsolute";
 import * as ApiClient from '../api_client';
 import { LocalCart } from "../local-cart";
+import { createPublicApi } from "../createPublicApi";
 
 declare global {
     interface Window { RTC: any; }
@@ -28,6 +29,9 @@ interface IProps {
   paypalConfirmUrl?: string;
 }
 
+
+
+
 export const RTC = (props: IProps) => {
   ApiClient.setApiEndpoint(props.apiEndpoint);
   const settings : ISettings = load_settings(props);
@@ -49,10 +53,11 @@ export const RTC = (props: IProps) => {
       newCart.currencyCart = new LocalCart(newCart.currencyCart);
     }
     window.RTC.cart = newCart;
-    console.log(`Setting cart`);
-    console.log(newCart);
     setCartOrig(newCart);
   };
+  const publicApi = createPublicApi(ApiClient, setCart);
+  window.RTC.publicApi = publicApi;
+
 
   const Component = props.component;
 

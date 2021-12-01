@@ -1,6 +1,11 @@
 import React from 'react'
 import { RTCContext } from './rtc_context';
-import { SubtotalValue, TotalValue, TaxValue, ShippingValue, DiscountValue, LineItems } from '../index';
+import { SubtotalValue } from "./subtotal_value";
+import { TotalValue } from "./total_value";
+import { TaxValue } from "./tax_value";
+import { ShippingValue } from "./shipping_value";
+import { DiscountValue } from "./discount_value";
+import { LineItems } from "./line_items";
 
 /*
   {

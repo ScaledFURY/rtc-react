@@ -36,10 +36,9 @@ export const RTC = (props: IProps) => {
   ApiClient.setApiEndpoint(props.apiEndpoint);
   const settings : ISettings = load_settings(props);
 
-  const [ cart, setCartOrig ]           = React.useState({});
-  const [ meta, setMeta ]               = React.useState({});
-  const [ pricingData, setPricingData ] = React.useState({});
-  const [ currencyFormatter, setCurrencyFormatter] = React.useState<object|null>(null);
+  const [ cart, setCartOrig ]           = React.useState(null);
+  const [ meta, setMeta ]               = React.useState(null);
+  const [ pricingData, setPricingData ] = React.useState(null);
 
   ((pd:any) => {
     pd.stuff
@@ -68,8 +67,6 @@ export const RTC = (props: IProps) => {
       setCart(newCart.cart);
       console.log(newCart.cart.locale);
       console.log(newCart.cart.cartCurrency);
-      const itlObj = new Intl.NumberFormat(newCart.cart.locale, { style: 'currency', currency: newCart.cart.cartCurrency });
-      setCurrencyFormatter(itlObj);
     });
     ApiClient.loadPricing().then(newPricingData => {
       setPricingData(newPricingData);
@@ -77,7 +74,7 @@ export const RTC = (props: IProps) => {
   }, []);
 
   return (
-    <RTCContext.Provider value={{ cart, meta, currencyFormatter, publicApi }}>
+    <RTCContext.Provider value={{ cart, meta, publicApi }}>
       <Component />
     </RTCContext.Provider>
   )

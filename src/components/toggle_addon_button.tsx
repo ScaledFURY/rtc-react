@@ -10,7 +10,7 @@ interface IProps {
 
 export const ToggleAddonButton = (props:IProps) => {
   const ctx : any = React.useContext(RTCContext);
-  if (!ctx.cart || !ctx.currencyFormatter) {
+  if (!ctx.cart) {
     return null;
   }
 

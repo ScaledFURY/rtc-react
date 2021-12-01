@@ -3,10 +3,10 @@ import { RTCContext } from './rtc_context';
 
 export const SubtotalValue = () => {
   const ctx : any = React.useContext(RTCContext);
-  if (!ctx.cart || !ctx.currencyFormatter) {
+  if (!ctx.cart) {
     return null;
   }
   return (
-    <span className="rtc-subtotal-value">{ctx.currencyFormatter.format(ctx.cart.currencyCart.subTotal)}</span>
+    <span className="rtc-subtotal-value">{ctx.publicApi.formatCurrency(ctx.cart.currencyCart.subTotal)}</span>
   )
 }

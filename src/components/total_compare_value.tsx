@@ -3,7 +3,7 @@ import { RTCContext } from './rtc_context';
 
 export const TotalCompareValue = () => {
   const ctx : any = React.useContext(RTCContext);
-  if (!ctx.cart || !ctx.currencyFormatter) {
+  if (!ctx.cart) {
     return null;
   }
 
@@ -14,6 +14,6 @@ export const TotalCompareValue = () => {
   }
 
   return (
-    <span className="rtc-total-compare-value">{ctx.currencyFormatter.format(ts.compareAtTotal)}</span>
+    <span className="rtc-total-compare-value">{ctx.publicApi.formatCurrency(ts.compareAtTotal)}</span>
   )
 }

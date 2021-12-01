@@ -3,7 +3,7 @@ import { RTCContext } from './rtc_context';
 
 export const TotalSavingsValue = () => {
   const ctx : any = React.useContext(RTCContext);
-  if (!ctx.cart || !ctx.currencyFormatter) {
+  if (!ctx.cart) {
     return null;
   }
 
@@ -14,6 +14,6 @@ export const TotalSavingsValue = () => {
   }
 
   return (
-    <span className="rtc-total-savings-value">{ctx.currencyFormatter.format(ts.totalSavings)}</span>
+    <span className="rtc-total-savings-value">{ctx.publicApi.formatCurrency(ts.totalSavings)}</span>
   )
 }

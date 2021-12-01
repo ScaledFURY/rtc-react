@@ -23,7 +23,7 @@ interface IFormattedLineItem {
 
 export const LineItems = (props:IProps) => {
   const ctx : any = React.useContext(RTCContext);
-  if (!ctx.cart || !ctx.currencyFormatter || !ctx.cart.currencyCart || !ctx.cart.currencyCart.lineItems) {
+  if (!ctx.cart) {
     return null;
   }
 
@@ -49,7 +49,7 @@ export const LineItems = (props:IProps) => {
 
     [ "price", "compareAtPrice", "totalPrice","totalCompareAtPrice", "shippingRatePerItem", "totalShipping"].forEach(x => {
       if (formattedLi[x] !== null) {
-        formattedLi[x] = ctx.currencyFormatter.format(parseFloat(formattedLi[x]));
+        formattedLi[x] = ctx.publicApi.formatCurrency(parseFloat(formattedLi[x]));
       }
     });
     console.log(JSON.stringify(formattedLi, null, 4));

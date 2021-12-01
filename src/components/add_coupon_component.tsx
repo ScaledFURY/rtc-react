@@ -9,6 +9,8 @@ interface IProps {
 
 export const AddCouponComponent = (props:IProps) => {
   const ctx : any = React.useContext(RTCContext);
+  let [ couponCode, setCouponCode ] = React.useState("");
+
   if (!ctx.cart) {
     return null;
   }
@@ -16,8 +18,6 @@ export const AddCouponComponent = (props:IProps) => {
   if (typeof(ctx.cart.couponCode) === 'string' && ctx.cart.couponCode.length > 0) {
     return null;
   }
-
-  let [ couponCode, setCouponCode ] = React.useState("");
 
   const btnHandler = async () => {
     await ctx.publicApi.applyCoupon(couponCode);

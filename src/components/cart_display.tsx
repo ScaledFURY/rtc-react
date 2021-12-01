@@ -1,5 +1,5 @@
 import React from 'react'
-
+import { RTCContext } from './rtc_context';
 import { SubtotalValue, TotalValue, TaxValue, ShippingValue, DiscountValue, LineItems } from '../index';
 
 /*
@@ -36,6 +36,10 @@ const LineItem = (props:any) => {
 };
 
 export const CartDisplay = () => {
+  const ctx : any = React.useContext(RTCContext);
+  if (!ctx.cart) {
+    return null;
+  }
   return (
       <table className="rtc-cart-display">
         <tbody>

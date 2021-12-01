@@ -3,11 +3,12 @@ import { RTCContext } from './rtc_context';
 
 export const DebugComponent = () => {
   const ctx : any = React.useContext(RTCContext);
-  if (!ctx || !ctx.cart || !ctx.meta) {
+  const [ visible, setVisible ] = React.useState(false);
+
+  if (!ctx.cart || !ctx.meta) {
     return null;
   }
 
-  const [ visible, setVisible ] = React.useState(false);
 
   return (
     <div>

@@ -10,10 +10,9 @@ interface IProps {
 
 export const SetPrimaryVariantButton = (props:IProps) => {
   const ctx : any = React.useContext(RTCContext);
-  if (!ctx.cart || !ctx.currencyFormatter) {
+  if (!ctx.cart) {
     return null;
   }
-
   let className = `rtc-select-primary-variant ${props.className || ""}`;
 
   if (ctx.publicApi.hasVariant(props.variantId)) {

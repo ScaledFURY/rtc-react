@@ -3,7 +3,7 @@ import { RTCContext } from './rtc_context';
 
 export const TotalSavingsPct = () => {
   const ctx : any = React.useContext(RTCContext);
-  if (!ctx.cart || !ctx.currencyFormatter) {
+  if (!ctx.cart) {
     return null;
   }
 

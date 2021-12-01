@@ -1,6 +1,17 @@
 export const createPublicApi = (apiClient:any, setCart:Function, cart: any) => {
   const result : any = {};
 
+  let currencyFormatter : any = null;
+
+  result.formatCurrency = (val:string|number) => {
+    if (!cart.locale) {
+      return null;
+    }
+    currencyFormatter = currencyFormatter || new Intl.NumberFormat(cart.locale, { style: 'currency', currency: cart.cartCurrency });
+    return currencyFormatter.format(val);
+
+  }
+
   result.hasVariant = (variantId:string) => {
     return cart.currencyCart.hasVariant(variantId);
   }

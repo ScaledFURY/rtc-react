@@ -4,7 +4,6 @@ import { RTCContext } from './rtc_context';
 
 interface IProps {
   variantId: string;
-  text: string;
   id?: string;
   className?: string;
   max: number;
@@ -12,9 +11,9 @@ interface IProps {
 
 export const QuantitySelector = (props:IProps) => {
   const ctx : any = React.useContext(RTCContext);
-  const [ curQty, setCurQty ] = React.useState(ctx.api.getVariantQuantity(props.variantId));
+  const [ curQty, setCurQty ] = React.useState(ctx.api.getVariantQuantity(props.variantId) || 0);
 
-  if (!ctx.cart) {
+  if (!ctx.cart || curQty == null) {
     return null;
   }
 

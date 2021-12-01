@@ -9,9 +9,6 @@ declare global {
     interface Window { RTC: any; }
 }
 
-window.RTC = window.RTC || {};
-window.RTC.__ApiClient = ApiClient;
-
 interface IProps {
   component: any;
   apiEndpoint: string;
@@ -34,15 +31,17 @@ interface IProps {
 
 export const RTC = (props: IProps) => {
   ApiClient.setApiEndpoint(props.apiEndpoint);
+  const debugMode = props.apiEndpoint.match(/burnerdomain/);
+
+  if (debugMode) {
+    window.RTC = window.RTC || {};
+    window.RTC.__ApiClient = ApiClient;
+  }
   const settings : ISettings = load_settings(props);
 
   const [ cart, setCartOrig ]           = React.useState(null);
   const [ meta, setMeta ]               = React.useState(null);
   const [ pricingData, setPricingData ] = React.useState(null);
-
-  ((pd:any) => {
-    pd.stuff
-  })(pricingData);
 
   const setCart = (newCart : any) => {
     if (newCart.localCart) {
@@ -51,12 +50,16 @@ export const RTC = (props: IProps) => {
     if (newCart.currencyCart) {
       newCart.currencyCart = new LocalCart(newCart.currencyCart);
     }
-    window.RTC.__cart = newCart;
+    if (debugMode) {
+      window.RTC.cart = newCart;
+    }
     setCartOrig(newCart);
   };
-  const publicApi = createPublicApi(ApiClient, setCart, cart);
-  window.RTC.__publicApi = publicApi;
 
+  const api = createPublicApi(ApiClient, setCart, cart, pricingData);
+  if (debugMode) {
+    window.RTC.api = api;
+  }
 
   const Component = props.component;
 
@@ -74,7 +77,7 @@ export const RTC = (props: IProps) => {
   }, []);
 
   return (
-    <RTCContext.Provider value={{ cart, meta, publicApi }}>
+    <RTCContext.Provider value={{ cart, meta, api }}>
       <Component />
     </RTCContext.Provider>
   )

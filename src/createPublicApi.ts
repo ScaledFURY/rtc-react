@@ -1,4 +1,4 @@
-export const createPublicApi = (apiClient:any, setCart:Function, cart: any) => {
+export const createPublicApi = (apiClient:any, setCart:Function, cart: any, pricingData:any) => {
   const result : any = {};
 
   let currencyFormatter : any = null;
@@ -9,8 +9,45 @@ export const createPublicApi = (apiClient:any, setCart:Function, cart: any) => {
     }
     currencyFormatter = currencyFormatter || new Intl.NumberFormat(cart.locale, { style: 'currency', currency: cart.cartCurrency });
     return currencyFormatter.format(val);
-
   }
+
+
+  result.getVariantData = (variantId:string|number) => {
+
+    if (!cart || !pricingData || !pricingData[variantId]) {
+      return null;
+    }
+
+    const data = Object.assign({}, pricingData[variantId], pricingData[variantId].presentmentPrices[cart.cartCurrency]);
+    delete data.presentmentPrices;
+
+    data.shippingRate = 0;
+    data.shippingRateFormatted = "";
+
+
+    try {
+      if (data.shippingRates[cart.shippingZone]) {
+        data.shippingRate = data.shippingRates[cart.shippingZone];
+      } else {
+        data.shippingRate = data.shippingRates["DEFAULT"] || 0;
+      }
+
+      data.shippingRateFormatted = result.formatCurrency(data.shippingRate);
+    } catch (err) {
+      console.log(err);
+    }
+
+    delete data.shippingRates;
+
+    ["price", "compareAtPrice", "compareSavings"].forEach(field => {
+      const num = parseFloat(data[field]);
+      if (num && !isNaN(num)) {
+        data[field + "Formatted"] = result.formatCurrency(num);
+      }
+    });
+    return data;
+  }
+
 
   result.hasVariant = (variantId:string) => {
     return cart.currencyCart.hasVariant(variantId);

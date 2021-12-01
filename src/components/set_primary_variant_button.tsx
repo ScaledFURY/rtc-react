@@ -15,12 +15,12 @@ export const SetPrimaryVariantButton = (props:IProps) => {
   }
   let className = `rtc-select-primary-variant ${props.className || ""}`;
 
-  if (ctx.publicApi.hasVariant(props.variantId)) {
+  if (ctx.api.hasVariant(props.variantId)) {
     className += " rtc-selected-primary-variant";
   }
 
   const handler = async () => {
-    ctx.publicApi.setPrimaryVariant(props.variantId);
+    ctx.api.setPrimaryVariant(props.variantId);
   };
 
   return (

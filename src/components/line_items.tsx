@@ -49,7 +49,7 @@ export const LineItems = (props:IProps) => {
 
     [ "price", "compareAtPrice", "totalPrice","totalCompareAtPrice", "shippingRatePerItem", "totalShipping"].forEach(x => {
       if (formattedLi[x] !== null) {
-        formattedLi[x] = ctx.publicApi.formatCurrency(parseFloat(formattedLi[x]));
+        formattedLi[x] = ctx.api.formatCurrency(parseFloat(formattedLi[x]));
       }
     });
     console.log(JSON.stringify(formattedLi, null, 4));

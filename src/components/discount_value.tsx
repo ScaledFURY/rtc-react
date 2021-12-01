@@ -7,6 +7,6 @@ export const DiscountValue = () => {
     return null;
   }
   return (
-    <span className="rtc-subtotal-value">{ctx.publicApi.formatCurrency(ctx.cart.currencyCart.discountTotal)}</span>
+    <span className="rtc-subtotal-value">{ctx.api.formatCurrency(ctx.cart.currencyCart.discountTotal)}</span>
   )
 }

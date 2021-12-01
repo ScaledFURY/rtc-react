@@ -16,12 +16,12 @@ export const ToggleAddonButton = (props:IProps) => {
 
   let className = `rtc-toggle-addon ${props.className}`;
 
-  if (ctx.publicApi.hasVariant(props.variantId)) {
+  if (ctx.api.hasVariant(props.variantId)) {
     className += " rtc-addon-enabled";
   }
 
   const handler = async () => {
-    ctx.publicApi.toggleAddon(props.variantId);
+    ctx.api.toggleAddon(props.variantId);
   };
 
   return (

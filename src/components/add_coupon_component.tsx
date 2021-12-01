@@ -20,7 +20,7 @@ export const AddCouponComponent = (props:IProps) => {
   }
 
   const btnHandler = async () => {
-    await ctx.publicApi.applyCoupon(couponCode);
+    await ctx.api.applyCoupon(couponCode);
     setCouponCode("");
   };
 

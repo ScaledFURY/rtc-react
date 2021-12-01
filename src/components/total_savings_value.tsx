@@ -14,6 +14,6 @@ export const TotalSavingsValue = () => {
   }
 
   return (
-    <span className="rtc-total-savings-value">{ctx.publicApi.formatCurrency(ts.totalSavings)}</span>
+    <span className="rtc-total-savings-value">{ctx.api.formatCurrency(ts.totalSavings)}</span>
   )
 }

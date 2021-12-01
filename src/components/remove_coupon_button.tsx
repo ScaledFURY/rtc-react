@@ -20,7 +20,7 @@ export const RemoveCouponButton = (props:IProps) => {
   let className = `rtc-remove-coupon ${props.className || ""}`;
 
   const handler = async () => {
-    ctx.publicApi.removeCoupon();
+    ctx.api.removeCoupon();
   };
 
   return (

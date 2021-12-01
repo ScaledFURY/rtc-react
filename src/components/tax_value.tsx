@@ -7,6 +7,6 @@ export const TaxValue = () => {
     return null;
   }
   return (
-    <span className="rtc-tax-value">{ctx.publicApi.formatCurrency(ctx.cart.currencyCart.taxTotal)}</span>
+    <span className="rtc-tax-value">{ctx.api.formatCurrency(ctx.cart.currencyCart.taxTotal)}</span>
   )
 }

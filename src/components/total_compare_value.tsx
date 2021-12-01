@@ -14,6 +14,6 @@ export const TotalCompareValue = () => {
   }
 
   return (
-    <span className="rtc-total-compare-value">{ctx.publicApi.formatCurrency(ts.compareAtTotal)}</span>
+    <span className="rtc-total-compare-value">{ctx.api.formatCurrency(ts.compareAtTotal)}</span>
   )
 }

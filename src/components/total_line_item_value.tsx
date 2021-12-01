@@ -7,6 +7,6 @@ export const TotalLineItemValue = () => {
     return null;
   }
   return (
-    <span className="rtc-total-line-item-value">{ctx.publicApi.formatCurrency(ctx.cart.currencyCart.lineItemTotal)}</span>
+    <span className="rtc-total-line-item-value">{ctx.api.formatCurrency(ctx.cart.currencyCart.lineItemTotal)}</span>
   )
 }

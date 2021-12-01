@@ -7,6 +7,6 @@ export const ShippingValue = () => {
     return null;
   }
   return (
-    <span className="rtc-shipping-value">{ctx.publicApi.formatCurrency(ctx.cart.currencyCart.shippingTotal)}</span>
+    <span className="rtc-shipping-value">{ctx.api.formatCurrency(ctx.cart.currencyCart.shippingTotal)}</span>
   )
 }

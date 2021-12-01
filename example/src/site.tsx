@@ -21,7 +21,11 @@ import { DebugComponent,
          VariantImage,
          VariantPrice,
          VariantPropductTitle,
-         VariantTitle
+         VariantTitle,
+         QuantityValue,
+         IncreaseQuantityButton,
+         DecreaseQuantityButton
+
        } from 'rtc-react';
 
 export const Site = () => {
@@ -30,13 +34,21 @@ export const Site = () => {
       <h3>Cart Display</h3>
       <CartDisplay />
       <hr/>
-      <h3>Toggle Addon Buttons</h3>
+
+      <h3>CartQuantityValue (39507333513402) (And DecreaseQuantityButton, IncreaseQuantityButton)</h3>
+      <DecreaseQuantityButton variantId="39507333513402" text="-" />
+      <QuantityValue variantId="39507333513402" />
+      <IncreaseQuantityButton variantId="39507333513402" text="+" />
+
+      <hr />
+
+      <h3>ToggleAddonButton</h3>
       <ToggleAddonButton text="small addon" variantId="39518515298490" />
       <ToggleAddonButton text="medium addon" variantId="39518515331258" />
       <ToggleAddonButton text="large addon" variantId="39518515364026" />
 
       <hr/>
-      <h3>Set Primary Variant Buttons</h3>
+      <h3>SetPrimaryVariantButton</h3>
       <SetPrimaryVariantButton text="small widgets" variantId="39507333447866" />
       <SetPrimaryVariantButton text="medium widgets" variantId="39507333480634" />
       <SetPrimaryVariantButton text="large widgets" variantId="39507333513402" />
@@ -46,13 +58,13 @@ export const Site = () => {
 
       <hr/>
 
-      <h3>Add Coupon Component</h3>
+      <h3>AddCouponComponent</h3>
       <AddCouponComponent text="Add coupon" />
 
 
       <hr/>
 
-      <h3>Remove Coupon Button</h3>
+      <h3>RemoveCouponButton</h3>
       <RemoveCouponButton text="remove coupon" />
 
       <hr/>

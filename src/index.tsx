@@ -24,3 +24,7 @@ export { VariantImage }                  from "./components/variant_image";
 export { VariantPrice }                  from "./components/variant_price";
 export { VariantPropductTitle }          from "./components/variant_product_title";
 export { VariantTitle }                  from "./components/variant_title";
+
+export { QuantityValue } from "./components/quantity_value";
+export { IncreaseQuantityButton } from "./components/increase_quantity_button";
+export { DecreaseQuantityButton } from "./components/decrease_quantity_button";

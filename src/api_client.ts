@@ -70,6 +70,10 @@ export async function setPrimaryVariant(variantId:string) {
   return apiRequest(`cart/${getCartId()}/set_current_variant`, { "method": "POST", "body": JSON.stringify({ "variantId": variantId }) }, {});
 }
 
+export async function setVariantQuantities(data:any) {
+  return apiRequest(`cart/${getCartId()}/set_variant_quantities`, { "method": "POST", "body": JSON.stringify(data) }, {});
+
+}
 
 export async function loadPricing() {
   if (apiEndpoint === null) {

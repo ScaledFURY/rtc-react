@@ -12,6 +12,13 @@ export const createPublicApi = (apiClient:any, setCart:Function, cart: any, pric
   }
 
 
+  result.getVariantQuantity = (variantId:string) => {
+    if (!cart) {
+      return null;
+    }
+    return cart.currencyCart.getVariantQuantity(variantId);
+  }
+
   result.getVariantData = (variantId:string|number) => {
 
     if (!cart || !pricingData || !pricingData[variantId]) {
@@ -51,6 +58,16 @@ export const createPublicApi = (apiClient:any, setCart:Function, cart: any, pric
 
   result.hasVariant = (variantId:string) => {
     return cart.currencyCart.hasVariant(variantId);
+  }
+
+  result.setVariantQuantities = async(data:any) => {
+    const result = await apiClient.setVariantQuantities(data);
+    if (result) {
+      setCart(result);
+      return true;
+    } else {
+      return false
+    }
   }
 
   result.setPrimaryVariant = async (variantId:string) => {

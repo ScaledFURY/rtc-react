@@ -28,3 +28,4 @@ export { VariantTitle }                  from "./components/variant_title";
 export { QuantityValue } from "./components/quantity_value";
 export { IncreaseQuantityButton } from "./components/increase_quantity_button";
 export { DecreaseQuantityButton } from "./components/decrease_quantity_button";
+export { QuantitySelector } from "./components/quantity_selector";

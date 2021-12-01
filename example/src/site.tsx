@@ -84,6 +84,7 @@ export const Site = () => {
       <h3>LineItems</h3>
       No demo for LineItems
 
+      <hr />
       <h3>Debug View</h3>
       <DebugComponent />
 

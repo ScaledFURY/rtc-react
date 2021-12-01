@@ -28,3 +28,16 @@ code {
 .rtc-selected-primary-variant {
   background: yellow;
 }
+
+.variant-data-demo {
+  display: flex;
+}
+
+.variant-data-demo > div {
+  flex: 1;
+}
+
+
+.variant-data-demo img {
+  height: 100px;
+}

@@ -13,7 +13,15 @@ import { DebugComponent,
          SubtotalValue,
          TotalValue,
          ShippingValue,
-         DiscountValue
+         DiscountValue,
+         VariantComparePriceSavingsPct,
+         VariantComparePriceSavings,
+         VariantComparePrice,
+         VariantDisplayName,
+         VariantImage,
+         VariantPrice,
+         VariantPropductTitle,
+         VariantTitle
        } from 'rtc-react';
 
 export const Site = () => {
@@ -78,6 +86,88 @@ export const Site = () => {
 
       <h3>Debug View</h3>
       <DebugComponent />
+
+      <hr/>
+      <div className="variant-data-demo">
+        <div>
+          <h3>VariantComparePriceSavingsPct</h3>
+          <VariantComparePriceSavingsPct variantId="39507333447866" />
+
+          <h3>VariantComparePriceSavings</h3>
+          <VariantComparePriceSavings variantId="39507333447866" />
+
+          <h3>VariantComparePrice</h3>
+          <VariantComparePrice variantId="39507333447866" />
+
+          <h3>VariantDisplayName</h3>
+          <VariantDisplayName variantId="39507333447866" />
+
+          <h3>VariantImage</h3>
+          <VariantImage variantId="39507333447866" />
+
+          <h3>VariantPrice</h3>
+          <VariantPrice variantId="39507333447866" />
+
+          <h3>VariantPropductTitle</h3>
+          <VariantPropductTitle variantId="39507333447866" />
+
+          <h3>VariantTitle</h3>
+          <VariantTitle variantId="39507333447866" />
+        </div>
+        <div>
+          <h3>VariantComparePriceSavingsPct</h3>
+          <VariantComparePriceSavingsPct variantId="39518515298490" />
+
+          <h3>VariantComparePriceSavings</h3>
+          <VariantComparePriceSavings variantId="39518515298490" />
+
+          <h3>VariantComparePrice</h3>
+          <VariantComparePrice variantId="39518515298490" />
+
+          <h3>VariantDisplayName</h3>
+          <VariantDisplayName variantId="39518515298490" />
+
+          <h3>VariantImage</h3>
+          <VariantImage variantId="39518515298490" />
+
+          <h3>VariantPrice</h3>
+          <VariantPrice variantId="39518515298490" />
+
+          <h3>VariantPropductTitle</h3>
+          <VariantPropductTitle variantId="39518515298490" />
+
+          <h3>VariantTitle</h3>
+          <VariantTitle variantId="39518515298490" />
+        </div>
+
+        <div>
+          <h3>VariantComparePriceSavingsPct</h3>
+          <VariantComparePriceSavingsPct variantId="39518512808122" />
+
+          <h3>VariantComparePriceSavings</h3>
+          <VariantComparePriceSavings variantId="39518512808122" />
+
+          <h3>VariantComparePrice</h3>
+          <VariantComparePrice variantId="39518512808122" />
+
+          <h3>VariantDisplayName</h3>
+          <VariantDisplayName variantId="39518512808122" />
+
+          <h3>VariantImage</h3>
+          <VariantImage variantId="39518512808122" />
+
+          <h3>VariantPrice</h3>
+          <VariantPrice variantId="39518512808122" />
+
+          <h3>VariantPropductTitle</h3>
+          <VariantPropductTitle variantId="39518512808122" />
+
+          <h3>VariantTitle</h3>
+          <VariantTitle variantId="39518512808122" />
+        </div>
+
+
+      </div>
 
 
     </>

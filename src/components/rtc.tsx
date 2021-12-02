@@ -78,7 +78,7 @@ export const RTC = (props: IProps) => {
 
   return (
     <RTCContext.Provider value={{ cart, meta, api }}>
-      <Component api={api} />
+      <Component rtcApi={api} />
     </RTCContext.Provider>
   )
 }

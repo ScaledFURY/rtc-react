@@ -4,7 +4,7 @@ import { urlToAbsolute } from "../urlToAbsolute";
 import * as ApiClient from '../api_client';
 import { LocalCart } from "../local-cart";
 import { createPublicApi } from "../createPublicApi";
-
+//import { digestMessage } from "../digestMessage";
 declare global {
     interface Window { RTC: any; }
 }
@@ -57,7 +57,7 @@ export const RTC = (props: IProps) => {
     setCartOrig(newCart);
   };
 
-  const api = createPublicApi(ApiClient, setCart, cart, pricingData, settings);
+  const api = createPublicApi(ApiClient, setCart, cart, pricingData, settings, meta);
   if (debugMode) {
     window.RTC.api = api;
   }
@@ -67,12 +67,27 @@ export const RTC = (props: IProps) => {
   React.useEffect(() => {
 
     ApiClient.getCart(settings).then(newCart => {
+      newCart.meta.localNow = +new Date();
       setMeta(newCart.meta);
       setCart(newCart.cart);
+      // Send page view event.
+      //api.fireEvent(createPageViewEvent(settings, newCart.cart, api));
+
     });
     ApiClient.loadPricing().then(newPricingData => {
       setPricingData(newPricingData);
     });
+
+    ApiClient.getBrowserEvents().then(browserEvents => {
+      if (browserEvents.events) {
+        for (let i = 0; i < browserEvents.events.length; i++) {
+          // We tell the server handler to not re-send else we cause an infinite loop.
+          api.fireEvent(Object.assign({}, browserEvents.events[i], { noServer: true}));
+        }
+      }
+    });
+
+
   }, []);
 
   return (
@@ -104,6 +119,45 @@ export interface ISettings {
     paypalConfirmUrl?: string;
     eventHandler?: Function;
 }
+
+/*
+async function createPageViewEvent(settings:ISettings, cart:any, api:any) {
+  const now = api.normalizedTimestamp();
+  const hshKey = `page_view:${settings.sessionId}:${now}:${window.location.href}`;
+  const eventId = await digestMessage(hshKey);
+
+  const e = { eventType: "page_view",
+              url: window.location.href,
+              pageTitle: document.title,
+              referrer: document.referrer,
+              eventId,
+              eventSourceUrl: window.location.href,
+              createdAt: now,
+//
+// TODO: FIXME FIXME FIXME FIXME
+//
+//              isCheckoutPage: this.isCheckoutPage(),
+//              ...this.eventsCommon(),
+            };
+
+  if (typeof(settings.landingPageName) === 'string' && settings.landingPageName.length > 0) {
+    e.pageType = "lander";
+  }
+
+  if (typeof(settings.upsellPageName) === 'string' && settings.upsellPageName.length > 0) {
+    e.pageType = "upsell";
+    e.upsellPageName = settings.upsellPageName;
+  }
+
+  if (typeof(settings.advertorialPageName) === 'string' && settings.advertorialPageName.length > 0) {
+    e.pageType = "advertorial";
+    e.advertorialPageName = settings.advertorialPageName;
+  }
+
+  return e;
+}
+*/
+
 
 function load_settings(props: IProps) : ISettings {
   const urlParams = new URLSearchParams(window.location.search);

@@ -1,9 +1,15 @@
 import { fireEvent } from "./events";
 
-export const createPublicApi = (apiClient:any, setCart:Function, cart: any, pricingData:any, settings:any) => {
+export const createPublicApi = (apiClient:any, setCart:Function, cart: any, pricingData:any, settings:any, meta:any) => {
   const result : any = {};
 
   let currencyFormatter : any = null;
+
+  result.normalizedTimestamp = () => {
+    const clientTimestampDrift = meta.localNow - (+new Date());
+    return (+new Date()) + clientTimestampDrift;
+
+  };
 
   result.fireEvent = async (e:any) => {
     const promises = [];

@@ -27,7 +27,6 @@ function getCartId(resetCookie:boolean=false) {
       setNewCookie();
     }
   }
-  console.log(`cartId = ${cartId}`);
   return cartId;
 }
 
@@ -51,7 +50,10 @@ async function apiRequest(endPoint:string, opts:any={}, queryParams:any={}) {
 }
 
 export async function getCart(props:any) {
-  return apiRequest(`cart/${getCartId(props.resetCookie)}`, {}, props);
+  const result = await apiRequest(`cart/${getCartId(props.resetCookie)}`, {}, props);
+  result.cart.sessionCartId = result.cart.sessionCartId || getCartId(); // TODO: server should set this.
+  console.log(`cartId = ${result.cart.sessionCartId}`);
+  return result;
 }
 
 export async function removeCoupon() {
@@ -72,8 +74,17 @@ export async function setPrimaryVariant(variantId:string) {
 
 export async function setVariantQuantities(data:any) {
   return apiRequest(`cart/${getCartId()}/set_variant_quantities`, { "method": "POST", "body": JSON.stringify(data) }, {});
-
 }
+
+export async function getBrowserEvents() {
+  return apiRequest(`browser_events/${getCartId()}`, {});
+}
+
+export async function sendEvent(data:any = {}) {
+  data.sessionCartId = data.sessionCartId || getCartId();
+  return apiRequest(`events/${getCartId()}`, { "method": "POST", "body": JSON.stringify(data) }, {});
+}
+
 
 export async function loadPricing() {
   if (apiEndpoint === null) {

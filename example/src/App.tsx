@@ -5,9 +5,8 @@ import { Site } from "./site";
 const App = () => {
 
   const eh = async(e:any, rtcApi:any) => {
-    console.log("Hi from custom event handler");
-    console.log(e);
-    console.log(rtcApi);
+    console.log(`custom event handler received: ${e.eventType}`);
+    rtcApi.normalizedTimestamp(); // keep TS compiler happy about otherwise unused rtcApi.
   };
 
   return (
@@ -25,6 +24,7 @@ const App = () => {
          trackStock={false}
          paypalConfirmUrl="http://www.whatever.com"
          eventHandler={eh}
+         isCheckoutPage={false}
     />
   );
 }

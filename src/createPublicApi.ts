@@ -1,15 +1,21 @@
 import { fireEvent } from "./events";
 
+console.log("Setting localNow");
+const localNow = +new Date();
+
 export const createPublicApi = (apiClient:any, setCart:Function, cart: any, pricingData:any, settings:any, meta:any) => {
   const result : any = {};
 
   let currencyFormatter : any = null;
 
   result.normalizedTimestamp = () => {
-    const clientTimestampDrift = meta.localNow - (+new Date());
+    const clientTimestampDrift = meta.serverNow - localNow;
     return (+new Date()) + clientTimestampDrift;
-
   };
+
+  result.sendEvent = async(e:any) => {
+    return apiClient.sendEvent(e);
+  }
 
   result.fireEvent = async (e:any) => {
     const promises = [];

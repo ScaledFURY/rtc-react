@@ -81,7 +81,6 @@ export async function getBrowserEvents() {
 }
 
 export async function sendEvent(data:any = {}) {
-  data.sessionCartId = data.sessionCartId || getCartId();
   return apiRequest(`events/${getCartId()}`, { "method": "POST", "body": JSON.stringify(data) }, {});
 }
 

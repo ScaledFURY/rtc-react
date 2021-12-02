@@ -4,7 +4,7 @@ import { urlToAbsolute } from "../urlToAbsolute";
 import * as ApiClient from '../api_client';
 import { LocalCart } from "../local-cart";
 import { createPublicApi } from "../createPublicApi";
-//import { digestMessage } from "../digestMessage";
+import { digestMessage } from "../digestMessage";
 declare global {
     interface Window { RTC: any; }
 }
@@ -25,12 +25,14 @@ interface IProps {
   trackStock?: boolean;
   paypalConfirmUrl?: string;
   eventHandler?: Function;
+  isCheckoutPage?: boolean;
 }
 
 
 
 
 export const RTC = (props: IProps) => {
+  //console.log("Starting RTC Render");
   ApiClient.setApiEndpoint(props.apiEndpoint);
   const debugMode = props.apiEndpoint.match(/burnerdomain/);
 
@@ -43,6 +45,7 @@ export const RTC = (props: IProps) => {
   const [ cart, setCartOrig ]           = React.useState(null);
   const [ meta, setMeta ]               = React.useState(null);
   const [ pricingData, setPricingData ] = React.useState(null);
+  const [ ready, setReady ]             = React.useState(false);
 
   const setCart = (newCart : any) => {
     if (newCart.localCart) {
@@ -67,28 +70,32 @@ export const RTC = (props: IProps) => {
   React.useEffect(() => {
 
     ApiClient.getCart(settings).then(newCart => {
-      newCart.meta.localNow = +new Date();
       setMeta(newCart.meta);
       setCart(newCart.cart);
-      // Send page view event.
-      //api.fireEvent(createPageViewEvent(settings, newCart.cart, api));
-
     });
     ApiClient.loadPricing().then(newPricingData => {
       setPricingData(newPricingData);
     });
 
-    ApiClient.getBrowserEvents().then(browserEvents => {
-      if (browserEvents.events) {
-        for (let i = 0; i < browserEvents.events.length; i++) {
-          // We tell the server handler to not re-send else we cause an infinite loop.
-          api.fireEvent(Object.assign({}, browserEvents.events[i], { noServer: true}));
-        }
-      }
-    });
-
-
   }, []);
+
+
+  React.useEffect(()=> {
+    if (meta && cart && pricingData && !ready) {
+      setReady(true);
+      (async function() {
+        ApiClient.getBrowserEvents().then(browserEvents => {
+          if (browserEvents.events) {
+            for (let i = 0; i < browserEvents.events.length; i++) {
+              // We tell the server handler to not re-send else we cause an infinite loop.
+              api.fireEvent(Object.assign({}, browserEvents.events[i], { noServer: true}));
+            }
+          }
+        });
+        await api.fireEvent(await createPageViewEvent(api, settings, cart, meta));
+      })();
+    }
+  }, [meta, cart, ready]);
 
   return (
     <RTCContext.Provider value={{ cart, meta, api }}>
@@ -118,46 +125,8 @@ export interface ISettings {
     trackStock: boolean;
     paypalConfirmUrl?: string;
     eventHandler?: Function;
+    isCheckoutPage: boolean;
 }
-
-/*
-async function createPageViewEvent(settings:ISettings, cart:any, api:any) {
-  const now = api.normalizedTimestamp();
-  const hshKey = `page_view:${settings.sessionId}:${now}:${window.location.href}`;
-  const eventId = await digestMessage(hshKey);
-
-  const e = { eventType: "page_view",
-              url: window.location.href,
-              pageTitle: document.title,
-              referrer: document.referrer,
-              eventId,
-              eventSourceUrl: window.location.href,
-              createdAt: now,
-//
-// TODO: FIXME FIXME FIXME FIXME
-//
-//              isCheckoutPage: this.isCheckoutPage(),
-//              ...this.eventsCommon(),
-            };
-
-  if (typeof(settings.landingPageName) === 'string' && settings.landingPageName.length > 0) {
-    e.pageType = "lander";
-  }
-
-  if (typeof(settings.upsellPageName) === 'string' && settings.upsellPageName.length > 0) {
-    e.pageType = "upsell";
-    e.upsellPageName = settings.upsellPageName;
-  }
-
-  if (typeof(settings.advertorialPageName) === 'string' && settings.advertorialPageName.length > 0) {
-    e.pageType = "advertorial";
-    e.advertorialPageName = settings.advertorialPageName;
-  }
-
-  return e;
-}
-*/
-
 
 function load_settings(props: IProps) : ISettings {
   const urlParams = new URLSearchParams(window.location.search);
@@ -187,8 +156,59 @@ function load_settings(props: IProps) : ISettings {
     advertorialPageName:  props.advertorialPageName || "",
     trackStock:           !!props.trackStock,
     eventHandler:         props.eventHandler,
-    paypalConfirmUrl:     urlToAbsolute(props.paypalConfirmUrl)
+    paypalConfirmUrl:     urlToAbsolute(props.paypalConfirmUrl),
+    isCheckoutPage:       props.isCheckoutPage === true
   };
 
   return settings;
+}
+
+function eventsCommon(cart:any, meta:any) {
+    return {
+      ip: meta.ipAddress,
+      userAgent: meta.userAgent,
+      sessionCartId: cart.sessionCartId,
+      advertorialPageName: cart.advertorialPageName,
+      landingPageName: cart.landingPageName,
+      funnelName: cart.funnelName,
+      pageParams: cart.checkoutPageParams,
+      country: cart.shippingZone,
+      primaryVariantId: cart.primaryVariantId,
+      //splitDecisions: this.splitDecisions, // TODO: Are we still doing split decisions?  How?
+      locale: cart.locale,
+      parentSessionCartId: cart.parentSessionCartId
+    }
+}
+
+async function createPageViewEvent(api:any, settings:any, cart:any, meta:any) {
+  const now = api.normalizedTimestamp();
+  const hshKey = `page_view:${cart.sessionCartId}:${now}:${window.location.href}`;
+  const eventId = await digestMessage(hshKey);
+
+  const e:any = { eventType: "page_view",
+              url: window.location.href,
+              pageTitle: document.title,
+              referrer: document.referrer,
+              eventId,
+              eventSourceUrl: window.location.href,
+              createdAt: now,
+              ...eventsCommon(cart, meta),
+              isCheckoutPage: settings.isCheckoutPage
+            };
+
+  if (typeof(settings.landingPageName) === 'string' && settings.landingPageName.length > 0) {
+    e.pageType = "lander";
+  }
+
+  if (typeof(settings.upsellPageName) === 'string' && settings.upsellPageName.length > 0) {
+    e.pageType = "upsell";
+    e.upsellPageName = settings.upsellPageName;
+  }
+
+  if (typeof(settings.advertorialPageName) === 'string' && settings.advertorialPageName.length > 0) {
+    e.pageType = "advertorial";
+    e.advertorialPageName = settings.advertorialPageName;
+  }
+  return e;
+
 }

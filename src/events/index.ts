@@ -1,7 +1,6 @@
 import { fireEventServer } from "./event_handlers/server";
 
 export async function fireEvent(e:any, rtcApi:any) {
-  console.log("Hi from fireEvent");
   const handlers = [ fireEventServer ];
   const promises = [];
 

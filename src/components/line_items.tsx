@@ -52,7 +52,6 @@ export const LineItems = (props:IProps) => {
         formattedLi[x] = ctx.api.formatCurrency(parseFloat(formattedLi[x]));
       }
     });
-    console.log(JSON.stringify(formattedLi, null, 4));
 
     return ( <Component key={li.variantId} lineItem={formattedLi} /> );
 

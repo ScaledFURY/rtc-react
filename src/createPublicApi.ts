@@ -1,7 +1,19 @@
-export const createPublicApi = (apiClient:any, setCart:Function, cart: any, pricingData:any) => {
+import { fireEvent } from "./events";
+
+export const createPublicApi = (apiClient:any, setCart:Function, cart: any, pricingData:any, settings:any) => {
   const result : any = {};
 
   let currencyFormatter : any = null;
+
+  result.fireEvent = async (e:any) => {
+    const promises = [];
+    promises.push(fireEvent(e, result));
+    if (settings.eventHandler) {
+      promises.push(settings.eventHandler(e, result));
+    }
+    return Promise.allSettled(promises);
+
+  }
 
   result.formatCurrency = (val:string|number) => {
     if (!cart.locale) {

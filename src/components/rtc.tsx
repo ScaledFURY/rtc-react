@@ -24,6 +24,7 @@ interface IProps {
   advertorialPageName?: string;
   trackStock?: boolean;
   paypalConfirmUrl?: string;
+  eventHandler?: Function;
 }
 
 
@@ -56,7 +57,7 @@ export const RTC = (props: IProps) => {
     setCartOrig(newCart);
   };
 
-  const api = createPublicApi(ApiClient, setCart, cart, pricingData);
+  const api = createPublicApi(ApiClient, setCart, cart, pricingData, settings);
   if (debugMode) {
     window.RTC.api = api;
   }
@@ -68,8 +69,6 @@ export const RTC = (props: IProps) => {
     ApiClient.getCart(settings).then(newCart => {
       setMeta(newCart.meta);
       setCart(newCart.cart);
-      console.log(newCart.cart.locale);
-      console.log(newCart.cart.cartCurrency);
     });
     ApiClient.loadPricing().then(newPricingData => {
       setPricingData(newPricingData);
@@ -103,6 +102,7 @@ export interface ISettings {
     advertorialPageName: string;
     trackStock: boolean;
     paypalConfirmUrl?: string;
+    eventHandler?: Function;
 }
 
 function load_settings(props: IProps) : ISettings {
@@ -132,6 +132,7 @@ function load_settings(props: IProps) : ISettings {
     orderTag:             props.orderTag || "",
     advertorialPageName:  props.advertorialPageName || "",
     trackStock:           !!props.trackStock,
+    eventHandler:         props.eventHandler,
     paypalConfirmUrl:     urlToAbsolute(props.paypalConfirmUrl)
   };
 

@@ -3,6 +3,13 @@ import { RTC } from 'rtc-react'
 import { Site } from "./site";
 
 const App = () => {
+
+  const eh = async(e:any, rtcApi:any) => {
+    console.log("Hi from custom event handler");
+    console.log(e);
+    console.log(rtcApi);
+  };
+
   return (
     <RTC component={Site}
          defaultVariantId="40194513993914"
@@ -17,6 +24,7 @@ const App = () => {
          advertorialPageName="APN"
          trackStock={false}
          paypalConfirmUrl="http://www.whatever.com"
+         eventHandler={eh}
     />
   );
 }

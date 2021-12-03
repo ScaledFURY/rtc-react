@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { RTCContext } from './rtc_context';
 
-interface IVariantImageProps {
+export interface IVariantImageProps {
   variantId: string;
 }
 

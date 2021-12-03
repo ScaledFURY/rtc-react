@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { RTCContext } from './rtc_context';
 
-interface IRemoveCouponButtonProps {
+export interface IRemoveCouponButtonProps {
   text: string;
   id?: string;
   className?: string;

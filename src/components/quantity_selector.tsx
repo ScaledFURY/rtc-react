@@ -2,7 +2,7 @@ import * as React from 'react'
 import { RTCContext } from './rtc_context';
 
 
-interface IQuantitySelectorProps {
+export interface IQuantitySelectorProps {
   variantId: string;
   id?: string;
   className?: string;

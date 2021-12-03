@@ -9,7 +9,7 @@ declare global {
     interface Window { RTC: any; }
 }
 
-interface IRTCProps {
+export interface IRTCProps {
   component: any;
   apiEndpoint: string;
   forceVariantId?: string;

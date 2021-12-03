@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { RTCContext } from './rtc_context';
 
-interface ISetPrimaryVariantButtonProps {
+export interface ISetPrimaryVariantButtonProps {
   variantId: string;
   text: string;
   id?: string;

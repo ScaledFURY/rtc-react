@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { RTCContext } from './rtc_context';
 
-interface IVariantComparePriceSavingsPctProps {
+export interface IVariantComparePriceSavingsPctProps {
   variantId: string;
 }
 

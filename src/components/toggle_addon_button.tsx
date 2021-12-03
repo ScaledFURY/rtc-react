@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { RTCContext } from './rtc_context';
 
-interface IToggleAddonButtonProps {
+export interface IToggleAddonButtonProps {
   variantId: string;
   text: string;
   id?: string;

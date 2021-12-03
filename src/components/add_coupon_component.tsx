@@ -1,12 +1,15 @@
 import * as React from 'react'
 import { RTCContext } from './rtc_context';
 
-interface IAddCouponComponentProps {
+/** this is an interface typedoc! */
+export interface IAddCouponComponentProps {
+  /** Blarg */
   text: string;
   id?: string;
   className?: string;
 }
 
+/** Creates a textfield/button combo to add coupons */
 export const AddCouponComponent = (props:IAddCouponComponentProps) => {
   const ctx : any = React.useContext(RTCContext);
   let [ couponCode, setCouponCode ] = React.useState("");

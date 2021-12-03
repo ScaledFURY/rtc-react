@@ -2,7 +2,7 @@ import * as React from 'react'
 import { RTCContext } from './rtc_context';
 
 
-interface IIncreaseQuantityButtonProps {
+export interface IIncreaseQuantityButtonProps {
   variantId: string;
   text: string;
   id?: string;

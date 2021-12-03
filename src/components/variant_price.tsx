@@ -1,7 +1,9 @@
 import * as React from 'react'
 import { RTCContext } from './rtc_context';
 
+/** Properties for the VariantPrice component */
 export interface IVariantPriceProps {
+  /** The variantId this control should display */
   variantId: string;
 }
 

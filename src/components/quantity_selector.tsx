@@ -2,7 +2,9 @@ import * as React from 'react'
 import { RTCContext } from './rtc_context';
 
 
+/** Properties for the QuantitySelector component */
 export interface IQuantitySelectorProps {
+  /** The variantId this control should effect */
   variantId: string;
   id?: string;
   className?: string;

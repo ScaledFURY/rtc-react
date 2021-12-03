@@ -2,6 +2,7 @@ import * as React from 'react'
 import { RTCContext } from './rtc_context';
 
 export interface IVariantComparePriceSavingsPctProps {
+  /** The variantId this control should display */
   variantId: string;
 }
 

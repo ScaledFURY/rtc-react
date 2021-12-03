@@ -1,9 +1,13 @@
 import * as React from 'react'
 import { RTCContext } from './rtc_context';
 
+/** Properties for the RemoveCouponButton component */
 export interface IRemoveCouponButtonProps {
+  /** Text for the button */
   text: string;
+  /** An optional id to apply to this button */
   id?: string;
+  /** Optional className to apply to this button */
   className?: string;
 }
 

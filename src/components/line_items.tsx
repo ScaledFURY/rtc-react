@@ -1,12 +1,14 @@
 import * as React from 'react'
 import { RTCContext } from './rtc_context';
 
+/** Properties for the line item component */
 export interface ILineItemsProps {
+  /** A React component that should be used to render the line items.  */
   component: Function;
 }
 
 //{"variantId":"40194513993914","title":"the big bundle","subtitle":"the big bundle","price":"CA$169.00","quantity":1,"shippingRatePerItem":"CA$0.00","discountable":true,"compareAtPrice":null,"productImage":"https://cdn.shopify.com/s/files/1/0533/1979/4874/products/cat.jpg?v=1628176645"}
-interface IFormattedLineItem {
+export interface IFormattedLineItem {
   variantId: string;
   title: string;
   subtitle: string;
@@ -21,6 +23,11 @@ interface IFormattedLineItem {
   totalShipping: any;
 }
 
+/**
+  Renders a list of line items currently in the cart.
+  The component passed will be used to render each line item.
+  The Component will be passed properties from @IFormattedLineItem
+*/
 export const LineItems = (props:ILineItemsProps) => {
   const ctx : any = React.useContext(RTCContext);
   if (!ctx.cart) {

@@ -5,7 +5,7 @@ export { TotalValue     }          from "./components/total_value";
 export { TaxValue       }          from "./components/tax_value";
 export { ShippingValue  }          from "./components/shipping_value";
 export { DiscountValue  }          from "./components/discount_value";
-export { LineItems, ILineItemsProps      }          from "./components/line_items";
+export { LineItems, ILineItemsProps, IFormattedLineItem }          from "./components/line_items";
 export { CartDisplay    }          from "./components/cart_display";
 export { ToggleAddonButton, IToggleAddonButtonProps }       from "./components/toggle_addon_button";
 export { RemoveCouponButton, IRemoveCouponButtonProps }      from "./components/remove_coupon_button";

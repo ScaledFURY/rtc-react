@@ -9,6 +9,7 @@ declare global {
     interface Window { RTC: any; }
 }
 
+/** Properties for the RTC Component */
 export interface IRTCProps {
   component: any;
   apiEndpoint: string;

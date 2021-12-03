@@ -1,8 +1,9 @@
 import * as React from 'react'
 import { RTCContext } from './rtc_context';
 
-
+/** Properties for the QuantityValue component */
 export interface IQuantityValueProps {
+  /** The variantId this control should effect */
   variantId: string;
 }
 

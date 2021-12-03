@@ -31,7 +31,7 @@ export interface IRTCProps {
 
 
 
-
+/* Main wrapper of RTC Library */
 export const RTC = (props: IRTCProps) => {
   //console.log("Starting RTC Render");
   ApiClient.setApiEndpoint(props.apiEndpoint);

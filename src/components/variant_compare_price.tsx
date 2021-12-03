@@ -7,6 +7,7 @@ export interface IVariantComparePriceProps {
   variantId: string;
 }
 
+/** Display's a variants compare price in the cart's currency */
 export const VariantComparePrice = (props:IVariantComparePriceProps) => {
   const ctx : any = React.useContext(RTCContext);
   if (!ctx.cart) {

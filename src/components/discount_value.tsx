@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { RTCContext } from './rtc_context';
 
+/* Displays the cart's total discount value in the cart currency */
 export const DiscountValue = () => {
   const ctx : any = React.useContext(RTCContext);
   if (!ctx.cart) {

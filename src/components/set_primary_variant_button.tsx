@@ -13,6 +13,7 @@ export interface ISetPrimaryVariantButtonProps {
   className?: string;
 }
 
+/** Provides a button which allows the user to select a new variant as the primary variant */
 export const SetPrimaryVariantButton = (props:ISetPrimaryVariantButtonProps) => {
   const ctx : any = React.useContext(RTCContext);
   if (!ctx.cart) {

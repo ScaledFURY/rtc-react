@@ -7,6 +7,7 @@ export interface IVariantPropductTitleProps {
   variantId: string;
 }
 
+/** Displays the product title for a variant */
 export const VariantPropductTitle = (props:IVariantPropductTitleProps) => {
   const ctx : any = React.useContext(RTCContext);
   if (!ctx.cart) {

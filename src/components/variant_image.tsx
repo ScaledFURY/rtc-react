@@ -7,6 +7,7 @@ export interface IVariantImageProps {
   variantId: string;
 }
 
+/** Displays a variant's image */
 export const VariantImage = (props:IVariantImageProps) => {
   const ctx : any = React.useContext(RTCContext);
   if (!ctx.cart) {

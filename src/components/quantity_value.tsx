@@ -7,6 +7,7 @@ export interface IQuantityValueProps {
   variantId: string;
 }
 
+/* Displays the current cart quantity of a particular variant */
 export const QuantityValue = (props:IQuantityValueProps) => {
   const ctx : any = React.useContext(RTCContext);
   if (!ctx.cart) {

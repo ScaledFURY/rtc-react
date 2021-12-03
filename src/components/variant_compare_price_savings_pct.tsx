@@ -6,6 +6,7 @@ export interface IVariantComparePriceSavingsPctProps {
   variantId: string;
 }
 
+/** Displays a variant's compare price savings (compare-actual) in percent (without % symbol) */
 export const VariantComparePriceSavingsPct = (props:IVariantComparePriceSavingsPctProps) => {
   const ctx : any = React.useContext(RTCContext);
   if (!ctx.cart) {

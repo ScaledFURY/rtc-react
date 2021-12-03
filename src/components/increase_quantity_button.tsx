@@ -32,6 +32,6 @@ export const IncreaseQuantityButton = (props:IIncreaseQuantityButtonProps) => {
 
 
   return (
-    <button className="rtc-increase-quantity" onClick={handler}>{props.text}</button>
+    <button className={`rtc-increase-quantity ${props.className || ""}`} onClick={handler}>{props.text}</button>
   )
 }

@@ -34,7 +34,7 @@ export const QuantitySelector = (props:IQuantitySelectorProps) => {
 
 
   return (
-    <select className={`rtc-quantity-selector`} value={curQty} id={props.id} onChange={handler}>
+    <select className={`rtc-quantity-selector ${props.className || ""}`} value={curQty} id={props.id} onChange={handler}>
       {options}
     </select>
 

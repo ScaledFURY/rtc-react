@@ -22,7 +22,7 @@ export const ToggleAddonButton = (props:IToggleAddonButtonProps) => {
     return null;
   }
 
-  let className = `rtc-toggle-addon ${props.className}`;
+  let className = `rtc-toggle-addon ${props.className || ""}`;
 
   if (ctx.api.hasVariant(props.variantId)) {
     className += " rtc-addon-enabled";

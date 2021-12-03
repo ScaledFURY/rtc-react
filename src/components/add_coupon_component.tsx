@@ -1,13 +1,13 @@
 import * as React from 'react'
 import { RTCContext } from './rtc_context';
 
-interface IProps {
+interface IAddCouponComponentProps {
   text: string;
   id?: string;
   className?: string;
 }
 
-export const AddCouponComponent = (props:IProps) => {
+export const AddCouponComponent = (props:IAddCouponComponentProps) => {
   const ctx : any = React.useContext(RTCContext);
   let [ couponCode, setCouponCode ] = React.useState("");
 

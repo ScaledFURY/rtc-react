@@ -2,7 +2,7 @@ import * as React from 'react'
 import { RTCContext } from './rtc_context';
 
 
-interface IProps {
+interface IIncreaseQuantityButtonProps {
   variantId: string;
   text: string;
   id?: string;
@@ -10,7 +10,7 @@ interface IProps {
   max?: number;
 }
 
-export const IncreaseQuantityButton = (props:IProps) => {
+export const IncreaseQuantityButton = (props:IIncreaseQuantityButtonProps) => {
   const ctx : any = React.useContext(RTCContext);
   if (!ctx.cart) {
     return null;

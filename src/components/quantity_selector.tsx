@@ -2,14 +2,14 @@ import * as React from 'react'
 import { RTCContext } from './rtc_context';
 
 
-interface IProps {
+interface IQuantitySelectorProps {
   variantId: string;
   id?: string;
   className?: string;
   max: number;
 }
 
-export const QuantitySelector = (props:IProps) => {
+export const QuantitySelector = (props:IQuantitySelectorProps) => {
   const ctx : any = React.useContext(RTCContext);
   const [ curQty, setCurQty ] = React.useState(ctx.api.getVariantQuantity(props.variantId) || 0);
 

@@ -1,14 +1,14 @@
 import * as React from 'react'
 import { RTCContext } from './rtc_context';
 
-interface IProps {
+interface IToggleAddonButtonProps {
   variantId: string;
   text: string;
   id?: string;
   className?: string;
 }
 
-export const ToggleAddonButton = (props:IProps) => {
+export const ToggleAddonButton = (props:IToggleAddonButtonProps) => {
   const ctx : any = React.useContext(RTCContext);
   if (!ctx.cart) {
     return null;

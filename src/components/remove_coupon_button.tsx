@@ -1,13 +1,13 @@
 import * as React from 'react'
 import { RTCContext } from './rtc_context';
 
-interface IProps {
+interface IRemoveCouponButtonProps {
   text: string;
   id?: string;
   className?: string;
 }
 
-export const RemoveCouponButton = (props:IProps) => {
+export const RemoveCouponButton = (props:IRemoveCouponButtonProps) => {
   const ctx : any = React.useContext(RTCContext);
   if (!ctx.cart) {
     return null;

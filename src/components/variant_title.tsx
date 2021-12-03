@@ -1,11 +1,11 @@
 import * as React from 'react'
 import { RTCContext } from './rtc_context';
 
-interface IProps {
+interface IVariantTitleProps {
   variantId: string;
 }
 
-export const VariantTitle = (props:IProps) => {
+export const VariantTitle = (props:IVariantTitleProps) => {
   const ctx : any = React.useContext(RTCContext);
   if (!ctx.cart) {
     return null;

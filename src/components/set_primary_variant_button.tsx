@@ -1,14 +1,14 @@
 import * as React from 'react'
 import { RTCContext } from './rtc_context';
 
-interface IProps {
+interface ISetPrimaryVariantButtonProps {
   variantId: string;
   text: string;
   id?: string;
   className?: string;
 }
 
-export const SetPrimaryVariantButton = (props:IProps) => {
+export const SetPrimaryVariantButton = (props:ISetPrimaryVariantButtonProps) => {
   const ctx : any = React.useContext(RTCContext);
   if (!ctx.cart) {
     return null;

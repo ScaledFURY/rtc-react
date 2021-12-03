@@ -9,7 +9,7 @@ declare global {
     interface Window { RTC: any; }
 }
 
-interface IProps {
+interface IRTCProps {
   component: any;
   apiEndpoint: string;
   forceVariantId?: string;
@@ -31,7 +31,7 @@ interface IProps {
 
 
 
-export const RTC = (props: IProps) => {
+export const RTC = (props: IRTCProps) => {
   //console.log("Starting RTC Render");
   ApiClient.setApiEndpoint(props.apiEndpoint);
   const debugMode = props.apiEndpoint.match(/burnerdomain/);
@@ -128,7 +128,7 @@ export interface ISettings {
     isCheckoutPage: boolean;
 }
 
-function load_settings(props: IProps) : ISettings {
+function load_settings(props: IRTCProps) : ISettings {
   const urlParams = new URLSearchParams(window.location.search);
 
   const origParams = {};

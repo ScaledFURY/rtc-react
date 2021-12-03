@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { RTCContext } from './rtc_context';
 
-interface IProps {
+interface ILineItemsProps {
   component: Function;
 }
 
@@ -21,7 +21,7 @@ interface IFormattedLineItem {
   totalShipping: any;
 }
 
-export const LineItems = (props:IProps) => {
+export const LineItems = (props:ILineItemsProps) => {
   const ctx : any = React.useContext(RTCContext);
   if (!ctx.cart) {
     return null;

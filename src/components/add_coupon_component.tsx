@@ -1,11 +1,13 @@
 import * as React from 'react'
 import { RTCContext } from './rtc_context';
 
-/** this is an interface typedoc! */
+/** Properties for AddCouponComponent */
 export interface IAddCouponComponentProps {
-  /** Blarg */
+  /** Text for the button */
   text: string;
+  /** An optional id to apply to this button */
   id?: string;
+  /** Optional className to apply to this button */
   className?: string;
 }
 

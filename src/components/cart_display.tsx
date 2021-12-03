@@ -40,6 +40,7 @@ const LineItem = (props:any) => {
   return JSON.stringify(props.lineItem);
 };
 
+/** A generic component for showing the current cart. */
 export const CartDisplay = () => {
   const ctx : any = React.useContext(RTCContext);
   if (!ctx.cart) {

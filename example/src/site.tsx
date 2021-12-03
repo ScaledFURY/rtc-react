@@ -1,7 +1,6 @@
 import React from 'react'
 
-import { DebugComponent,
-         CartDisplay,
+import { CartDisplay,
          ToggleAddonButton,
          RemoveCouponButton,
          SetPrimaryVariantButton,
@@ -98,10 +97,6 @@ export const Site = () => {
 
       <h3>LineItems</h3>
       No demo for LineItems
-
-      <hr />
-      <h3>Debug View</h3>
-      <DebugComponent />
 
       <hr/>
       <div className="variant-data-demo">

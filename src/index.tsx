@@ -1,5 +1,5 @@
 export { RTC, IRTCProps }                     from "./components/rtc";
-export { DebugComponent }          from "./components/debug";
+//export { DebugComponent }          from "./components/debug";
 export { SubtotalValue  }          from "./components/subtotal_value";
 export { TotalValue     }          from "./components/total_value";
 export { TaxValue       }          from "./components/tax_value";

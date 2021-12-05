@@ -128,7 +128,7 @@ export const RTC = (props: IRTCProps) => {
 
   return (
     <RTCContext.Provider value={{ cart, meta, api }}>
-      <Component rtcApi={api} />
+      <Component rtcApi={ready ? api : null} />
     </RTCContext.Provider>
   )
 }

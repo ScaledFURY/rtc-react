@@ -3,7 +3,7 @@ import { RTCContext } from './rtc_context';
 import { urlToAbsolute } from "../urlToAbsolute";
 import * as ApiClient from '../api_client';
 import { LocalCart } from "../local-cart";
-import { createPublicApi } from "../createPublicApi";
+import * as api from "../createPublicApi";
 import { digestMessage } from "../digestMessage";
 declare global {
     interface Window { RTC: any; }
@@ -89,7 +89,7 @@ export const RTC = (props: IRTCProps) => {
     setCartOrig(newCart);
   };
 
-  const api = createPublicApi(ApiClient, setCart, cart, pricingData, settings, meta);
+  api.updatePublicApi(ApiClient, setCart, cart, pricingData, settings, meta);
   if (debugMode) {
     window.RTC.api = api;
   }

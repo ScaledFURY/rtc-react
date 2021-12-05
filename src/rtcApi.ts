@@ -13,7 +13,7 @@ let settings : any = null;
 let meta : any = null;
 
 
-
+/** @internal */
 export function updatePublicApi(newApiClient:any, newSetCart:Function, newCart: any, newPricingData:any, newSettings:any, newMeta:any) {
   apiClient   = newApiClient;
   setCart     = newSetCart;
@@ -23,25 +23,32 @@ export function updatePublicApi(newApiClient:any, newSetCart:Function, newCart: 
   meta        = newMeta;
 }
 
+/** Returns a timestamp value that has been normalized against the server's time */
 export const normalizedTimestamp = () => {
   const clientTimestampDrift = meta.serverNow - localNow;
   return (+new Date()) + clientTimestampDrift;
 };
 
+/**
+  Transmits an event to the server
+  @internal
+*/
 export const sendEvent = async(e:any) => {
   return apiClient.sendEvent(e);
 }
 
+/** Sends an event to the event handling system and any defined custom event handlers */
 export const fireEvent = async (e:any) => {
   const promises = [];
-  promises.push(doFireEvent(e, {})); // FIXME
+  promises.push(doFireEvent(e)); // FIXME
   if (settings.eventHandler) {
-    promises.push(settings.eventHandler(e, {})); // FIXME
+    promises.push(settings.eventHandler(e)); // FIXME
   }
   return Promise.allSettled(promises);
 
 }
 
+/** Converts a value 1.24 into a formmated currency string for the current locale and cartCurrency */
 export const formatCurrency = (val:string|number) => {
   if (!cart.locale) {
     return null;
@@ -51,6 +58,7 @@ export const formatCurrency = (val:string|number) => {
 }
 
 
+/** Returns the quantity of a given variant currently in the cart */
 export const getVariantQuantity = (variantId:string) => {
   if (!cart) {
     return null;
@@ -58,6 +66,27 @@ export const getVariantQuantity = (variantId:string) => {
   return cart.currencyCart.getVariantQuantity(variantId);
 }
 
+/** Returns a structure of variant data
+
+For example,
+```
+{
+    "productTitle": "Widgets",
+    "variantTitle": "large",
+    "displayName": "Widgets - large",
+    "price": "30.25",
+    "inStock": true,
+    "compareAtPrice": null,
+    "image": "https://cdn.shopify.com/s/files/1/0533/1979/4874/products/randombox.png?v=1618435551",
+    "sku": "",
+    "compareSavings": null,
+    "compareSavingsPct": null,
+    "shippingRate": "7.00",
+    "shippingRateFormatted": "$7.00",
+    "priceFormatted": "$30.25"
+}
+```
+*/
 export const getVariantData = (variantId:string|number) => {
 
   if (!cart || !pricingData || !pricingData[variantId]) {
@@ -95,10 +124,22 @@ export const getVariantData = (variantId:string|number) => {
 }
 
 
+/** Returns true/false if the specified variantId is in the cart */
 export const hasVariant = (variantId:string) => {
   return cart.currencyCart.hasVariant(variantId);
 }
 
+
+/** Pass a map of variantId -> quantities that you want to update
+
+for example,
+```
+setVariantQuantities({
+  "39507333513402": 3
+})
+```
+
+*/
 export const setVariantQuantities = async(data:any) => {
   const result = await apiClient.setVariantQuantities(data);
   if (result) {
@@ -109,6 +150,7 @@ export const setVariantQuantities = async(data:any) => {
   }
 }
 
+/** Sets the primary variant of the cart.  A cart can only have one primary variant */
 export const setPrimaryVariant = async (variantId:string) => {
   const result = await apiClient.setPrimaryVariant(variantId);
   if (result) {
@@ -119,7 +161,7 @@ export const setPrimaryVariant = async (variantId:string) => {
   }
 }
 
-
+/** Toggles a variant in the cart */
 export const toggleAddon = async (variantId:string) => {
   const result = await apiClient.toggleAddon(variantId);
   if (result) {
@@ -130,6 +172,7 @@ export const toggleAddon = async (variantId:string) => {
   }
 }
 
+/** Apples a coupon to the cart */
 export const applyCoupon = async (code:string) => {
   const result = await apiClient.applyCoupon(code);
   if (result) {
@@ -140,6 +183,7 @@ export const applyCoupon = async (code:string) => {
   }
 };
 
+/** Removes a coupon from the cart */
 export const removeCoupon = async () => {
   const result = await apiClient.removeCoupon();
   if (result) {

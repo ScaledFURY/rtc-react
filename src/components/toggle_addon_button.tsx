@@ -29,7 +29,7 @@ export const ToggleAddonButton = (props:IToggleAddonButtonProps) => {
   }
 
   const handler = async () => {
-    ctx.api.toggleAddon(props.variantId);
+    ctx.api.toggleVariant(props.variantId);
   };
 
   return (

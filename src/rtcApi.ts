@@ -162,7 +162,7 @@ export const setPrimaryVariant = async (variantId:string) => {
 }
 
 /** Toggles a variant in the cart */
-export const toggleAddon = async (variantId:string) => {
+export const toggleVariant = async (variantId:string) => {
   const result = await apiClient.toggleAddon(variantId);
   if (result) {
     setCart(result);

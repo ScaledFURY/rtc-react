@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { RTCContext } from './rtc_context';
 import { urlToAbsolute } from "../urlToAbsolute";
-import * as ApiClient from '../api_client';
+import * as ApiClient from '../rest_api_client';
 import { LocalCart } from "../local-cart";
 import * as api from "../rtcApi";
 import { digestMessage } from "../digestMessage";

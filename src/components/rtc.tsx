@@ -62,7 +62,9 @@ export interface IRTCProps {
 */
 export const RTC = (props: IRTCProps) => {
   //console.log("Starting RTC Render");
-  ApiClient.setApiEndpoint(props.apiEndpoint);
+  React.useEffect(() => {
+    ApiClient.setApiEndpoint(props.apiEndpoint);
+  });
   const debugMode = props.apiEndpoint.match(/burnerdomain/);
 
   if (debugMode) {

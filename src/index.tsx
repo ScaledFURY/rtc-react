@@ -29,4 +29,4 @@ export { QuantityValue, IQuantityValueProps } from "./components/quantity_value"
 export { IncreaseQuantityButton, IIncreaseQuantityButtonProps } from "./components/increase_quantity_button";
 export { DecreaseQuantityButton, IDecreaseQuantityButtonProps } from "./components/decrease_quantity_button";
 export { QuantitySelector, IQuantitySelectorProps } from "./components/quantity_selector";
-export * as RTCApi from "./rtcApi";
+export * as RTCApi from "./rtc_api";

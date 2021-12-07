@@ -1,4 +1,4 @@
-import * as rtcApi from "../../rtcApi";
+import * as rtcApi from "../../rtc_api";
 
 export async function fireEventServer(e: any) {
   console.log(e);

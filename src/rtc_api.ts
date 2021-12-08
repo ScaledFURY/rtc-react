@@ -2,7 +2,6 @@ import { fireEvent as doFireEvent } from "./events";
 import * as apiClient from './rest_api_client';
 //import { ISettings } from './components/rtc';
 import { warnWithOffset } from './logging';
-console.log("Setting localNow");
 const localNow = +new Date();
 
 
@@ -15,6 +14,7 @@ let settings : any = null;
 let meta : any = null;
 
 
+/** @internal */
 export function setApiEndpoint(endpoint:string) {
   return apiClient.setApiEndpoint(endpoint);
 }
@@ -30,15 +30,25 @@ export function updatePublicApi(newSetCart:Function, newSetMeta:Function, newCar
 }
 
 interface ILoadCartSettings {
+  /** Forces this variant to be the primary variant, overrides current cart */
   forceVariantId?: string|null;
+  /** Sets the landing page name if it hasn't been already set */
   landingPageName?: string;
+  /** Sets the funnelName if it hasn't already been set */
   funnelName?: string;
+  /** Sets the orderTag if it hasn't already been set */
   orderTag?: string;
+  /** Sets the advertorialPageName if it hasn't already been set */
   advertorialPageName?: string;
+  /** Forces the shipping zone to the specified value, debug purposes */
   forceShippingZone?: string|null;
+  /** Enables foreign currency debug mode (overrides foreign currency global enabled/disabled admin config option) */
   debugForeignCurrency?: string;
+  /** Sets the primary variantId for NEW carts */
   defaultVariantId?: string;
+  /** Sets the default addons for NEW carts */
   defaultAddons?: string;
+  /** Sets the URL to redirect to after checkout success (paypal) */
   nextUrl?: string;
 }
 
@@ -48,8 +58,6 @@ export async function loadCart(cartSettings:ILoadCartSettings) {
     warnWithOffset("loadCart() was called before settings were available");
     return null;
   }
-  console.log(cartSettings);
-  console.log(settings);
   const loadCartSettings = Object.assign({}, settings, cartSettings);
   apiClient.getCart(loadCartSettings).then(newCart => {
     setMeta(newCart.meta);
@@ -75,7 +83,7 @@ export const sendEvent = async(e:any) => {
   return apiClient.sendEvent(e);
 }
 
-/** Bulk updates several options on a cart at once */
+/** Bulk updates several options on a cart at once (STILL IN DEVELOPMENT) */
 export const updateCart = async(data:any) => {
   return apiClient.updateCart(data);
 }
@@ -93,7 +101,7 @@ export const fireEvent = async (e:any) => {
 
 /** Converts a value 1.24 into a formmated currency string for the current locale and cartCurrency */
 export const formatCurrency = (val:string|number) => {
-  if (!cart.locale) {
+  if (!cart || !cart.locale) {
     return null;
   }
   currencyFormatter = currencyFormatter || new Intl.NumberFormat(cart.locale, { style: 'currency', currency: cart.cartCurrency });

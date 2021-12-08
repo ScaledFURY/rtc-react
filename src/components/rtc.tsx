@@ -3,6 +3,8 @@ import { RTCContext } from './rtc_context';
 //import { urlToAbsolute } from "../urlToAbsolute";
 import * as ApiClient from '../rest_api_client';
 import { LocalCart } from "../local-cart";
+import { logWithOffset } from '../logging';
+
 import * as api from "../rtc_api";
 //import { digestMessage } from "../digestMessage";
 declare global {
@@ -79,6 +81,9 @@ export interface IRTCProps {
 
 
 */
+
+logWithOffset("Initializing RTC");
+
 export const RTC = (props: IRTCProps) => {
   api.setApiEndpoint(props.apiEndpoint);
   const debugMode = props.apiEndpoint.match(/burnerdomain/);

@@ -1,33 +1,52 @@
 import * as React from 'react'
 import { RTCContext } from './rtc_context';
-import { urlToAbsolute } from "../urlToAbsolute";
+//import { urlToAbsolute } from "../urlToAbsolute";
 import * as ApiClient from '../rest_api_client';
 import { LocalCart } from "../local-cart";
 import * as api from "../rtc_api";
-import { digestMessage } from "../digestMessage";
+//import { digestMessage } from "../digestMessage";
 declare global {
     interface Window { RTC: any; }
 }
 
 /** Properties for the RTC Component */
 export interface IRTCProps {
+  /** A React component to render with RTC context */
   component: any;
+  /** The RTC API endpoint to use */
   apiEndpoint: string;
-  forceVariantId?: string;
-  isReceiptPage?: boolean; // Needed?
+  /** Global default variant ID if one is already not set, can be overridden when calling loadCart */
   defaultVariantId?: string;
+  /** Global default addon variant ids to include on first load (CSV), can be overridden when calling loadCart */
   defaultAddons?: string;
+  /** The URL to redirect to after successful checkout.  Used for Paypal */
   nextUrl: string;
-  landingPageName?: string;
-  upsellPageName?: string;
-  funnelName?: string;
-  orderTag?: string; // Needed?
-  advertorialPageName?: string;
-  trackStock?: boolean;
-  paypalConfirmUrl?: string;
+  /** A callback function which will be used whenever an event is fired locally or received from server.  TODO: How to handle server side? */
   eventHandler?: Function;
-  isCheckoutPage?: boolean;
 }
+
+
+//
+// forceVariantId?: string;   This needs to be an option on loadCart...
+
+/** The landingPageName to tag with, ignored if one is already set. */
+//landingPageName?: string;
+/** The funnelName to tag with, ignored if one is already set. */
+//funnelName?: string;
+/** The advertorialPageName to tag with, ignored if one is already set. */
+//advertorialPageName?: string;
+
+//
+
+
+
+// RTC PROPS THAT ARE NO LONGER ACCEPTED...
+//  orderTag?: string; // Needed?
+//  upsellPageName?: string;
+//  trackStock?: boolean;
+//  paypalConfirmUrl?: string;
+//  isCheckoutPage?: boolean;
+
 
 
 
@@ -61,10 +80,7 @@ export interface IRTCProps {
 
 */
 export const RTC = (props: IRTCProps) => {
-  //console.log("Starting RTC Render");
-  React.useEffect(() => {
-    ApiClient.setApiEndpoint(props.apiEndpoint);
-  });
+  api.setApiEndpoint(props.apiEndpoint);
   const debugMode = props.apiEndpoint.match(/burnerdomain/);
 
   if (debugMode) {
@@ -91,7 +107,7 @@ export const RTC = (props: IRTCProps) => {
     setCartOrig(newCart);
   };
 
-  api.updatePublicApi(ApiClient, setCart, cart, pricingData, settings, meta);
+  api.updatePublicApi(setCart, setMeta, cart, pricingData, settings, meta);
   if (debugMode) {
     window.RTC.api = api;
   }
@@ -99,15 +115,9 @@ export const RTC = (props: IRTCProps) => {
   const Component = props.component;
 
   React.useEffect(() => {
-
-    ApiClient.getCart(settings).then(newCart => {
-      setMeta(newCart.meta);
-      setCart(newCart.cart);
-    });
     ApiClient.loadPricing().then(newPricingData => {
       setPricingData(newPricingData);
     });
-
   }, []);
 
 
@@ -123,40 +133,16 @@ export const RTC = (props: IRTCProps) => {
             }
           }
         });
-        await api.fireEvent(await createPageViewEvent(api, settings, cart, meta));
+        //await api.fireEvent(await createPageViewEvent(api, settings, cart, meta));
       })();
     }
   }, [meta, cart, ready]);
 
   return (
     <RTCContext.Provider value={{ cart, meta, api }}>
-      <Component rtcApi={ready ? api : null} />
+      <Component rtcApi={api} />
     </RTCContext.Provider>
   )
-}
-
-export interface ISettings {
-    urlCoupon : string|null;
-    forceVariantId: string|null;
-    recoveryCartId: string|null;
-    resetCookie: boolean;
-    forceShippingZone: string|null;
-    debugForeignCurrency: string;
-    checkoutPage: Location;
-    checkoutPageParams: string;
-    isReceiptPage: boolean;
-    defaultVariantId?: string;
-    defaultAddons?: string;
-    nextUrl: string;
-    landingPageName: string;
-    upsellPageName: string;
-    funnelName: string;
-    orderTag: string;
-    advertorialPageName: string;
-    trackStock: boolean;
-    paypalConfirmUrl?: string;
-    eventHandler?: Function;
-    isCheckoutPage: boolean;
 }
 
 function load_settings(props: IRTCProps) : ISettings {
@@ -169,31 +155,32 @@ function load_settings(props: IRTCProps) : ISettings {
 
   const settings : ISettings = {
     urlCoupon:            urlParams.get('coupon'),
-    forceVariantId:       urlParams.get('forceVariantId') || props.forceVariantId || null,
+    //forceVariantId:       urlParams.get('forceVariantId') || props.forceVariantId || null,
     recoveryCartId:       urlParams.get('recoveryCartId'),
     resetCookie:          urlParams.get('resetCookie') === "true",
     forceShippingZone:    urlParams.get('forceShippingZone') || "",
     debugForeignCurrency: urlParams.get('debugForeignCurrency') || "false",
     checkoutPage:         window.location,
     checkoutPageParams:   JSON.stringify(origParams),
-    isReceiptPage:        props.isReceiptPage || false,
+    //isReceiptPage:        props.isReceiptPage || false,
     defaultVariantId:     props.defaultVariantId,
     defaultAddons:        props.defaultAddons || "",
     nextUrl:              props.nextUrl,
-    landingPageName:      props.landingPageName || "",
-    upsellPageName:       props.upsellPageName || "",
-    funnelName:           props.funnelName || "",
-    orderTag:             props.orderTag || "",
-    advertorialPageName:  props.advertorialPageName || "",
-    trackStock:           !!props.trackStock,
+    //landingPageName:      props.landingPageName || "",
+    //upsellPageName:       props.upsellPageName || "",
+    //funnelName:           props.funnelName || "",
+    //orderTag:             props.orderTag || "",
+    //advertorialPageName:  props.advertorialPageName || "",
+    //trackStock:           !!props.trackStock,
     eventHandler:         props.eventHandler,
-    paypalConfirmUrl:     urlToAbsolute(props.paypalConfirmUrl),
-    isCheckoutPage:       props.isCheckoutPage === true
+    //paypalConfirmUrl:     urlToAbsolute(props.paypalConfirmUrl),
+    //isCheckoutPage:       props.isCheckoutPage === true
   };
 
   return settings;
 }
 
+/*
 function eventsCommon(cart:any, meta:any) {
     return {
       ip: meta.ipAddress,
@@ -210,6 +197,7 @@ function eventsCommon(cart:any, meta:any) {
       parentSessionCartId: cart.parentSessionCartId
     }
 }
+
 
 async function createPageViewEvent(api:any, settings:any, cart:any, meta:any) {
   const now = api.normalizedTimestamp();
@@ -243,3 +231,4 @@ async function createPageViewEvent(api:any, settings:any, cart:any, meta:any) {
   return e;
 
 }
+*/

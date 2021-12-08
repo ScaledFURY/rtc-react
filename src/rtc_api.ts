@@ -1,30 +1,55 @@
 import { fireEvent as doFireEvent } from "./events";
-
+import * as apiClient from './rest_api_client';
+//import { ISettings } from './components/rtc';
+import { warnWithOffset } from './logging';
 console.log("Setting localNow");
 const localNow = +new Date();
 
 
 let currencyFormatter : any = null;
-let apiClient : any= null;
-let setCart : any= null;
+let setCart : any = null;
+let setMeta : any = null;
 let cart : any = null;
 let pricingData : any = null;
 let settings : any = null;
 let meta : any = null;
 
 
+export function setApiEndpoint(endpoint:string) {
+  return apiClient.setApiEndpoint(endpoint);
+}
+
 /** @internal */
-export function updatePublicApi(newApiClient:any, newSetCart:Function, newCart: any, newPricingData:any, newSettings:any, newMeta:any) {
-  apiClient   = newApiClient;
+export function updatePublicApi(newSetCart:Function, newSetMeta:Function, newCart: any, newPricingData:any, newSettings:any, newMeta:any) {
   setCart     = newSetCart;
+  setMeta     = newSetMeta;
   cart        = newCart;
   pricingData = newPricingData;
   settings    = newSettings;
   meta        = newMeta;
 }
 
+/** Loads the cart */
+export async function loadCart(cartSettings:any) {
+  if (!settings) {
+    warnWithOffset("loadCart() was called before settings were available");
+    return null;
+  }
+  console.log(cartSettings);
+  console.log(settings);
+  const loadCartSettings = Object.assign({}, settings, cartSettings);
+  apiClient.getCart(loadCartSettings).then(newCart => {
+    setMeta(newCart.meta);
+    setCart(newCart.cart);
+  });
+  return;
+}
+
 /** Returns a timestamp value that has been normalized against the server's time */
 export const normalizedTimestamp = () => {
+  if (!meta) {
+    return null;
+  }
   const clientTimestampDrift = meta.serverNow - localNow;
   return (+new Date()) + clientTimestampDrift;
 };
@@ -35,6 +60,11 @@ export const normalizedTimestamp = () => {
 */
 export const sendEvent = async(e:any) => {
   return apiClient.sendEvent(e);
+}
+
+/** Bulk updates several options on a cart at once */
+export const updateCart = async(data:any) => {
+  return apiClient.updateCart(data);
 }
 
 /** Sends an event to the event handling system and any defined custom event handlers */

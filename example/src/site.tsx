@@ -27,7 +27,13 @@ import { CartDisplay,
          QuantitySelector
        } from 'rtc-react';
 
-export const Site = () => {
+export const Site = (props:any) => {
+
+  React.useEffect(() => {
+    props.rtcApi.loadCart();
+  }, []);
+
+
   return (
     <>
       <h3>Cart Display</h3>

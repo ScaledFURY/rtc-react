@@ -1,5 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
 import Cookies from 'js-cookie';
+import { logWithOffset } from "./logging";
 //import { Settings } from "./components/rtc";
 
 let apiEndpoint : string|null = null;
@@ -56,6 +57,10 @@ export async function getCart(props:any) {
   return result;
 }
 
+export async function updateCart(data:any) {
+  return apiRequest(`cart/${getCartId()}`, { "method": "PUT", "body": JSON.stringify(data) }, {});
+}
+
 export async function removeCoupon() {
   return apiRequest(`cart/${getCartId()}/remove_coupon`, { "method": "POST" }, {});
 }
@@ -86,10 +91,10 @@ export async function sendEvent(data:any = {}) {
 
 
 export async function loadPricing() {
+  logWithOffset("Loading Pricing Data");
   if (apiEndpoint === null) {
     throw Error("api called before calling setApiEndpoint");
   }
-  console.log(`Loading Pricing`);
 
   try {
     const cdnUrl = apiEndpoint.replace(/^api\./, 'cdn.');

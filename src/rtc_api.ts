@@ -29,8 +29,21 @@ export function updatePublicApi(newSetCart:Function, newSetMeta:Function, newCar
   meta        = newMeta;
 }
 
+interface ILoadCartSettings {
+  forceVariantId?: string|null;
+  landingPageName?: string;
+  funnelName?: string;
+  orderTag?: string;
+  advertorialPageName?: string;
+  forceShippingZone?: string|null;
+  debugForeignCurrency?: string;
+  defaultVariantId?: string;
+  defaultAddons?: string;
+  nextUrl?: string;
+}
+
 /** Loads the cart */
-export async function loadCart(cartSettings:any) {
+export async function loadCart(cartSettings:ILoadCartSettings) {
   if (!settings) {
     warnWithOffset("loadCart() was called before settings were available");
     return null;

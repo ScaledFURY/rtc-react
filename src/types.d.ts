@@ -1,23 +1,32 @@
 interface ISettings {
-    urlCoupon : string|null;
-    //forceVariantId: string|null;
-    recoveryCartId: string|null;
     resetCookie: boolean;
+    urlCoupon : string|null;
+    recoveryCartId: string|null;
     forceShippingZone: string|null;
     debugForeignCurrency: string;
-    checkoutPage: Location;
-    checkoutPageParams: string;
-    //isReceiptPage: boolean;
     defaultVariantId?: string;
     defaultAddons?: string;
     nextUrl: string;
-    //landingPageName: string;
-    //upsellPageName: string;
-    //funnelName: string;
-    //orderTag: string;
-    //advertorialPageName: string;
+    checkoutPage: Location;
+    checkoutPageParams: string;
+    //isReceiptPage: boolean;
     //trackStock: boolean;
     //paypalConfirmUrl?: string;
     eventHandler?: Function;
     //isCheckoutPage: boolean;
 }
+
+
+/*
+
+//forceVariantId: string|null;
+//landingPageName: string;
+//upsellPageName: string;
+//funnelName: string;
+//orderTag: string;
+//advertorialPageName: string;
+
+// Overrideable
+
+
+*/

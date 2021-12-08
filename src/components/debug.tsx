@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { RTCContext } from './rtc_context';
 
-export const DebugComponent = () => {
+export function DebugComponent() {
   const ctx : any = React.useContext(RTCContext);
   const [ visible, setVisible ] = React.useState(false);
 

@@ -8,7 +8,7 @@ export interface IVariantComparePriceProps {
 }
 
 /** Display's a variants compare price in the cart's currency */
-export const VariantComparePrice = (props:IVariantComparePriceProps) => {
+export function VariantComparePrice(props:IVariantComparePriceProps) {
   const ctx : any = React.useContext(RTCContext);
   if (!ctx.cart) {
     return null;

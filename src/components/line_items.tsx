@@ -28,7 +28,7 @@ export interface IFormattedLineItem {
   The component passed will be used to render each line item.
   The Component will be passed properties from @IFormattedLineItem
 */
-export const LineItems = (props:ILineItemsProps) => {
+export function LineItems(props:ILineItemsProps) {
   const ctx : any = React.useContext(RTCContext);
   if (!ctx.cart) {
     return null;

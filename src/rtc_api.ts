@@ -29,7 +29,7 @@ export function updatePublicApi(newSetCart:Function, newSetMeta:Function, newCar
   meta        = newMeta;
 }
 
-interface ILoadCartSettings {
+export interface ILoadCartSettings {
   /** Forces this variant to be the primary variant, overrides current cart */
   forceVariantId?: string|null;
   /** Sets the landing page name if it hasn't been already set */

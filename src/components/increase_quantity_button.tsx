@@ -16,7 +16,7 @@ export interface IIncreaseQuantityButtonProps {
 }
 
 /** A button that will increase the quantity of variant in the cart */
-export const IncreaseQuantityButton = (props:IIncreaseQuantityButtonProps) => {
+export function IncreaseQuantityButton(props:IIncreaseQuantityButtonProps) {
   const ctx : any = React.useContext(RTCContext);
   if (!ctx.cart) {
     return null;

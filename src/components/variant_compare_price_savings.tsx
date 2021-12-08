@@ -8,7 +8,7 @@ export interface IVariantComparePriceSavingsProps {
 }
 
 /** Displays a variant's compare price savings (compare - actual) in the cart's currency */
-export const VariantComparePriceSavings = (props:IVariantComparePriceSavingsProps) => {
+export function VariantComparePriceSavings(props:IVariantComparePriceSavingsProps) {
   const ctx : any = React.useContext(RTCContext);
   if (!ctx.cart) {
     return null;

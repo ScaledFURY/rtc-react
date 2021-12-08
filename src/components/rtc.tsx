@@ -84,7 +84,7 @@ export interface IRTCProps {
 
 logWithOffset("Initializing RTC");
 
-export const RTC = (props: IRTCProps) => {
+export function RTC(props: IRTCProps) {
   api.setApiEndpoint(props.apiEndpoint);
   const debugMode = props.apiEndpoint.match(/burnerdomain/);
 

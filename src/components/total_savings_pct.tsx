@@ -2,7 +2,7 @@ import * as React from 'react'
 import { RTCContext } from './rtc_context';
 
 /** Displays the total savings between the compare price and the actual price.  Does not include % symbol */
-export const TotalSavingsPct = () => {
+export function TotalSavingsPct() {
   const ctx : any = React.useContext(RTCContext);
   if (!ctx.cart) {
     return null;

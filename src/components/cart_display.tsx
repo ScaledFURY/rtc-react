@@ -44,7 +44,7 @@ const LineItem = (props:any) => {
     You are also free to implmement your own cart display using:<br>
     LineItems, SubtotalValue, ShippingValue, DiscountValue, TaxValue, TotalValue, etc.<br>
  */
-export const CartDisplay = () => {
+export function CartDisplay() {
   const ctx : any = React.useContext(RTCContext);
   if (!ctx.cart) {
     return null;

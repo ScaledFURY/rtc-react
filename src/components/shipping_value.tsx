@@ -2,7 +2,7 @@ import * as React from 'react'
 import { RTCContext } from './rtc_context';
 
 /** Displays the current shipping total in the cart's currency */
-export const ShippingValue = () => {
+export function ShippingValue() {
   const ctx : any = React.useContext(RTCContext);
   if (!ctx.cart) {
     return null;

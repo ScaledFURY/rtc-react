@@ -16,7 +16,7 @@ export interface IDecreaseQuantityButtonProps {
 }
 
 /** A button that will decrease the quantity of variant in the cart */
-export const DecreaseQuantityButton = (props:IDecreaseQuantityButtonProps) => {
+export function DecreaseQuantityButton(props:IDecreaseQuantityButtonProps) {
   const ctx : any = React.useContext(RTCContext);
   if (!ctx.cart) {
     return null;

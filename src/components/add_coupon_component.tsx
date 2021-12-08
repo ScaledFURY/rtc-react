@@ -12,7 +12,7 @@ export interface IAddCouponComponentProps {
 }
 
 /** Creates a textfield/button combo to add coupons */
-export const AddCouponComponent = (props:IAddCouponComponentProps) => {
+export function AddCouponComponent(props:IAddCouponComponentProps) {
   const ctx : any = React.useContext(RTCContext);
   let [ couponCode, setCouponCode ] = React.useState("");
 

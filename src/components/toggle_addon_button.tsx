@@ -16,7 +16,7 @@ export interface IToggleAddonButtonProps {
 /** Creates a button that allows the user to toggle a variant on and off.<br>
     Button has the class `rtc-addon-enabled` when variant is in the cart.
 */
-export const ToggleAddonButton = (props:IToggleAddonButtonProps) => {
+export function ToggleAddonButton(props:IToggleAddonButtonProps) {
   const ctx : any = React.useContext(RTCContext);
   if (!ctx.cart) {
     return null;

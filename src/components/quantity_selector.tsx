@@ -12,7 +12,7 @@ export interface IQuantitySelectorProps {
 }
 
 /** Creates a &lt;select&gt; element allowing the user to select a quantity for an item */
-export const QuantitySelector = (props:IQuantitySelectorProps) => {
+export function QuantitySelector(props:IQuantitySelectorProps) {
   const ctx : any = React.useContext(RTCContext);
   const [ curQty, setCurQty ] = React.useState(ctx.api.getVariantQuantity(props.variantId) || 0);
 

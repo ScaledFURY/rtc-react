@@ -12,7 +12,7 @@ export interface IRemoveCouponButtonProps {
 }
 
 /** Creates a button which allows the user to remove an applied coupon */
-export const RemoveCouponButton = (props:IRemoveCouponButtonProps) => {
+export function RemoveCouponButton(props:IRemoveCouponButtonProps) {
   const ctx : any = React.useContext(RTCContext);
   if (!ctx.cart) {
     return null;

@@ -3,7 +3,7 @@ import * as apiClient from './rest_api_client';
 //import { ISettings } from './components/rtc';
 import { warnWithOffset } from './logging';
 const localNow = +new Date();
-
+import { digestMessage } from "./digestMessage";
 
 let currencyFormatter : any = null;
 let setCart : any = null;
@@ -244,3 +244,93 @@ export const removeCoupon = async () => {
     return false
   }
 };
+
+
+interface IPageViewProps {
+  /** Specifies pageType: advertorial, lander, upsell */
+  pageType:string;
+  /** Is this a page where the customer can checkout */
+  isCheckoutPage:boolean;
+  /** Optionally override eventSourceUrl: defaults to window.location.href */
+  eventSourceUrl?:string;
+  /** Optionally override url: defaults to window.location.href */
+  url?:string;
+  /** Optionally override pageTitle: defaults to document.title */
+  pageTitle?:string;
+  /** Optionally override referrer: defaults to document.referrer */
+  referrer?:string;
+  /** Required when pageType="advertorial" */
+  advertorialPageName?:string;
+  /** Required when pageType="upsell" */
+  upsellPageName?:string;
+  /** Required when pageType="lander" */
+  landingPageName?:string;
+}
+
+
+export async function firePageView(props:IPageViewProps) {
+  const validPageTypes = ["lander","upsell","advertorial"];
+  if (validPageTypes.indexOf(props.pageType) === -1) {
+    warnWithOffset(`firePageView: '${props.pageType}' is not a valid pageType`)
+  }
+  if (props.pageType === "lander" && !props.landingPageName) {
+    warnWithOffset(`firePageView: pageType is 'lander' but landingPageName was not specified`);
+  }
+  if (props.pageType === "upsell" && !props.upsellPageName) {
+    warnWithOffset(`firePageView: pageType is 'upsell' but upsellPageName was not specified`);
+  }
+  if (props.pageType === "advertorial" && !props.advertorialPageName) {
+    warnWithOffset(`firePageView: pageType is 'advertorial' but advertorialPageName was not specified`);
+  }
+
+  const now = normalizedTimestamp();
+  const hshKey = `page_view:${cart.sessionCartId}:${now}:${window.location.href}:${JSON.stringify(props)}`;
+  const eventId = await digestMessage(hshKey);
+
+
+  const e:any = { eventType: "page_view",
+              url: props.url || window.location.href,
+              pageTitle: props.pageTitle || document.title,
+              referrer: props.referrer || document.referrer,
+              eventId,
+              eventSourceUrl: props.eventSourceUrl || window.location.href,
+              createdAt: now,
+              ...eventsCommon,
+              isCheckoutPage: props.isCheckoutPage,
+              pageType: props.pageType
+            };
+
+  switch(e.pageType) {
+    case 'lander':
+      e.landingPageName = props.landingPageName;
+      break;
+    case 'upsell':
+      e.upsellPageName = props.upsellPageName;
+      break;
+    case 'advertorial':
+      e.advertorialPageName = props.advertorialPageName;
+      break;
+  }
+  await fireEvent(e);
+
+}
+
+export function eventsCommon() {
+    if (!meta || !cart) {
+      return {};
+    }
+    return {
+      ip: meta.ipAddress,
+      userAgent: meta.userAgent,
+      sessionCartId: cart.sessionCartId,
+      advertorialPageName: cart.advertorialPageName,
+      landingPageName: cart.landingPageName,
+      funnelName: cart.funnelName,
+      pageParams: cart.checkoutPageParams,
+      country: cart.shippingZone,
+      primaryVariantId: cart.primaryVariantId,
+      //splitDecisions: this.splitDecisions, // TODO: Are we still doing split decisions?  How?
+      locale: cart.locale,
+      parentSessionCartId: cart.parentSessionCartId
+    }
+}

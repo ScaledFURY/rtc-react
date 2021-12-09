@@ -7,5 +7,5 @@ export function logWithOffset(message:string) {
 
 export function warnWithOffset(message:string) {
   const diff = (+new Date()) - startupOffset;
-  console.warn(`[RTC +${diff}] WARNING: ${message}`);
+  console.error(`[RTC +${diff}] WARNING: ${message}`);
 }

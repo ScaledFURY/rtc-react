@@ -6,7 +6,7 @@ import { LocalCart } from "../local-cart";
 import { logWithOffset } from '../logging';
 
 import * as api from "../rtc_api";
-//import { digestMessage } from "../digestMessage";
+
 declare global {
     interface Window { RTC: any; }
 }

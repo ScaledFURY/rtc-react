@@ -29,8 +29,7 @@ export function updatePublicApi(newSetCart:Function, newSetMeta:Function, newCar
   meta        = newMeta;
   if (cart && meta) {
     while (pendingPageViews.length > 0) {
-      const ppv = pendingPageViews.pop();
-      firePageView(ppv);
+      firePageView(pendingPageViews.pop());
     }
   }
 
@@ -107,7 +106,7 @@ export async function fireEvent(e:any) {
 }
 
 /** Converts a value 1.24 into a formmated currency string for the current locale and cartCurrency */
-export async function formatCurrency(val:string|number) {
+export function formatCurrency(val:string|number) {
   if (!cart || !cart.locale) {
     return null;
   }
@@ -117,7 +116,7 @@ export async function formatCurrency(val:string|number) {
 
 
 /** Returns the quantity of a given variant currently in the cart */
-export async function getVariantQuantity(variantId:string) {
+export function getVariantQuantity(variantId:string) {
   if (!cart) {
     return null;
   }

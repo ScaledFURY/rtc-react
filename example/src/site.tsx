@@ -30,6 +30,10 @@ import { CartDisplay,
 export const Site = (props:any) => {
 
   React.useEffect(() => {
+    props.rtcApi.firePageView({
+      pageType: "lander",
+      landingPageName: "example"
+    });
     props.rtcApi.loadCart({
       defaultVariantId:"40194513993914",
       defaultAddons:"39518515298490",

@@ -21,7 +21,8 @@
     "test:unit": "cross-env CI=1 react-scripts test --env=jsdom",
     "test:watch": "react-scripts test --env=jsdom",
     "predeploy": "cd example && yarn install && yarn run build",
-    "deploy": "gh-pages -d example/build"
+    "deploy": "gh-pages -d example/build",
+    "doc": "typedoc ./src/index.tsx --internalNamespace Interfaces"
   },
   "peerDependencies": {
     "react": "^17.0.0"
@@ -66,6 +67,7 @@
   ],
   "dependencies": {
     "js-cookie": "^3.0.1",
+    "typedoc-plugin-missing-exports": "^0.22.6",
     "uuid": "^8.3.2"
   }
 }

@@ -12,7 +12,7 @@ let cart : any = null;
 let pricingData : any = null;
 let settings : any = null;
 let meta : any = null;
-
+let pendingPageViews : any = [];
 
 /** @internal */
 export function setApiEndpoint(endpoint:string) {
@@ -27,6 +27,13 @@ export function updatePublicApi(newSetCart:Function, newSetMeta:Function, newCar
   pricingData = newPricingData;
   settings    = newSettings;
   meta        = newMeta;
+  if (cart && meta) {
+    while (pendingPageViews.length > 0) {
+      const ppv = pendingPageViews.pop();
+      firePageView(ppv);
+    }
+  }
+
 }
 
 export interface ILoadCartSettings {
@@ -67,7 +74,7 @@ export async function loadCart(cartSettings:ILoadCartSettings) {
 }
 
 /** Returns a timestamp value that has been normalized against the server's time */
-export const normalizedTimestamp = () => {
+export function normalizedTimestamp() {
   if (!meta) {
     return null;
   }
@@ -79,17 +86,17 @@ export const normalizedTimestamp = () => {
   Transmits an event to the server
   @internal
 */
-export const sendEvent = async(e:any) => {
+export async function sendEvent(e:any) {
   return apiClient.sendEvent(e);
 }
 
-/** Bulk updates several options on a cart at once (STILL IN DEVELOPMENT) */
-export const updateCart = async(data:any) => {
-  return apiClient.updateCart(data);
-}
+/*** Bulk updates several options on a cart at once (STILL IN DEVELOPMENT) */
+//export async function updateCart = async(data:any) => {
+//  return apiClient.updateCart(data);
+//}
 
 /** Sends an event to the event handling system and any defined custom event handlers */
-export const fireEvent = async (e:any) => {
+export async function fireEvent(e:any) {
   const promises = [];
   promises.push(doFireEvent(e)); // FIXME
   if (settings.eventHandler) {
@@ -100,7 +107,7 @@ export const fireEvent = async (e:any) => {
 }
 
 /** Converts a value 1.24 into a formmated currency string for the current locale and cartCurrency */
-export const formatCurrency = (val:string|number) => {
+export async function formatCurrency(val:string|number) {
   if (!cart || !cart.locale) {
     return null;
   }
@@ -110,7 +117,7 @@ export const formatCurrency = (val:string|number) => {
 
 
 /** Returns the quantity of a given variant currently in the cart */
-export const getVariantQuantity = (variantId:string) => {
+export async function getVariantQuantity(variantId:string) {
   if (!cart) {
     return null;
   }
@@ -138,7 +145,7 @@ For example,
 }
 ```
 */
-export const getVariantData = (variantId:string|number) => {
+export function getVariantData(variantId:string|number) {
 
   if (!cart || !pricingData || !pricingData[variantId]) {
     return null;
@@ -176,7 +183,7 @@ export const getVariantData = (variantId:string|number) => {
 
 
 /** Returns true/false if the specified variantId is in the cart */
-export const hasVariant = (variantId:string) => {
+export function hasVariant(variantId:string) {
   return cart.currencyCart.hasVariant(variantId);
 }
 
@@ -191,7 +198,7 @@ setVariantQuantities({
 ```
 
 */
-export const setVariantQuantities = async(data:any) => {
+export async function setVariantQuantities(data:any) {
   const result = await apiClient.setVariantQuantities(data);
   if (result) {
     setCart(result);
@@ -202,7 +209,7 @@ export const setVariantQuantities = async(data:any) => {
 }
 
 /** Sets the primary variant of the cart.  A cart can only have one primary variant */
-export const setPrimaryVariant = async (variantId:string) => {
+export async function setPrimaryVariant(variantId:string) {
   const result = await apiClient.setPrimaryVariant(variantId);
   if (result) {
     setCart(result);
@@ -213,7 +220,7 @@ export const setPrimaryVariant = async (variantId:string) => {
 }
 
 /** Toggles a variant in the cart */
-export const toggleVariant = async (variantId:string) => {
+export async function toggleVariant(variantId:string) {
   const result = await apiClient.toggleAddon(variantId);
   if (result) {
     setCart(result);
@@ -224,7 +231,7 @@ export const toggleVariant = async (variantId:string) => {
 }
 
 /** Apples a coupon to the cart */
-export const applyCoupon = async (code:string) => {
+export async function applyCoupon(code:string) {
   const result = await apiClient.applyCoupon(code);
   if (result) {
     setCart(result);
@@ -235,7 +242,7 @@ export const applyCoupon = async (code:string) => {
 };
 
 /** Removes a coupon from the cart */
-export const removeCoupon = async () => {
+export async function removeCoupon() {
   const result = await apiClient.removeCoupon();
   if (result) {
     setCart(result);
@@ -245,30 +252,11 @@ export const removeCoupon = async () => {
   }
 };
 
-
-interface IPageViewProps {
-  /** Specifies pageType: advertorial, lander, upsell */
-  pageType:string;
-  /** Is this a page where the customer can checkout */
-  isCheckoutPage:boolean;
-  /** Optionally override eventSourceUrl: defaults to window.location.href */
-  eventSourceUrl?:string;
-  /** Optionally override url: defaults to window.location.href */
-  url?:string;
-  /** Optionally override pageTitle: defaults to document.title */
-  pageTitle?:string;
-  /** Optionally override referrer: defaults to document.referrer */
-  referrer?:string;
-  /** Required when pageType="advertorial" */
-  advertorialPageName?:string;
-  /** Required when pageType="upsell" */
-  upsellPageName?:string;
-  /** Required when pageType="lander" */
-  landingPageName?:string;
-}
-
-
 export async function firePageView(props:IPageViewProps) {
+  if (!cart || !meta) {
+    pendingPageViews.push(props);
+    return;
+  }
   const validPageTypes = ["lander","upsell","advertorial"];
   if (validPageTypes.indexOf(props.pageType) === -1) {
     warnWithOffset(`firePageView: '${props.pageType}' is not a valid pageType`)
@@ -315,7 +303,7 @@ export async function firePageView(props:IPageViewProps) {
 
 }
 
-export function eventsCommon() {
+function eventsCommon() {
     if (!meta || !cart) {
       return {};
     }

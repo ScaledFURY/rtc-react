@@ -35,6 +35,7 @@ export const Site = (props:any) => {
       landingPageName: "example"
     });
     props.rtcApi.loadCart({
+      landingPageName: "example",
       defaultVariantId:"40194513993914",
       defaultAddons:"39518515298490",
       urlCoupon: "STEPHEN"

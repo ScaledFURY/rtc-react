@@ -2,6 +2,40 @@ import React from 'react'
 import { Link } from "react-router-dom";
 import { CartDisplay } from "rtc-react";
 
+function CCMonthChoices() {
+  return (
+    <>
+    <option value="">- Select Exp Month -</option>
+    <option value="1">01 - January</option>
+    <option value="2">02 - Febuary</option>
+    <option value="3">03 - March</option>
+    <option value="4">04 - April</option>
+    <option value="5">05 - May</option>
+    <option value="6">06 - June</option>
+    <option value="7">07 - July</option>
+    <option value="8">08 - August</option>
+    <option value="9">09 - September</option>
+    <option value="10">10 - October</option>
+    <option value="11">11 - November</option>
+    <option value="12">12 - December</option>
+    </>
+  );
+}
+
+function CCYearChoices() {
+  const curYear = (new Date()).getFullYear();
+  const expirations = [(<option value="">- Select Exp Year -</option>)];
+  for (let year=curYear; year < (curYear+25); year++) {
+    expirations.push(<option value={year}>{year}</option>);
+  }
+
+  return (
+    <>
+    {expirations}
+    </>
+  );
+}
+
 export function Checkout(props:any) {
 
   React.useEffect(() => {
@@ -18,11 +52,258 @@ export function Checkout(props:any) {
     });
   }, [ props.rtcApi ]);
 
+  const [ checkoutProps, setCheckoutProps ] = React.useState({
+    "accepts_marketing": true,
+    "accepts_attentive": false,
+    "shipping": {
+        "first_name": "",
+        "last_name": "",
+        "address1": "",
+        "address2": "",
+        "city": "",
+        "state": "",
+        "postal_code": "",
+        "country": "US",
+        "phone": ""
+    },
+    "billing": {
+        "first_name": "",
+        "last_name": "",
+        "address1": "",
+        "address2": "",
+        "city": "",
+        "state": "",
+        "postal_code": "",
+        "country": "US",
+        "phone": ""
+    },
+    "email": "",
+    "billing_use_shipping": true,
+    "cc_number": "",
+    "cc_exp_month": "",
+    "cc_exp_year": "",
+    "cc_cvv": "",
+    "combo_mode": "bancontact"
+  });
+/*
+  const curYear = parseInt((new Date()).toISOString().slice(0,4));
+  const validCcYears = [ ]
+  for (let i = 0; i < 10; i++) {
+    validCcYears.push(curYear + i);
+  }
+*/
+  function textChangeHandler(e:any) {
+    const newProps = Object.assign({}, checkoutProps);
+
+    if (e.target.name.match(/shipping_/)) {
+      const field = e.target.name.replace(/shipping_/, "");
+      newProps.shipping[field] = e.target.value;
+    } else if (e.target.name.match(/billing_/)) {
+      const field = e.target.name.replace(/billing_/, "");
+      newProps.billing[field] = e.target.value;
+    } else {
+      newProps[e.target.name] = e.target.value;
+    }
+    console.log(JSON.stringify(newProps, null, 4));
+    setCheckoutProps(newProps);
+  }
+
   return (
     <>
     <Link to="/">Back to Lander</Link>
     <CartDisplay />
-    <h1>Hello!</h1>
+    <hr />
+
+    <form className="checkout-combo-form" method="post">
+          <h4>Contact Information</h4>
+
+          <div className="form-group">
+            <label htmlFor="email">Email</label>
+            <input id="email" type="email" name="email" value={checkoutProps.email} onChange={textChangeHandler} />
+          </div>
+
+          <h4>Shipping Address</h4>
+
+          <div className="form-group">
+            <label htmlFor="shipping_first_name">First Name</label>
+            <input type="text" id="shipping_first_name" name="shipping_first_name"  value={checkoutProps.shipping.first_name} onChange={textChangeHandler} />
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="shipping_last_name">Last Name</label>
+            <input id="shipping_last_name" type="text" name="shipping_last_name" value={checkoutProps.shipping.last_name} onChange={textChangeHandler} />
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="shipping_address_1">Address 1</label>
+            <input id="shipping_address_1" type="text" name="shipping_address1" value={checkoutProps.shipping.address1} onChange={textChangeHandler} />
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="shipping_address_2">Address 2</label>
+            <input id="shipping_address_2" type="text" name="shipping_address2" value={checkoutProps.shipping.address2} onChange={textChangeHandler} />
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="shipping_city">City</label>
+            <input id="shipping_city" type="text" name="shipping_city" value={checkoutProps.shipping.city} onChange={textChangeHandler} />
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="shipping_state">State</label>
+            <select id="shipping_state" name="shipping_state" value={checkoutProps.shipping.state} onChange={textChangeHandler}>
+            </select>
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="shipping_postal_code">ZIP Code</label>
+            <input type="text" name="shipping_postal_code" value={checkoutProps.shipping.postal_code} onChange={textChangeHandler} />
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="shipping_country">Country</label>
+            <select id="shipping_country"  name="shipping_country">
+            </select>
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="shipping_phone">Phone</label>
+            <input id="shipping_phone" type="text" name="shipping_phone" value={checkoutProps.shipping.phone} onChange={textChangeHandler} />
+          </div>
+
+          <h4>Billing Address</h4>
+
+          <div className="form-group">
+            <input type="radio" id="billing_use_shipping_true" name="billing_use_shipping" value="true" checked />
+            <label htmlFor="billing_use_shipping_true">Same as Shipping Address</label>
+
+            <input type="radio" id="billing_use_shipping_false" name="billing_use_shipping" value="false" />
+            <label htmlFor="billing_use_shipping_false">Use a different billing address</label>
+          </div>
+
+
+          <div className="checkout-billing-fields">
+            <div className="form-group">
+              <label htmlFor="billing_first_name">First Name</label>
+              <input type="text" id="billing_first_name" name="billing_first_name" value={checkoutProps.billing.first_name} onChange={textChangeHandler} />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="billing_last_name">Last Name</label>
+              <input id="billing_last_name" type="text" name="billing_last_name" value={checkoutProps.billing.last_name} onChange={textChangeHandler} />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="billing_address_1">Address 1</label>
+              <input id="billing_address_1" type="text" name="billing_address1" value={checkoutProps.billing.address1} onChange={textChangeHandler} />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="billing_address_2">Address 2</label>
+              <input id="billing_address_2" type="text" name="billing_address2" value={checkoutProps.billing.address2} onChange={textChangeHandler} />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="billing_city">City</label>
+              <input id="billing_city" type="text" name="billing_city" value={checkoutProps.billing.city} onChange={textChangeHandler} />
+            </div>
+
+
+            <div className="form-group">
+              <label htmlFor="billing_state">State</label>
+              <select id="billing_state" name="billing_state" data-country="US">
+              </select>
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="billing_postal_code">ZIP Code</label>
+              <input type="text" name="billing_postal_code" value={checkoutProps.billing.postal_code} onChange={textChangeHandler} />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="billing_country">Country</label>
+              <select id="billing_country" name="billing_country">
+              </select>
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="billing_phone">Phone</label>
+              <input id="billing_phone" type="text" name="billing_phone" value={checkoutProps.billing.phone} onChange={textChangeHandler} />
+            </div>
+          </div>
+
+          <h4>Credit Card</h4>
+          <div className="form-group">
+            <label htmlFor="cc_number">Credit Card Number</label>
+            <input id="cc_number" type="text" name="cc_number" value={checkoutProps.cc_number} onChange={textChangeHandler} />
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="cc_exp_month">Exp Month</label>
+            <select id="cc_exp_month" name="cc_exp_month" value={checkoutProps.cc_exp_month} onChange={textChangeHandler}>
+              <CCMonthChoices />
+            </select>
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="cc_exp_year">Exp Year</label>
+            <select id="cc_exp_year" name="cc_exp_year" value={checkoutProps.cc_exp_year} onChange={textChangeHandler}>
+              <CCYearChoices />
+            </select>
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="cc_cvv">CVV</label>
+            <input id="cc_cvv" type="text" name="cc_cvv" />
+          </div>
+
+
+          <div className="form-group">
+            <input type="radio" id="combo_mode_credit" name="combo_mode" value="credit" checked />
+            <label htmlFor="combo_mode_credit">Use Credit</label>
+
+            <input type="radio" id="combo_mode_paypal" name="combo_mode" value="paypal" />
+            <label htmlFor="combo_mode_paypal">Use PayPal</label>
+
+            <input type="radio" id="combo_mode_klarna" name="combo_mode" value="klarna" />
+            <label htmlFor="combo_mode_klarna">Use Klarna</label>
+
+            <input type="radio" id="combo_mode_ideal" name="combo_mode" value="ideal" />
+            <label htmlFor="combo_mode_ideal">Use Ideal</label>
+
+            <input type="radio" id="combo_mode_bancontact" name="combo_mode" value="bancontact" />
+            <label htmlFor="combo_mode_bancontact">Use Bancontact</label>
+
+
+
+            <div id="checkout-ideal-container" className="checkout-ideal-container" data-checkout-next-url="/receipt.html" data-checkout-fail-url="/combo.html"></div>
+
+            <div id="checkout-bancontact-container" className="checkout-bancontact-container" data-checkout-next-url="/receipt.html" data-checkout-fail-url="/combo.html"></div>
+
+            <div className="checkout-klarna-container" data-payment-method="pay_over_time" data-checkout-next-url="/receipt.html#fromklarna"></div>
+
+
+
+          </div>
+
+
+          <div className="form-group">
+            <label>Accepts Marketing?</label>
+            <input type="checkbox" name="accepts_marketing" checked={true} />
+          </div>
+
+          <div className="form-group">
+            <label>Accepts Attentive?</label>
+            <input type="checkbox" name="accepts_attentive" />
+          </div>
+
+
+          <button className="checkout-submit-combo">Buy</button>
+
+        </form>
+
+
+
     </>
   )
 }

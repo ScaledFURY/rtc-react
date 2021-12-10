@@ -93,6 +93,9 @@ export async function setShippingZone(country:string) {
   return apiRequest(`cart/${getCartId()}/set_country`, { "method": "POST", "body": JSON.stringify({ "country": country }) }, {});
 }
 
+export async function charge(ccData:ICheckoutData) {
+  return apiRequest(`cart/${getCartId()}/charge`, { "method": "POST", "body": JSON.stringify(ccData) }, {});
+}
 
 
 export async function loadPricing() {

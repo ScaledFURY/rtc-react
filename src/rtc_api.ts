@@ -231,6 +231,16 @@ export function getVariantData(variantId:string|number) {
 }
 
 
+export async function CreditCardCheckout(data:ICheckoutData) {
+  const result = await apiClient.charge(data);
+  if (result) {
+    setCart(result);
+    return true;
+  } else {
+    return false
+  }
+}
+
 /** Returns true/false if the specified variantId is in the cart */
 export function hasVariant(variantId:string) {
   return cart.currencyCart.hasVariant(variantId);

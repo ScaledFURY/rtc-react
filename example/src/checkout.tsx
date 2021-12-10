@@ -108,21 +108,18 @@ export function Checkout(props:any) {
   function toggleChangeHandler(e:any) {
     const newProps = Object.assign({}, checkoutProps);
     newProps[e.target.name] = !newProps[e.target.name];
-    console.log(JSON.stringify(newProps, null, 4));
     setCheckoutProps(newProps);
   }
 
   function billingUseShippingChangeHandler(e:any) {
     const newProps = Object.assign({}, checkoutProps);
     newProps[e.target.name] = e.target.value === "true";
-    console.log(JSON.stringify(newProps, null, 4));
     setCheckoutProps(newProps);
   }
 
   function comboModeChangeHandler(e:any) {
     const newProps = Object.assign({}, checkoutProps);
     newProps[e.target.name] = e.target.value;
-    console.log(JSON.stringify(newProps, null, 4));
     setCheckoutProps(newProps);
   }
 
@@ -137,7 +134,6 @@ export function Checkout(props:any) {
     } else {
       newProps[e.target.name] = e.target.value;
     }
-    console.log(JSON.stringify(newProps, null, 4));
     setCheckoutProps(newProps);
   }
 

@@ -66,6 +66,7 @@
     "dist"
   ],
   "dependencies": {
+    "country-state-picker": "^1.1.5",
     "js-cookie": "^3.0.1",
     "typedoc-plugin-missing-exports": "^0.22.6",
     "uuid": "^8.3.2"

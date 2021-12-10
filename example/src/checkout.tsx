@@ -2,6 +2,19 @@ import React from 'react'
 import { Link } from "react-router-dom";
 import { CartDisplay } from "rtc-react";
 
+function CountryOptions(props:any) {
+    const opts = props.rtcApi.getCountries().map((c:any) => {
+      return (
+        <option key={c.code} value={c.code}>{c.name}</option>
+      )
+    });
+    return (
+      <>
+      {opts}
+      </>
+    );
+}
+
 function CCMonthOptions() {
   return (
     <>
@@ -28,7 +41,6 @@ function CCYearOptions() {
   for (let year=curYear; year < (curYear+25); year++) {
     expirations.push(<option value={year} key={`year_choice${year}`}>{year}</option>);
   }
-
   return (
     <>
     {expirations}
@@ -37,6 +49,40 @@ function CCYearOptions() {
 }
 
 export function Checkout(props:any) {
+
+  const [ checkoutProps, setCheckoutProps ] = React.useState({
+    "accepts_marketing": true,
+    "accepts_attentive": false,
+    "shipping": {
+        "first_name": "",
+        "last_name": "",
+        "address1": "",
+        "address2": "",
+        "city": "",
+        "state": "",
+        "postal_code": "",
+        "country": "",
+        "phone": ""
+    },
+    "billing": {
+        "first_name": "",
+        "last_name": "",
+        "address1": "",
+        "address2": "",
+        "city": "",
+        "state": "",
+        "postal_code": "",
+        "country": "",
+        "phone": ""
+    },
+    "email": "",
+    "billing_use_shipping": true,
+    "cc_number": "",
+    "cc_exp_month": "",
+    "cc_exp_year": "",
+    "cc_cvv": "",
+    "combo_mode": "credit"
+  });
 
   React.useEffect(() => {
     props.rtcApi.firePageView({
@@ -50,43 +96,15 @@ export function Checkout(props:any) {
         defaultVariantId:"40194513993914",
         defaultAddons:"39518515298490",
         urlCoupon: "STEPHEN"
+      }).then(() => {
+        const newProps = Object.assign({}, checkoutProps);
+        newProps.shipping.country = props.rtcApi.currentShippingZone();
+        newProps.billing.country  = props.rtcApi.currentShippingZone();
+        setCheckoutProps(newProps);
       });
     }
   }, [ props.rtcApi ]);
 
-  const [ checkoutProps, setCheckoutProps ] = React.useState({
-    "accepts_marketing": true,
-    "accepts_attentive": false,
-    "shipping": {
-        "first_name": "",
-        "last_name": "",
-        "address1": "",
-        "address2": "",
-        "city": "",
-        "state": "",
-        "postal_code": "",
-        "country": "US",
-        "phone": ""
-    },
-    "billing": {
-        "first_name": "",
-        "last_name": "",
-        "address1": "",
-        "address2": "",
-        "city": "",
-        "state": "",
-        "postal_code": "",
-        "country": "US",
-        "phone": ""
-    },
-    "email": "",
-    "billing_use_shipping": true,
-    "cc_number": "",
-    "cc_exp_month": "",
-    "cc_exp_year": "",
-    "cc_cvv": "",
-    "combo_mode": "credit"
-  });
 
   function doPurchase(e:any) {
     e.preventDefault();
@@ -191,7 +209,8 @@ export function Checkout(props:any) {
 
           <div className="form-group">
             <label htmlFor="shipping_country">Country</label>
-            <select id="shipping_country"  name="shipping_country">
+            <select id="shipping_country"  name="shipping_country" value={checkoutProps.shipping.country}>
+              <CountryOptions {...props} />
             </select>
           </div>
 
@@ -252,6 +271,7 @@ export function Checkout(props:any) {
             <div className="form-group">
               <label htmlFor="billing_country">Country</label>
               <select id="billing_country" name="billing_country">
+                <CountryOptions {...props} />
               </select>
             </div>
 

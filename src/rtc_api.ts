@@ -4,6 +4,8 @@ import * as apiClient from './rest_api_client';
 import { warnWithOffset } from './logging';
 const localNow = +new Date();
 import { digestMessage } from "./digestMessage";
+import * as csp from 'country-state-picker';
+
 
 declare global {
     interface Window { RTC: any; }
@@ -44,6 +46,31 @@ export function updatePublicApi(newSetCart:Function, newSetMeta:Function, newCar
 
 }
 
+/** Returns current shipping zone */
+export function currentShippingZone() {
+  return !cart ? null : cart.shippingZone;
+}
+
+
+let countryCache = null;
+
+/** Returns list of cournties */
+export function getCountries() {
+  if (!countryCache) {
+    const countryCache = csp.getCountries();
+    // TODO:  We need to fork CSP to make it not do this.
+    for (let i = 0; i < countryCache.length; i++) {
+      countryCache[i].code = countryCache[i].code.toUpperCase();
+    }
+  }
+  return countryCache;
+}
+
+/** Returns list of provinces for the current shipping zone */
+export function provincesForShippingZone() {
+  return csp.getStates(currentShippingZone().toLowerCase());
+}
+
 /** Checks if cart has already been loaded. */
 export function cartLoaded() {
   return cart !== null;
@@ -79,11 +106,10 @@ export async function loadCart(cartSettings:ILoadCartSettings) {
     return null;
   }
   const loadCartSettings = Object.assign({}, settings, cartSettings);
-  apiClient.getCart(loadCartSettings).then(newCart => {
-    setMeta(newCart.meta);
-    setCart(newCart.cart);
-  });
-  return;
+  const newCart = await apiClient.getCart(loadCartSettings);
+  setMeta(newCart.meta);
+  setCart(newCart.cart);
+  return newCart.cart;
 }
 
 /** Returns a timestamp value that has been normalized against the server's time */

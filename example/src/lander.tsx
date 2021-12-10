@@ -35,12 +35,14 @@ export const Lander = (props:any) => {
       pageType: "lander",
       landingPageName: "example"
     });
-    props.rtcApi.loadCart({
-      landingPageName: "example",
-      defaultVariantId:"40194513993914",
-      defaultAddons:"39518515298490",
-      urlCoupon: "STEPHEN"
-    });
+    if (!props.rtcApi.cartLoaded()) {
+      props.rtcApi.loadCart({
+        landingPageName: "example",
+        defaultVariantId:"40194513993914",
+        defaultAddons:"39518515298490",
+        urlCoupon: "STEPHEN"
+      });
+    }
   }, [ props.rtcApi ]);
 
   return (

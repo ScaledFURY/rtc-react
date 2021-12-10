@@ -35,6 +35,11 @@ export function updatePublicApi(newSetCart:Function, newSetMeta:Function, newCar
 
 }
 
+/** Checks if cart has already been loaded. */
+export function cartLoaded() {
+  return cart !== null;
+}
+
 export interface ILoadCartSettings {
   /** Forces this variant to be the primary variant, overrides current cart */
   forceVariantId?: string|null;

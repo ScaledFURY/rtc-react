@@ -2,7 +2,7 @@ import React from 'react'
 import { Link } from "react-router-dom";
 import { CartDisplay } from "rtc-react";
 
-function CCMonthChoices() {
+function CCMonthOptions() {
   return (
     <>
     <option value="">- Select Exp Month -</option>
@@ -22,7 +22,7 @@ function CCMonthChoices() {
   );
 }
 
-function CCYearChoices() {
+function CCYearOptions() {
   const curYear = (new Date()).getFullYear();
   const expirations = [(<option value="" key="year_choice_null">- Select Exp Year -</option>)];
   for (let year=curYear; year < (curYear+25); year++) {
@@ -86,6 +86,10 @@ export function Checkout(props:any) {
     "combo_mode": "credit"
   });
 
+  function onEmailBlur(e:any) {
+    alert(e.target.value);
+  }
+
   function toggleChangeHandler(e:any) {
     const newProps = Object.assign({}, checkoutProps);
     newProps[e.target.name] = !newProps[e.target.name];
@@ -133,7 +137,7 @@ export function Checkout(props:any) {
 
           <div className="form-group">
             <label htmlFor="email">Email</label>
-            <input id="email" type="email" name="email" value={checkoutProps.email} onChange={textChangeHandler} />
+            <input id="email" type="email" name="email" value={checkoutProps.email} onChange={textChangeHandler} onBlur={onEmailBlur} />
           </div>
 
           <h4>Shipping Address</h4>
@@ -255,20 +259,20 @@ export function Checkout(props:any) {
           <div className="form-group">
             <label htmlFor="cc_exp_month">Exp Month</label>
             <select id="cc_exp_month" name="cc_exp_month" value={checkoutProps.cc_exp_month} onChange={textChangeHandler}>
-              <CCMonthChoices />
+              <CCMonthOptions />
             </select>
           </div>
 
           <div className="form-group">
             <label htmlFor="cc_exp_year">Exp Year</label>
             <select id="cc_exp_year" name="cc_exp_year" value={checkoutProps.cc_exp_year} onChange={textChangeHandler}>
-              <CCYearChoices />
+              <CCYearOptions />
             </select>
           </div>
 
           <div className="form-group">
             <label htmlFor="cc_cvv">CVV</label>
-            <input id="cc_cvv" type="text" name="cc_cvv" />
+            <input id="cc_cvv" type="text" name="cc_cvv" value={checkoutProps.cc_cvv} onChange={textChangeHandler} />
           </div>
 
 

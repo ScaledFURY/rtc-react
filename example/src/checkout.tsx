@@ -2,17 +2,27 @@ import React from 'react'
 import { Link } from "react-router-dom";
 import { CartDisplay } from "rtc-react";
 
+function StateOptions(props:any) {
+    const states = props.rtcApi.statesForShippingZone();
+    const result = states.map((state:any) => (
+      <option key={state} value={state}>{state}</option>
+    ));
+    return (
+      <>
+        <option value="" key="state_choice_null">- Select State -</option>
+        {result}
+      </>
+    )
+}
+
 function CountryOptions(props:any) {
-    const opts = props.rtcApi.getCountries().map((c:any) => {
+    let rawCountries = props.rtcApi.getCountries();
+    return rawCountries.map((c:any) => {
       return (
         <option key={c.code} value={c.code}>{c.name}</option>
       )
     });
-    return (
-      <>
-      {opts}
-      </>
-    );
+
 }
 
 function CCMonthOptions() {
@@ -123,6 +133,18 @@ export function Checkout(props:any) {
     }
   }
 
+  async function changeCountryHandler(e:any) {
+    const newProps = Object.assign({}, checkoutProps);
+    newProps.shipping.country = e.target.value;
+    newProps.billing.country = e.target.value;
+    newProps.shipping.state = "";
+    newProps.billing.country = "";
+
+    setCheckoutProps(newProps);
+
+    await props.rtcApi.setShippingZone(e.target.value);
+  }
+
   function toggleChangeHandler(e:any) {
     const newProps = Object.assign({}, checkoutProps);
     newProps[e.target.name] = !newProps[e.target.name];
@@ -199,6 +221,7 @@ export function Checkout(props:any) {
           <div className="form-group">
             <label htmlFor="shipping_state">State</label>
             <select id="shipping_state" name="shipping_state" value={checkoutProps.shipping.state} onChange={textChangeHandler}>
+              <StateOptions {...props} />
             </select>
           </div>
 
@@ -209,7 +232,7 @@ export function Checkout(props:any) {
 
           <div className="form-group">
             <label htmlFor="shipping_country">Country</label>
-            <select id="shipping_country"  name="shipping_country" value={checkoutProps.shipping.country}>
+            <select id="shipping_country"  name="shipping_country" value={checkoutProps.shipping.country} onChange={changeCountryHandler}>
               <CountryOptions {...props} />
             </select>
           </div>
@@ -260,6 +283,7 @@ export function Checkout(props:any) {
             <div className="form-group">
               <label htmlFor="billing_state">State</label>
               <select id="billing_state" name="billing_state">
+                <StateOptions {...props} />
               </select>
             </div>
 
@@ -270,7 +294,7 @@ export function Checkout(props:any) {
 
             <div className="form-group">
               <label htmlFor="billing_country">Country</label>
-              <select id="billing_country" name="billing_country">
+              <select id="billing_country" name="billing_country" value={checkoutProps.billing.country} onChange={changeCountryHandler}>
                 <CountryOptions {...props} />
               </select>
             </div>

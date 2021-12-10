@@ -1,6 +1,5 @@
 import { fireEvent as doFireEvent } from "./events";
 import * as apiClient from './rest_api_client';
-//import { ISettings } from './components/rtc';
 import { warnWithOffset } from './logging';
 const localNow = +new Date();
 import { digestMessage } from "./digestMessage";
@@ -52,12 +51,12 @@ export function currentShippingZone() {
 }
 
 
-let countryCache = null;
+let countryCache : any = null;
 
 /** Returns list of cournties */
 export function getCountries() {
   if (!countryCache) {
-    const countryCache = csp.getCountries();
+    countryCache = csp.getCountries();
     // TODO:  We need to fork CSP to make it not do this.
     for (let i = 0; i < countryCache.length; i++) {
       countryCache[i].code = countryCache[i].code.toUpperCase();
@@ -67,8 +66,8 @@ export function getCountries() {
 }
 
 /** Returns list of provinces for the current shipping zone */
-export function provincesForShippingZone() {
-  return csp.getStates(currentShippingZone().toLowerCase());
+export function statesForShippingZone() {
+  return !cart ? [] : csp.getStates(currentShippingZone().toLowerCase());
 }
 
 /** Checks if cart has already been loaded. */
@@ -154,6 +153,17 @@ export function formatCurrency(val:string|number) {
   return currencyFormatter.format(val);
 }
 
+/** sets the current shipping zone */
+export async function setShippingZone(newZone:string) {
+  const result = await apiClient.setShippingZone(newZone);
+  if (result) {
+    setCart(result);
+    return true;
+  } else {
+    return false
+  }
+
+}
 
 /** Returns the quantity of a given variant currently in the cart */
 export function getVariantQuantity(variantId:string) {

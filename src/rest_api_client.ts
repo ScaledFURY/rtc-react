@@ -89,6 +89,11 @@ export async function sendEvent(data:any = {}) {
   return apiRequest(`events/${getCartId()}`, { "method": "POST", "body": JSON.stringify(data) }, {});
 }
 
+export async function setShippingZone(country:string) {
+  return apiRequest(`cart/${getCartId()}/set_country`, { "method": "POST", "body": JSON.stringify({ "country": country }) }, {});
+}
+
+
 
 export async function loadPricing() {
   logWithOffset("Loading Pricing Data");

@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from "react-router-dom";
-import { CartDisplay } from "rtc-react";
+import { CartDisplay, CountrySelectOptions } from "rtc-react";
 
 function StateOptions(props:any) {
     const states = props.rtcApi.statesForShippingZone();
@@ -15,15 +15,7 @@ function StateOptions(props:any) {
     )
 }
 
-function CountryOptions(props:any) {
-    let rawCountries = props.rtcApi.getCountries();
-    return rawCountries.map((c:any) => {
-      return (
-        <option key={c.code} value={c.code}>{c.name}</option>
-      )
-    });
 
-}
 
 function CCMonthOptions() {
   return (
@@ -192,7 +184,7 @@ export function Checkout(props:any) {
     <CartDisplay />
     <hr />
 
-    <form className="checkout-combo-form" method="post">
+    <div className="checkout-form">
           <h4>Contact Information</h4>
 
           <div className="form-group">
@@ -242,7 +234,7 @@ export function Checkout(props:any) {
           <div className="form-group">
             <label htmlFor="shipping_country">Country</label>
             <select id="shipping_country"  name="shipping_country" value={checkoutProps.shipping.country} onChange={changeCountryHandler}>
-              <CountryOptions {...props} />
+              <CountrySelectOptions />
             </select>
           </div>
 
@@ -304,7 +296,7 @@ export function Checkout(props:any) {
             <div className="form-group">
               <label htmlFor="billing_country">Country</label>
               <select id="billing_country" name="billing_country" value={checkoutProps.billing.country} onChange={changeCountryHandler}>
-                <CountryOptions {...props} />
+                <CountrySelectOptions />
               </select>
             </div>
 
@@ -363,7 +355,7 @@ export function Checkout(props:any) {
 
           <button className="checkout-submit-combo" onClick={doPurchase}>Buy</button>
 
-        </form>
+        </div>
 
 
 

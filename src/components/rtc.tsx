@@ -86,7 +86,7 @@ logWithOffset("Initializing RTC");
 
 export function RTC(props: IRTCProps) {
   api.setApiEndpoint(props.apiEndpoint);
-  const debugMode = props.apiEndpoint.match(/burnerdomain/);
+  const debugMode = !!props.apiEndpoint.match(/burnerdomain/);
 
   if (debugMode) {
     window.RTC = window.RTC || {};
@@ -112,7 +112,7 @@ export function RTC(props: IRTCProps) {
     setCartOrig(newCart);
   };
 
-  api.updatePublicApi(setCart, setMeta, cart, pricingData, settings, meta);
+  api.updatePublicApi(setCart, setMeta, cart, pricingData, settings, meta, debugMode);
   if (debugMode) {
     window.RTC.api = api;
   }

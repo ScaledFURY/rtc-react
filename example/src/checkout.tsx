@@ -88,8 +88,21 @@ export function Checkout(props:any) {
     "combo_mode": "credit"
   });
 
+  function doPurchase(e:any) {
+    e.preventDefault();
+    alert(JSON.stringify(checkoutProps, null, 4));
+  }
+
   function onEmailBlur(e:any) {
-    alert(e.target.value);
+
+    const validateEmail = (em:string) => {
+        // eslint-disable-next-line no-useless-escape
+        var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return re.test(String(em).toLowerCase());
+    }
+    if (validateEmail(e.target.value)) {
+      props.rtcApi.fireCheckoutStarted({ email: e.target.value });
+    }
   }
 
   function toggleChangeHandler(e:any) {
@@ -299,7 +312,7 @@ export function Checkout(props:any) {
           </div>
 
 
-          <button className="checkout-submit-combo">Buy</button>
+          <button className="checkout-submit-combo" onClick={doPurchase}>Buy</button>
 
         </form>
 

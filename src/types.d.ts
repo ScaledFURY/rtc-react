@@ -43,6 +43,11 @@ interface IPageViewProps {
   landingPageName?:string;
 }
 
+interface ICheckoutStartedProps {
+  email: string;
+  eventSourceUrl?: string;
+}
+
 /*
 
 //forceVariantId: string|null;

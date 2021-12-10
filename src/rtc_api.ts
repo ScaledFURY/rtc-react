@@ -5,6 +5,10 @@ import { warnWithOffset } from './logging';
 const localNow = +new Date();
 import { digestMessage } from "./digestMessage";
 
+declare global {
+    interface Window { RTC: any; }
+}
+
 let currencyFormatter : any = null;
 let setCart : any = null;
 let setMeta : any = null;
@@ -20,13 +24,18 @@ export function setApiEndpoint(endpoint:string) {
 }
 
 /** @internal */
-export function updatePublicApi(newSetCart:Function, newSetMeta:Function, newCart: any, newPricingData:any, newSettings:any, newMeta:any) {
+export function updatePublicApi(newSetCart:Function, newSetMeta:Function, newCart: any, newPricingData:any, newSettings:any, newMeta:any, debugMode:boolean) {
   setCart     = newSetCart;
   setMeta     = newSetMeta;
   cart        = newCart;
   pricingData = newPricingData;
   settings    = newSettings;
   meta        = newMeta;
+  if (debugMode) {
+    window.RTC.meta = meta;
+    window.RTC.cart = cart;
+    window.RTC.pricingData = pricingData;
+  }
   if (cart && meta) {
     while (pendingPageViews.length > 0) {
       firePageView(pendingPageViews.pop());
@@ -256,6 +265,25 @@ export async function removeCoupon() {
   }
 };
 
+
+export async function fireCheckoutStarted(props:ICheckoutStartedProps) {
+  //  email: string;
+  //  eventSourceUrl?: string;
+
+  const hshKey = `${cart.sessionCartId}:checkout_started`;
+  const eventId = await digestMessage(hshKey);
+  const e = { eventType: "checkout_started",
+              email: props.email,
+              eventId,
+              currency: meta.storeCurrency,
+              value: cart.localCart.subTotal, // Always use localCart when making stats.
+              eventSourceUrl: props.eventSourceUrl || window.location.href,
+              createdAt: normalizedTimestamp(),
+              ...eventsCommon()
+  };
+  return fireEvent(e);
+}
+
 export async function firePageView(props:IPageViewProps) {
   if (!cart || !meta) {
     pendingPageViews.push(props);
@@ -287,7 +315,7 @@ export async function firePageView(props:IPageViewProps) {
               eventId,
               eventSourceUrl: props.eventSourceUrl || window.location.href,
               createdAt: now,
-              ...eventsCommon,
+              ...eventsCommon(),
               isCheckoutPage: props.isCheckoutPage,
               pageType: props.pageType
             };
@@ -303,7 +331,7 @@ export async function firePageView(props:IPageViewProps) {
       e.advertorialPageName = props.advertorialPageName;
       break;
   }
-  await fireEvent(e);
+  return fireEvent(e);
 
 }
 

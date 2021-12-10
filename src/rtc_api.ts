@@ -231,13 +231,19 @@ export function getVariantData(variantId:string|number) {
 }
 
 
-export async function CreditCardCheckout(data:ICheckoutData) {
-  const result = await apiClient.charge(data);
-  if (result) {
+export async function creditCardCheckout(checkoutData:ICheckoutData) {
+  let checkoutCopy : ICheckoutData = Object.assign({}, checkoutData);
+
+  if (checkoutCopy.billing_use_shipping) {
+    checkoutCopy.billing = checkoutCopy.shipping;
+  }
+  console.log(checkoutCopy);
+  const result = await apiClient.charge(checkoutCopy);
+  if (result.error) {
+    return Error(result.error);
+  } else {
     setCart(result);
     return true;
-  } else {
-    return false
   }
 }
 

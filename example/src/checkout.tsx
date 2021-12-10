@@ -93,9 +93,15 @@ export function Checkout(props:any) {
   }, [ props.rtcApi ]);
 
 
-  function doPurchase(e:any) {
-    e.preventDefault();
-    alert(JSON.stringify(checkoutProps, null, 4));
+  async function doPurchase(e:any) {
+    console.log(e);
+    console.log(JSON.stringify(checkoutProps, null, 4));
+    const result = await props.rtcApi.creditCardCheckout(checkoutProps);
+    if (result instanceof Error) {
+      alert(result.message);
+    } else {
+      alert("SUCCESS");
+    }
   }
 
   function onEmailBlur(e:any) {

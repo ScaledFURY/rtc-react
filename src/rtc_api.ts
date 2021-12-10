@@ -66,8 +66,8 @@ export function getCountries() {
 }
 
 /** Returns list of provinces for the current shipping zone */
-export function statesForShippingZone() {
-  return !cart ? [] : csp.getStates(currentShippingZone().toLowerCase());
+export function statesForCountry(countryCode:string) {
+  return csp.getStates(countryCode.toLowerCase());
 }
 
 /** Checks if cart has already been loaded. */

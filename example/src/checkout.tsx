@@ -1,21 +1,6 @@
 import React from 'react'
 import { Link } from "react-router-dom";
-import { CartDisplay, CountrySelectOptions } from "rtc-react";
-
-function StateOptions(props:any) {
-    const states = props.rtcApi.statesForShippingZone();
-    const result = states.map((state:any) => (
-      <option key={state} value={state}>{state}</option>
-    ));
-    return (
-      <>
-        <option value="" key="state_choice_null">- Select State -</option>
-        {result}
-      </>
-    )
-}
-
-
+import { CartDisplay, CountrySelectOptions, StateSelectOptions } from "rtc-react";
 
 function CCMonthOptions() {
   return (
@@ -141,7 +126,8 @@ export function Checkout(props:any) {
     newProps.shipping.country = e.target.value;
     newProps.billing.country = e.target.value;
     newProps.shipping.state = "";
-    newProps.billing.country = "";
+    newProps.billing.state = "";
+    console.log(newProps);
     setCheckoutProps(newProps);
     await props.rtcApi.setShippingZone(e.target.value);
   }
@@ -222,7 +208,7 @@ export function Checkout(props:any) {
           <div className="form-group">
             <label htmlFor="shipping_state">State</label>
             <select id="shipping_state" name="shipping_state" value={checkoutProps.shipping.state} onChange={onStateChange}>
-              <StateOptions {...props} />
+              <StateSelectOptions countryCode={checkoutProps.shipping.country} />
             </select>
           </div>
 
@@ -284,7 +270,7 @@ export function Checkout(props:any) {
             <div className="form-group">
               <label htmlFor="billing_state">State</label>
               <select id="billing_state" name="billing_state" value={checkoutProps.billing.state} onChange={onStateChange}>
-                <StateOptions {...props} />
+                <StateSelectOptions countryCode={checkoutProps.shipping.country} />
               </select>
             </div>
 

@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { RTCContext } from './rtc_context';
 
-
+/** Renders a list of <option> elements for Countries */
 export function CountrySelectOptions() {
 
   const ctx : any = React.useContext(RTCContext);

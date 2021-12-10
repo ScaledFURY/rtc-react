@@ -133,15 +133,24 @@ export function Checkout(props:any) {
     }
   }
 
+  async function onStateChange(e:any) {
+    const newProps = Object.assign({}, checkoutProps);
+    if (e.target.name.match(/shipping_/)) {
+      newProps.shipping.state = e.target.value;
+    }
+    if (e.target.name.match(/billing_/)) {
+      newProps.billing.state = e.target.value;
+    }
+    setCheckoutProps(newProps);
+  }
+
   async function changeCountryHandler(e:any) {
     const newProps = Object.assign({}, checkoutProps);
     newProps.shipping.country = e.target.value;
     newProps.billing.country = e.target.value;
     newProps.shipping.state = "";
     newProps.billing.country = "";
-
     setCheckoutProps(newProps);
-
     await props.rtcApi.setShippingZone(e.target.value);
   }
 
@@ -220,7 +229,7 @@ export function Checkout(props:any) {
 
           <div className="form-group">
             <label htmlFor="shipping_state">State</label>
-            <select id="shipping_state" name="shipping_state" value={checkoutProps.shipping.state} onChange={textChangeHandler}>
+            <select id="shipping_state" name="shipping_state" value={checkoutProps.shipping.state} onChange={onStateChange}>
               <StateOptions {...props} />
             </select>
           </div>
@@ -282,7 +291,7 @@ export function Checkout(props:any) {
 
             <div className="form-group">
               <label htmlFor="billing_state">State</label>
-              <select id="billing_state" name="billing_state">
+              <select id="billing_state" name="billing_state" value={checkoutProps.billing.state} onChange={onStateChange}>
                 <StateOptions {...props} />
               </select>
             </div>

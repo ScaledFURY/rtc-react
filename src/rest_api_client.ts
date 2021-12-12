@@ -57,28 +57,24 @@ export async function getCart(props:any) {
   return result;
 }
 
-export async function updateCart(data:any) {
-  return apiRequest(`cart/${getCartId()}`, { "method": "PUT", "body": JSON.stringify(data) }, {});
-}
-
 export async function removeCoupon() {
-  return apiRequest(`cart/${getCartId()}/remove_coupon`, { "method": "POST" }, {});
+  return apiRequest(`cart/${getCartId()}/update_cart`, { "method": "POST", "body": JSON.stringify({ "updateType": "remove_coupon", updateData: { } }) }, {});
 }
 
 export async function  applyCoupon(code:string) {
-  return apiRequest(`cart/${getCartId()}/apply_coupon`, { "method": "POST", "body": JSON.stringify({ "code": code }) }, {});
+  return apiRequest(`cart/${getCartId()}/update_cart`, { "method": "POST", "body": JSON.stringify({ "updateType": "apply_coupon", updateData: { code } }) }, {});
 }
 
 export async function toggleAddon(variantId:string) {
-  return apiRequest(`cart/${getCartId()}/toggle_addon`, { "method": "POST", "body": JSON.stringify({ variantId }) }, {});
+  return apiRequest(`cart/${getCartId()}/update_cart`, { "method": "POST", "body": JSON.stringify({ "updateType": "toggle_addon", updateData: { variantId } }) }, {});
 }
 
 export async function setPrimaryVariant(variantId:string) {
-  return apiRequest(`cart/${getCartId()}/set_current_variant`, { "method": "POST", "body": JSON.stringify({ "variantId": variantId }) }, {});
+  return apiRequest(`cart/${getCartId()}/update_cart`, { "method": "POST", "body": JSON.stringify({ "updateType": "set_primary_variant", updateData: { variantId } }) }, {});
 }
 
-export async function setVariantQuantities(data:any) {
-  return apiRequest(`cart/${getCartId()}/set_variant_quantities`, { "method": "POST", "body": JSON.stringify(data) }, {});
+export async function setVariantQuantities(variantQuantities:any) {
+  return apiRequest(`cart/${getCartId()}/update_cart`, { "method": "POST", "body": JSON.stringify({ "updateType": "set_variant_quantities", updateData: { variantQuantities } }) }, {});
 }
 
 export async function getBrowserEvents() {
@@ -90,7 +86,7 @@ export async function sendEvent(data:any = {}) {
 }
 
 export async function setShippingZone(country:string) {
-  return apiRequest(`cart/${getCartId()}/set_country`, { "method": "POST", "body": JSON.stringify({ "country": country }) }, {});
+  return apiRequest(`cart/${getCartId()}/update_cart`, { "method": "POST", "body": JSON.stringify({ "updateType": "set_shipping_zone", updateData: { country } }) }, {});
 }
 
 export async function charge(ccData:ICheckoutData) {

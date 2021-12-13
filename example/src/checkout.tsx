@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from "react-router-dom";
-import { CartDisplay, CountrySelectOptions, StateSelectOptions } from "rtc-react";
+import { CartDisplay, CountrySelectOptions, StateSelectOptions, PaypalCheckoutButton } from "rtc-react";
 
 function CCMonthOptions() {
   return (
@@ -175,6 +175,7 @@ export function Checkout(props:any) {
     <Link to="/">Back to Lander</Link>
     <CartDisplay />
     <hr />
+    <PaypalCheckoutButton nextUrl={"https://www.google.com"} text="Checkout Paypal" />
 
     <div className="checkout-form">
           <h4>Contact Information</h4>

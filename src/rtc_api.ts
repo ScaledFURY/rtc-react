@@ -387,6 +387,10 @@ export async function firePageView(props:IPageViewProps) {
 
 }
 
+export function redirectToPaypal(nextUrl:string) {
+  apiClient.redirectToPaypal(nextUrl);
+}
+
 function eventsCommon() {
     if (!meta || !cart) {
       return {};

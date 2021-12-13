@@ -32,4 +32,4 @@ export { QuantitySelector } from "./components/quantity_selector";
 
 export { CountrySelectOptions } from "./components/country_select_options";
 export { StateSelectOptions } from "./components/state_select_options";
-export * as RTCApi from "./rtc_api";
+export { PaypalCheckoutButton } from "./components/paypal_checkout_button";

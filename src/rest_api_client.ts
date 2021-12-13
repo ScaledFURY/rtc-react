@@ -93,6 +93,12 @@ export async function charge(ccData:ICheckoutData) {
   return apiRequest(`cart/${getCartId()}/charge`, { "method": "POST", "body": JSON.stringify(ccData) }, {});
 }
 
+export async function redirectToPaypal(nextUrl:string) {
+  const urlParams = new URLSearchParams();
+  urlParams.set('nextUrl', nextUrl);
+  const paypalUrl : URL = new URL(`https://${apiEndpoint}/v1/paypal/${getCartId()}/init?${urlParams}`);
+  window.location = <any>paypalUrl;
+}
 
 export async function loadPricing() {
   logWithOffset("Loading Pricing Data");

@@ -21,8 +21,6 @@ export interface IRTCProps {
   defaultVariantId?: string;
   /** Global default addon variant ids to include on first load (CSV), can be overridden when calling loadCart */
   defaultAddons?: string;
-  /** The URL to redirect to after successful checkout.  Used for Paypal */
-  nextUrl: string;
   /** A callback function which will be used whenever an event is fired locally or received from server.  TODO: How to handle server side? */
   eventHandler?: Function;
 }
@@ -64,7 +62,6 @@ export interface IRTCProps {
        defaultVariantId="40194513993914"
        defaultAddons="39518515298490"
        forceVariantId="39507333480634"
-       nextUrl="https://www.whatever.com"
        apiEndpoint="api.burnerdomain.rtccart.io"
        landingPageName="LPN"
        upsellPageName="UPN"
@@ -170,7 +167,6 @@ function load_settings(props: IRTCProps) : ISettings {
     //isReceiptPage:        props.isReceiptPage || false,
     defaultVariantId:     props.defaultVariantId,
     defaultAddons:        props.defaultAddons || "",
-    nextUrl:              props.nextUrl,
     //landingPageName:      props.landingPageName || "",
     //upsellPageName:       props.upsellPageName || "",
     //funnelName:           props.funnelName || "",

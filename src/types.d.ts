@@ -12,7 +12,6 @@ interface ISettings {
 
     defaultVariantId?: string;
     defaultAddons?: string;
-    nextUrl: string;
     checkoutPage: Location;
     checkoutPageParams: string;
     //isReceiptPage: boolean;

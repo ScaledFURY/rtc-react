@@ -51,30 +51,30 @@ async function apiRequest(endPoint:string, opts:any={}, queryParams:any={}) {
 }
 
 export async function getCart(props:any) {
-  const result = await apiRequest(`cart/${getCartId(props.resetCookie)}`, {}, props);
+  const result = await apiRequest(`cart/${getCartId(props.resetCookie)}/fast_cart`, { "method": "POST", "body": JSON.stringify({ "action": "show", actionData: { ...props } }) }, {});
   result.cart.sessionCartId = result.cart.sessionCartId || getCartId(); // TODO: server should set this.
   console.log(`cartId = ${result.cart.sessionCartId}`);
   return result;
 }
 
 export async function removeCoupon() {
-  return apiRequest(`cart/${getCartId()}/update_cart`, { "method": "POST", "body": JSON.stringify({ "updateType": "remove_coupon", updateData: { } }) }, {});
+  return apiRequest(`cart/${getCartId()}/fast_cart`, { "method": "POST", "body": JSON.stringify({ "action": "remove_coupon", actionData: { } }) }, {});
 }
 
 export async function  applyCoupon(code:string) {
-  return apiRequest(`cart/${getCartId()}/update_cart`, { "method": "POST", "body": JSON.stringify({ "updateType": "apply_coupon", updateData: { code } }) }, {});
+  return apiRequest(`cart/${getCartId()}/fast_cart`, { "method": "POST", "body": JSON.stringify({ "action": "apply_coupon", actionData: { code } }) }, {});
 }
 
 export async function toggleAddon(variantId:string) {
-  return apiRequest(`cart/${getCartId()}/update_cart`, { "method": "POST", "body": JSON.stringify({ "updateType": "toggle_addon", updateData: { variantId } }) }, {});
+  return apiRequest(`cart/${getCartId()}/fast_cart`, { "method": "POST", "body": JSON.stringify({ "action": "toggle_addon", actionData: { variantId } }) }, {});
 }
 
 export async function setPrimaryVariant(variantId:string) {
-  return apiRequest(`cart/${getCartId()}/update_cart`, { "method": "POST", "body": JSON.stringify({ "updateType": "set_primary_variant", updateData: { variantId } }) }, {});
+  return apiRequest(`cart/${getCartId()}/fast_cart`, { "method": "POST", "body": JSON.stringify({ "action": "set_primary_variant", actionData: { variantId } }) }, {});
 }
 
 export async function setVariantQuantities(variantQuantities:any) {
-  return apiRequest(`cart/${getCartId()}/update_cart`, { "method": "POST", "body": JSON.stringify({ "updateType": "set_variant_quantities", updateData: { variantQuantities } }) }, {});
+  return apiRequest(`cart/${getCartId()}/fast_cart`, { "method": "POST", "body": JSON.stringify({ "action": "set_variant_quantities", actionData: { variantQuantities } }) }, {});
 }
 
 export async function getBrowserEvents() {
@@ -86,7 +86,7 @@ export async function sendEvent(data:any = {}) {
 }
 
 export async function setShippingZone(country:string) {
-  return apiRequest(`cart/${getCartId()}/update_cart`, { "method": "POST", "body": JSON.stringify({ "updateType": "set_shipping_zone", updateData: { country } }) }, {});
+  return apiRequest(`cart/${getCartId()}/fast_cart`, { "method": "POST", "body": JSON.stringify({ "action": "set_shipping_zone", actionData: { country } }) }, {});
 }
 
 export async function charge(ccData:ICheckoutData) {

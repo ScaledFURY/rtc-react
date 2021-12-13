@@ -59,20 +59,9 @@ export interface IRTCProps {
 
   ```
   <RTC component={Site}
-       defaultVariantId="40194513993914"
-       defaultAddons="39518515298490"
-       forceVariantId="39507333480634"
        apiEndpoint="api.burnerdomain.rtccart.io"
-       landingPageName="LPN"
-       upsellPageName="UPN"
-       funnelName="FN"
-       orderTag="OT"
-       advertorialPageName="APN"
-       trackStock={false}
-       paypalConfirmUrl="http://www.whatever.com"
        eventHandler={eh}
-       isCheckoutPage={false}
-  />
+
   ```
 
 

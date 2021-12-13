@@ -11,7 +11,6 @@ const App = () => {
 
   return (
     <RTC component={Site}
-         nextUrl="https://www.whatever.com"
          apiEndpoint="api.burnerdomain.rtccart.io"
          eventHandler={eh}
     />

@@ -83,7 +83,7 @@ export const Lander = (props:any) => {
       <hr/>
 
       <h3>QuantitySelector</h3>
-      <QuantitySelector variantId="39518515364026" max={10} />
+      <QuantitySelector variantId="39518515331258" max={10} />
 
       <h3>RemoveCouponButton</h3>
       <RemoveCouponButton text="remove coupon" />

@@ -1,6 +1,7 @@
 import React from 'react'
 import { Link } from "react-router-dom";
 import { CartDisplay, CountrySelectOptions, StateSelectOptions, PaypalCheckoutButton } from "rtc-react";
+import { useNavigate } from "react-router-dom";
 
 function CCMonthOptions() {
   return (
@@ -36,6 +37,7 @@ function CCYearOptions() {
 }
 
 export function Checkout(props:any) {
+  const navigate = useNavigate();
 
   const [ checkoutProps, setCheckoutProps ] = React.useState({
     "accepts_marketing": true,
@@ -100,7 +102,7 @@ export function Checkout(props:any) {
     if (result instanceof Error) {
       alert(result.message);
     } else {
-      alert("SUCCESS");
+      navigate("/upsell1");
     }
   }
 

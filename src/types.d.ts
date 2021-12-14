@@ -21,6 +21,14 @@ interface ISettings {
     //isCheckoutPage: boolean;
 }
 
+interface IUpsellParams {
+  upsellType: string;
+  upsellParam1: string;
+  upsellParam2?: string;
+  upsellPageName?: string;
+  upsellUrl?: string;
+}
+
 interface IPageViewProps {
   /** Specifies pageType: advertorial, lander, upsell */
   pageType:string;

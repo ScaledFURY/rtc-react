@@ -89,6 +89,11 @@ export async function setShippingZone(country:string) {
   return apiRequest(`cart/${getCartId()}/fast_cart`, { "method": "POST", "body": JSON.stringify({ "action": "set_shipping_zone", actionData: { country } }) }, {});
 }
 
+export async function acceptUpsell(data:IUpsellParams) {
+  return apiRequest(`cart/${getCartId()}/fast_cart`, { "method": "POST", "body": JSON.stringify({ "action": "accept_upsell", actionData: data }) }, {});
+}
+
+
 export async function charge(ccData:ICheckoutData) {
   return apiRequest(`cart/${getCartId()}/charge`, { "method": "POST", "body": JSON.stringify(ccData) }, {});
 }

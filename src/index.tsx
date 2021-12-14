@@ -15,7 +15,7 @@ export { TotalLineItemValue }      from "./components/total_line_item_value";
 export { TotalCompareValue }       from "./components/total_compare_value";
 export { TotalSavingsValue }       from "./components/total_savings_value";
 export { TotalSavingsPct }         from "./components/total_savings_pct";
-
+export { AcceptUpsellButton }      from "./components/accept_upsell_button";
 export { VariantComparePriceSavingsPct } from "./components/variant_compare_price_savings_pct";
 export { VariantComparePriceSavings }    from "./components/variant_compare_price_savings";
 export { VariantComparePrice }           from "./components/variant_compare_price";

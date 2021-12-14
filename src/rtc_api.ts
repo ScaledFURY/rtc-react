@@ -300,6 +300,17 @@ export async function toggleVariant(variantId:string) {
   }
 }
 
+/** Accepts an upsell */
+export async function acceptUpsell(data:IUpsellParams) {
+  const result = await apiClient.acceptUpsell(data);
+  if (result) {
+    setCart(result);
+    return true;
+  } else {
+    return false
+  }
+}
+
 /** Apples a coupon to the cart */
 export async function applyCoupon(code:string) {
   const result = await apiClient.applyCoupon(code);

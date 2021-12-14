@@ -13,7 +13,7 @@ export interface IPaypalCheckoutButtonProps {
   className?: string;
 }
 
-/** Provides a button which allows the user to select a new variant as the primary variant */
+/** Provides a button which redirects the user to Paypal */
 export function PaypalCheckoutButton(props:IPaypalCheckoutButtonProps) {
   const ctx : any = React.useContext(RTCContext);
   if (!ctx.cart) {

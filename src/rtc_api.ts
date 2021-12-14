@@ -173,6 +173,11 @@ export function getVariantQuantity(variantId:string) {
   return cart.currencyCart.getVariantQuantity(variantId);
 }
 
+/** Save arbitary data to the cart, will not overwrite previously saved values */
+export async function saveValues(savedValues:any) {
+  return apiClient.saveValues(savedValues);
+}
+
 /** Returns a structure of variant data
 
 For example,

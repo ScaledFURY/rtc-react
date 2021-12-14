@@ -100,6 +100,10 @@ export async function redirectToPaypal(nextUrl:string) {
   window.location = <any>paypalUrl;
 }
 
+export async function saveValues(savedValues:any) {
+  return apiRequest(`cart/${getCartId()}/fast_cart`, { "method": "POST", "body": JSON.stringify({ "action": "save_values", actionData: { savedValues } }) }, {});
+}
+
 export async function loadPricing() {
   logWithOffset("Loading Pricing Data");
   if (apiEndpoint === null) {

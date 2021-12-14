@@ -1,9 +1,9 @@
 import * as React from 'react'
 import { RTCContext } from './rtc_context';
 
-/** Properties for the SetPrimaryVariantButton component */
+/** Properties for the PaypalCheckoutButton component */
 export interface IPaypalCheckoutButtonProps {
-  /** The variantId this control will set as primary */
+  /** The location the user should be redirected to after coming back from paypal */
   nextUrl: string;
   /** Text for the button */
   text: string;

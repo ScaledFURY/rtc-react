@@ -1,6 +1,6 @@
 import { fireEvent as doFireEvent } from "./events";
 import * as apiClient from './rest_api_client';
-import { warnWithOffset } from './logging';
+import { errorWithOffset } from './logging';
 const localNow = +new Date();
 import { digestMessage } from "./digestMessage";
 import * as csp from 'country-state-picker';
@@ -101,7 +101,7 @@ export interface ILoadCartSettings {
 /** Loads the cart */
 export async function loadCart(cartSettings:ILoadCartSettings) {
   if (!settings) {
-    warnWithOffset("loadCart() was called before settings were available");
+    errorWithOffset("loadCart() was called before settings were available");
     return null;
   }
   const loadCartSettings = Object.assign({}, settings, cartSettings);
@@ -114,6 +114,7 @@ export async function loadCart(cartSettings:ILoadCartSettings) {
 /** Returns a timestamp value that has been normalized against the server's time */
 export function normalizedTimestamp() {
   if (!meta) {
+    errorWithOffset("called normalizedTimestamp before cart was loaded");
     return null;
   }
   const clientTimestampDrift = meta.serverNow - localNow;
@@ -147,6 +148,7 @@ export async function fireEvent(e:any) {
 /** Converts a value 1.24 into a formmated currency string for the current locale and cartCurrency */
 export function formatCurrency(val:string|number) {
   if (!cart || !cart.locale) {
+    errorWithOffset("formatCurrency was called before the cart was loaded");
     return null;
   }
   currencyFormatter = currencyFormatter || new Intl.NumberFormat(cart.locale, { style: 'currency', currency: cart.cartCurrency });
@@ -156,10 +158,11 @@ export function formatCurrency(val:string|number) {
 /** sets the current shipping zone */
 export async function setShippingZone(newZone:string) {
   const result = await apiClient.setShippingZone(newZone);
-  if (result) {
+  if (result && !result.error) {
     setCart(result);
     return true;
   } else {
+    errorWithOffset("setShippingZone: " + JSON.stringify(result, null, 4));
     return false
   }
 
@@ -254,6 +257,10 @@ export async function creditCardCheckout(checkoutData:ICheckoutData) {
 
 /** Returns true/false if the specified variantId is in the cart */
 export function hasVariant(variantId:string) {
+  if (!cart) {
+    errorWithOffset("hasVariant was called before cart was loaded");
+    return false;
+  }
   return cart.currencyCart.hasVariant(variantId);
 }
 
@@ -270,10 +277,11 @@ setVariantQuantities({
 */
 export async function setVariantQuantities(data:any) {
   const result = await apiClient.setVariantQuantities(data);
-  if (result) {
+  if (result && !result.error) {
     setCart(result);
     return true;
   } else {
+    errorWithOffset("setVariantQuantities: " + JSON.stringify(result, null, 4));
     return false
   }
 }
@@ -281,10 +289,11 @@ export async function setVariantQuantities(data:any) {
 /** Sets the primary variant of the cart.  A cart can only have one primary variant */
 export async function setPrimaryVariant(variantId:string) {
   const result = await apiClient.setPrimaryVariant(variantId);
-  if (result) {
+  if (result && !result.error) {
     setCart(result);
     return true;
   } else {
+    errorWithOffset("setPrimaryVariant: " + JSON.stringify(result, null, 4));
     return false
   }
 }
@@ -292,10 +301,11 @@ export async function setPrimaryVariant(variantId:string) {
 /** Toggles a variant in the cart */
 export async function toggleVariant(variantId:string) {
   const result = await apiClient.toggleAddon(variantId);
-  if (result) {
+  if (result && !result.error) {
     setCart(result);
     return true;
   } else {
+    errorWithOffset("toggleVariant: " + JSON.stringify(result, null, 4));
     return false
   }
 }
@@ -303,10 +313,11 @@ export async function toggleVariant(variantId:string) {
 /** Accepts an upsell */
 export async function acceptUpsell(data:IUpsellParams) {
   const result = await apiClient.acceptUpsell(data);
-  if (result) {
+  if (result && !result.error) {
     setCart(result);
     return true;
   } else {
+    errorWithOffset("acceptUpsell: " + JSON.stringify(result, null, 4));
     return false
   }
 }
@@ -314,10 +325,11 @@ export async function acceptUpsell(data:IUpsellParams) {
 /** Apples a coupon to the cart */
 export async function applyCoupon(code:string) {
   const result = await apiClient.applyCoupon(code);
-  if (result) {
+  if (result && !result.error) {
     setCart(result);
     return true;
   } else {
+    errorWithOffset("applyCoupon: " + JSON.stringify(result, null, 4));
     return false
   }
 };
@@ -325,10 +337,11 @@ export async function applyCoupon(code:string) {
 /** Removes a coupon from the cart */
 export async function removeCoupon() {
   const result = await apiClient.removeCoupon();
-  if (result) {
+  if (result && !result.error) {
     setCart(result);
     return true;
   } else {
+    errorWithOffset("removeCoupon: " + JSON.stringify(result, null, 4));
     return false
   }
 };
@@ -359,16 +372,16 @@ export async function firePageView(props:IPageViewProps) {
   }
   const validPageTypes = ["lander","upsell","advertorial"];
   if (validPageTypes.indexOf(props.pageType) === -1) {
-    warnWithOffset(`firePageView: '${props.pageType}' is not a valid pageType`)
+    errorWithOffset(`firePageView: '${props.pageType}' is not a valid pageType`)
   }
   if (props.pageType === "lander" && !props.landingPageName) {
-    warnWithOffset(`firePageView: pageType is 'lander' but landingPageName was not specified`);
+    errorWithOffset(`firePageView: pageType is 'lander' but landingPageName was not specified`);
   }
   if (props.pageType === "upsell" && !props.upsellPageName) {
-    warnWithOffset(`firePageView: pageType is 'upsell' but upsellPageName was not specified`);
+    errorWithOffset(`firePageView: pageType is 'upsell' but upsellPageName was not specified`);
   }
   if (props.pageType === "advertorial" && !props.advertorialPageName) {
-    warnWithOffset(`firePageView: pageType is 'advertorial' but advertorialPageName was not specified`);
+    errorWithOffset(`firePageView: pageType is 'advertorial' but advertorialPageName was not specified`);
   }
 
   const now = normalizedTimestamp();
@@ -409,6 +422,7 @@ export function redirectToPaypal(nextUrl:string) {
 
 function eventsCommon() {
     if (!meta || !cart) {
+      errorWithOffset("eventsCommon was called before cart was loaded");
       return {};
     }
     return {

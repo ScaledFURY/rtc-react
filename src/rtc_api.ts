@@ -162,7 +162,7 @@ export async function setShippingZone(newZone:string) {
     setCart(result);
     return true;
   } else {
-    errorWithOffset("setShippingZone: " + JSON.stringify(result, null, 4));
+    errorWithOffset(`setShippingZone: "${newZone}"` + JSON.stringify(result, null, 4));
     return false
   }
 
@@ -281,7 +281,7 @@ export async function setVariantQuantities(data:any) {
     setCart(result);
     return true;
   } else {
-    errorWithOffset("setVariantQuantities: " + JSON.stringify(result, null, 4));
+    errorWithOffset("setVariantQuantities: " + JSON.stringify([data, result], null, 4));
     return false
   }
 }
@@ -293,7 +293,8 @@ export async function setPrimaryVariant(variantId:string) {
     setCart(result);
     return true;
   } else {
-    errorWithOffset("setPrimaryVariant: " + JSON.stringify(result, null, 4));
+    errorWithOffset(`setPrimaryVariant "${variantId}": ` + JSON.stringify(result, null, 4));
+
     return false
   }
 }
@@ -305,7 +306,7 @@ export async function toggleVariant(variantId:string) {
     setCart(result);
     return true;
   } else {
-    errorWithOffset("toggleVariant: " + JSON.stringify(result, null, 4));
+    errorWithOffset(`toggleVariant "${variantId}": ` + JSON.stringify(result, null, 4));
     return false
   }
 }
@@ -317,7 +318,7 @@ export async function acceptUpsell(data:IUpsellParams) {
     setCart(result);
     return true;
   } else {
-    errorWithOffset("acceptUpsell: " + JSON.stringify(result, null, 4));
+    errorWithOffset("acceptUpsell: " + JSON.stringify([data, result], null, 4));
     return false
   }
 }
@@ -329,7 +330,7 @@ export async function applyCoupon(code:string) {
     setCart(result);
     return true;
   } else {
-    errorWithOffset("applyCoupon: " + JSON.stringify(result, null, 4));
+    errorWithOffset(`applyCoupon: "${code}"` + JSON.stringify(result, null, 4));
     return false
   }
 };
